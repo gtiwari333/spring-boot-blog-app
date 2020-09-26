@@ -1,0 +1,27 @@
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #acacac;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+.hidden {
+    display: none;
+}
+
+.note-box {
+    margin-bottom: 20px!important;
+    margin-left: 0!important;
+    margin-right: 0!important;
+}
