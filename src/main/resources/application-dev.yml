@@ -16,3 +16,8 @@ spring:
         console:
             enabled: true
 
+    mail:
+        host: localhost
+        port: 25
+        username:
+        password:
