@@ -63,13 +63,11 @@ And open   `http://localhost:8080` on your browser
 - Architecture test using ArchUnit
 
 Future: do more stuff
-- Account management with KeyCloak
+- Account management/Signup UI
 - Email
 - background jobs with Quartz
 - Liquibase/Flyway change log
 - Integrate Markdown editor for writing notes
-- search service using elastic search -- search into uploaded files as well
-- rate limit by IP on public API ( note api )
 
 ## Screenshots:
 
