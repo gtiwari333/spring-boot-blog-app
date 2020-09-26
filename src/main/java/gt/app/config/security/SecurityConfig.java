@@ -20,10 +20,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] AUTH_WHITELIST = {
         "/swagger-resources/**",
-        "/v2/api-docs",
+        "/v3/api-docs/**",
         "/h2-console/**",
         "/webjars/**",
         "/static/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html/**",
         "/" //landing page is allowed for all
     };
 
