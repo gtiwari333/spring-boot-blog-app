@@ -1,7 +1,7 @@
 # A Spring Boot Web Application Seed with tons of Ready to use features
 
 ### Intro
-This is a simple micro blogging application where you can post a note/blog and other can view it.
+This is a simple micro blogging application where you can post a note/blog with attachments and other can view it.
 
 The default username/passwords are listed on : gt.app.Application.initData, which are:
 
@@ -68,6 +68,17 @@ Future: do more stuff
 - background jobs with Quartz
 - Liquibase/Flyway change log
 - Integrate Markdown editor for writing notes
+
+#### SonarQube scan
+
+Run sonarqube:
+
+`docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube`
+
+Perform scan:
+
+mvn sonar:sonar
+
 
 ## Screenshots:
 

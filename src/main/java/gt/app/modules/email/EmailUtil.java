@@ -1,15 +1,17 @@
 package gt.app.modules.email;
 
 import gt.app.exception.InvalidDataException;
+import lombok.experimental.UtilityClass;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.util.Collection;
 import java.util.function.Function;
 
+@UtilityClass
 public class EmailUtil {
 
-    public static Function<String, InternetAddress> toInternetAddr() {
+    static Function<String, InternetAddress> toInternetAddr() {
         return it -> {
             try {
                 return new InternetAddress(it);
@@ -19,7 +21,7 @@ public class EmailUtil {
         };
     }
 
-    public static InternetAddress[] toInetArray(Collection<String> tos) {
+    static InternetAddress[] toInetArray(Collection<String> tos) {
         if (tos == null) {
             return new InternetAddress[0];
         }
