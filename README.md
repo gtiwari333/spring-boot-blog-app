@@ -1,4 +1,7 @@
-# A Spring Boot Web Application Seed with tons of Ready to use features
+# A BlogApp with Spring Boot
+
+#### More complex version is here: https://github.com/gtiwari333/spring-boot-web-application-seed
+
 
 ### Intro
 This is a simple micro blogging application where you can post a note/blog with attachments and other can view it.
