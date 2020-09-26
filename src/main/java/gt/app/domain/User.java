@@ -16,18 +16,25 @@ public class User extends BaseEntity implements UserDetails {
     @Basic(fetch = FetchType.LAZY)
     @Lob
     byte[] avatar;
+
     @Column(nullable = false)
     private String firstName;
+
     private String lastName;
+
     @Column(nullable = false)
     private LocalDate dateOfBirth;
+
     @Column(length = 254, unique = true, nullable = false)
     private String email;
+
     @Column(nullable = false, unique = true)
     @Size(min = 5, max = 20)
     private String uniqueId;
+
     @Column(name = "password_hash", length = 60)
     private String password;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "user_authority",
@@ -39,13 +46,18 @@ public class User extends BaseEntity implements UserDetails {
      */
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private boolean active = false;
+
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private boolean accountNonExpired;
+
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private boolean accountNonLocked;
+
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private boolean credentialsNonExpired;
+
     private String activationKey;
+
     private String resetKey;
 
     @Override
