@@ -26,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         "/static/**",
         "/swagger-ui/**",
         "/swagger-ui.html/**",
+        "/wro4j/**",
         "/" //landing page is allowed for all
     };
 

@@ -23,6 +23,8 @@
         <selenide.version>5.15.0</selenide.version>
         <google-guava.version>29.0-jre</google-guava.version>
 
+        <wro4j-sb-starter.version>0.7.1</wro4j-sb-starter.version>
+
         <!-- client deps -->
         <webjar-jquery.version>3.5.1</webjar-jquery.version>
         <webjar-bootstrap.version>4.5.0</webjar-bootstrap.version>
@@ -69,6 +71,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>eu.michael-simons</groupId>
+            <artifactId>wro4j-spring-boot-starter</artifactId>
+            <version>${wro4j-sb-starter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

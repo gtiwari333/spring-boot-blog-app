@@ -22,6 +22,14 @@ logging.level:
     gt: DEBUG
 
 
+wro4j:
+    jmx-enabled: false
+    debug: true
+    manager-factory:
+        pre-processors:  removeSourceMaps, cssUrlRewriting, cssImport, cssMinJawr, semicolonAppender, jsMin
+    filter-url: /wro4j # this is the default, needs to be used in secConfig and the htmls
+
+
 app-properties:
     file-storage:
         upload-folder: /X/uploads
