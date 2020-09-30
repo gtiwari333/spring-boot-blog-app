@@ -21,7 +21,7 @@ class HelloResourceIT {
     @WithMockUser
     void sayHello2(@Autowired MockMvc mvc) throws Exception {
 
-        mvc.perform(get("/api/hello"))
+        mvc.perform(get("/debug/hello"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.hello").value("world"));
