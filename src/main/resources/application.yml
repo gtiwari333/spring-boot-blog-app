@@ -10,6 +10,12 @@ spring:
         show-sql: true
         open-in-view: false
 
+    mail:
+        host: localhost
+        port: 25
+        username:
+        password:
+
 server:
     port: 8080
 

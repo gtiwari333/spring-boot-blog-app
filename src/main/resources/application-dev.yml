@@ -15,9 +15,3 @@ spring:
     h2:
         console:
             enabled: true
-
-    mail:
-        host: localhost
-        port: 25
-        username:
-        password:
