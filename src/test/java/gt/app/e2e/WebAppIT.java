@@ -60,9 +60,8 @@ class WebAppIT extends BaseSeleniumTest {
 
     private void testLoggedInHomePage(LoggedInHomePage page) {
         page.body()
-            .shouldHave(text("Logout"))
             .shouldHave(text("Post Note"))
-            .shouldHave(text("User1's Notes"));
+            .shouldHave(text("User1"));
 
         page.postNote("New Title", "New Content");
 
@@ -73,7 +72,6 @@ class WebAppIT extends BaseSeleniumTest {
 
     private void testUserPage(UserPage page) {
         page.body()
-            .shouldHave(text("Logout"))
             .shouldHave(text("Post Note"))
             .shouldHave(text("User1's Notes"))
             .shouldHave(text("Hello User1!"))
@@ -81,7 +79,7 @@ class WebAppIT extends BaseSeleniumTest {
             //should not see other user's notes
             .shouldNotHave(text("Content Admin 1"))
             .shouldNotHave(text("Content Admin 2"))
-            .shouldNotHave(text("User2 Note"))
+            .shouldNotHave(text("User2's Note"))
 
             //previously created note
             .shouldHave(text("New Title"))

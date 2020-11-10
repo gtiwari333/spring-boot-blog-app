@@ -33,9 +33,9 @@
 
         <!-- code quality -->
         <archunit-junit5.version>0.14.1</archunit-junit5.version>
-        <sonar-maven-plugin.version>3.6.0.1398</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
-        <maven.checkstyle.plugin.version>3.1.0</maven.checkstyle.plugin.version>
+        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
         <puppycrawl.checkstyle.version>8.37</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
@@ -92,17 +92,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.annotation</groupId>
-            <artifactId>jakarta.annotation-api</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <!-- processors/code generators -->
