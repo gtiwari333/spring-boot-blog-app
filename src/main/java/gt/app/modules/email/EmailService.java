@@ -1,9 +1,9 @@
 package gt.app.modules.email;
 
-import gt.app.exception.InternalServerErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -36,15 +36,17 @@ public class EmailService {
             message.setSubject(email.getSubject());
             message.setText(email.getContent(), email.isHtml());
 
-            for (var file : email.getFiles()) {
-                message.addAttachment(file.getFilename(), new ByteArrayResource(file.getData()));
+            if (email.getFiles() != null) {
+                for (var file : email.getFiles()) {
+                    message.addAttachment(file.getFilename(), new ByteArrayResource(file.getData()));
+                }
             }
 
             javaMailSender.send(mimeMessage);
 
             log.debug("Email Sent subject: {}", email.getSubject());
-        } catch (IOException | MessagingException e) {
-            throw new InternalServerErrorException("Failed to send email", e);
+        } catch (MailException | IOException | MessagingException e) {
+            log.error("Failed to send email", e);
         }
     }
 

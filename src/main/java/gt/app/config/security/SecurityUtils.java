@@ -1,10 +1,14 @@
 package gt.app.config.security;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 /**
@@ -71,4 +75,16 @@ public final class SecurityUtils {
         return authentication != null && authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authority));
     }
 
+    public static void setCurrentUserWithToken(UserDetails user) {
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user,
+            "token", //this can be empty
+            new HashSet<>(user.getAuthorities()) //use type
+        );
+
+        securityContext.setAuthentication(authentication);
+
+        SecurityContextHolder.setContext(securityContext);
+    }
 }

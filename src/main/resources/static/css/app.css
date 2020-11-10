@@ -21,7 +21,12 @@
 }
 
 .note-box {
-    margin-bottom: 20px!important;
-    margin-left: 0!important;
-    margin-right: 0!important;
+    margin-bottom: 20px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.error {
+    color: red;
+    font-size: smaller;
 }

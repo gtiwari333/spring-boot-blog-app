@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,12 +17,11 @@ public class User extends BaseEntity implements UserDetails {
     byte[] avatar;
 
     @Column(nullable = false)
+    @Size(min = 2, max = 30)
     private String firstName;
 
+    @Size(min = 0, max = 30)
     private String lastName;
-
-    @Column(nullable = false)
-    private LocalDate dateOfBirth;
 
     @Column(length = 254, unique = true, nullable = false)
     private String email;
@@ -95,12 +93,12 @@ public class User extends BaseEntity implements UserDetails {
         return active;
     }
 
-    public User(){
+    public User() {
 
     }
-    public User(String uniqueId, LocalDate dob, String firstName, String lastName, String email) {
+
+    public User(String uniqueId, String firstName, String lastName, String email) {
         this.uniqueId = uniqueId;
-        this.dateOfBirth = dob;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -115,7 +113,6 @@ public class User extends BaseEntity implements UserDetails {
         return "User{" +
             "firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
-            ", dateOfBirth=" + dateOfBirth +
             ", email='" + email + '\'' +
             ", authorities=" + authorities +
             ", active=" + active +

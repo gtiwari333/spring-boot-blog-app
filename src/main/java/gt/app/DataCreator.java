@@ -14,8 +14,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-
 @Component
 @Profile("dev")
 @RequiredArgsConstructor
@@ -42,18 +40,18 @@ public class DataCreator {
 
         String pwd = "$2a$10$UtqWHf0BfCr41Nsy89gj4OCiL36EbTZ8g4o/IvFN2LArruHruiRXO"; // to make it faster //value is 'pass'
 
-        User adminUser = new User("system", LocalDate.now().minusYears(10), "System", "Tiwari", "system@email");
+        User adminUser = new User("system", "System", "Tiwari", "system@email");
         adminUser.setPassword(pwd);
         adminUser.setAuthorities(authorityService.findByNameIn(Constants.ROLE_ADMIN, Constants.ROLE_USER));
         userService.save(adminUser);
 
-        User user1 = new User("user1", LocalDate.now().minusYears(10), "Ganesh", "Tiwari", "gt@email");
+        User user1 = new User("user1", "Ganesh", "Tiwari", "gt@email");
         user1.setPassword(pwd);
         user1.setAuthorities(authorityService.findByNameIn(Constants.ROLE_USER));
         userService.save(user1);
 
 
-        User user2 = new User("user2", LocalDate.now().minusYears(1), "Jyoti", "Kattel", "jk@email");
+        User user2 = new User("user2", "Jyoti", "Kattel", "jk@email");
         user2.setPassword(pwd);
         user2.setAuthorities(authorityService.findByNameIn(Constants.ROLE_USER));
         userService.save(user2);

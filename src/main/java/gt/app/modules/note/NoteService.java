@@ -24,10 +24,6 @@ public class NoteService {
     private final NoteRepository noteRepository;
     private final FileService fileService;
 
-    public Note save(Note note) {
-        return noteRepository.save(note);
-    }
-
     public Note createNote(NoteCreateDto dto) {
 
         List<ReceivedFile> files = new ArrayList<>();
@@ -61,6 +57,10 @@ public class NoteService {
         return noteRepository.findById(id)
             .map(NoteMapper.INSTANCE::mapForRead)
             .orElseThrow();
+    }
+
+    public Note save(Note note) {
+        return noteRepository.save(note);
     }
 
     public Page<NoteReadDto> readAll(Pageable pageable) {

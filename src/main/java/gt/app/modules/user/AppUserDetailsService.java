@@ -13,13 +13,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AppUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Override
     public AppUserDetails loadUserByUsername(String email) {
-        Optional<User> userFromDatabase = userService.findWithAuthoritiesByEmail(email);
+        Optional<User> userFromDatabase = userRepository.findOneWithAuthoritiesByUniqueId(email);
 
-         return userFromDatabase
+        return userFromDatabase
             .map(this::getCustomUserDetails)
             .orElseThrow(() -> new UsernameNotFoundException(" User with login:" + email + " was not found in the " + " database "));
     }
