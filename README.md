@@ -65,9 +65,10 @@ And open   `http://localhost:8080` on your browser
 - e2e with Selenide, fixtures. default data generated using Spring
 - Architecture test using ArchUnit
 - Email
+- Account management/Signup UI
+
 
 Future: do more stuff
-- Account management/Signup UI
 - background jobs with Quartz
 - Liquibase/Flyway change log
 - Integrate Markdown editor for writing notes
