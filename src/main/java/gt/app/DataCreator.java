@@ -15,7 +15,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("dev")
+@Profile({Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_TEST})
 @RequiredArgsConstructor
 @Slf4j
 public class DataCreator {

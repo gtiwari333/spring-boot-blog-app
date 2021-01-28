@@ -1,0 +1,15 @@
+springdoc:
+    api-docs:
+        enabled: false
+spring:
+    main:
+        lazy-initialization: true
+        banner-mode: off
+    jpa:
+        show-sql: false
+    data:
+        jpa:
+            repositories:
+                bootstrap-mode: lazy
+logging.level:
+    ROOT: ERROR

@@ -1,5 +1,6 @@
 package gt.app.web.rest;
 
+import gt.app.config.Constants;
 import gt.app.modules.email.EmailDto;
 import gt.app.modules.email.EmailService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@Profile("dev")
+@Profile({Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_TEST})
 public class HelloResource {
     private final EmailService emailService;
 

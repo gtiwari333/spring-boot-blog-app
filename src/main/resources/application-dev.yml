@@ -9,7 +9,8 @@ spring:
                 period: 0
     mvc:
         static-path-pattern: /static/**
-
+    jpa:
+        show-sql: true
     #Access from http://localhost:8080/h2-console/, db url: jdbc:h2:mem:testdb, username: sa
     h2:
         console:
