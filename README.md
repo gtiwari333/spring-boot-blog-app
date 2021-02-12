@@ -62,6 +62,7 @@ And open   `http://localhost:8080` on your browser
 - public home page -- view all notes by all 
 - private pages based on user roles
 - Test cases - unit/integration with JUnit 5, Mockito and Spring Test
+- Tests with Spock Framework (Groovy 3, Spock 2)
 - e2e with Selenide, fixtures. default data generated using Spring
 - Architecture test using ArchUnit
 - Email
