@@ -1,5 +1,6 @@
-package gt.app.config.security;
+package gt.app.config;
 
+import gt.app.config.security.SecurityUtils;
 import gt.app.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class SecurityAuditorResolver implements AuditorAware<User> {
+public class AuditorResolver implements AuditorAware<User> {
 
     private final EntityManager entityManager;
 
