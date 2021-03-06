@@ -1,6 +1,7 @@
 package gt.app.modules.user;
 
 import gt.app.config.security.AppUserDetails;
+import gt.app.modules.user.dto.PasswordUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

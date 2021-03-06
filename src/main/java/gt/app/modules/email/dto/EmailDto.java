@@ -1,4 +1,4 @@
-package gt.app.modules.email;
+package gt.app.modules.email.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

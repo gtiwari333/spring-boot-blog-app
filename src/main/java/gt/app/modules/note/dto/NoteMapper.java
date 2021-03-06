@@ -1,4 +1,4 @@
-package gt.app.modules.note;
+package gt.app.modules.note.dto;
 
 import gt.app.domain.Note;
 import gt.app.domain.ReceivedFile;

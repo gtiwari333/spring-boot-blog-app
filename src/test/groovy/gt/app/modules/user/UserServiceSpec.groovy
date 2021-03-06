@@ -3,6 +3,7 @@ package gt.app.modules.user
 import gt.app.config.Constants
 import gt.app.domain.User
 import gt.app.modules.email.EmailService
+import gt.app.modules.user.dto.UserSignUpDTO
 import org.springframework.security.crypto.password.NoOpPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification

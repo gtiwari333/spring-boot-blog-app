@@ -1,7 +1,7 @@
 package gt.app.web.rest;
 
 import gt.app.config.Constants;
-import gt.app.modules.email.EmailDto;
+import gt.app.modules.email.dto.EmailDto;
 import gt.app.modules.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

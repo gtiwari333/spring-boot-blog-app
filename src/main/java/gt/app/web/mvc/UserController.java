@@ -2,6 +2,9 @@ package gt.app.web.mvc;
 
 import gt.app.config.security.AppUserDetails;
 import gt.app.modules.user.*;
+import gt.app.modules.user.dto.PasswordUpdateDTO;
+import gt.app.modules.user.dto.UserProfileUpdateDTO;
+import gt.app.modules.user.dto.UserSignUpDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

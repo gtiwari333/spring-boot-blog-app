@@ -1,4 +1,4 @@
-package gt.app.modules.user;
+package gt.app.modules.user.dto;
 
 import gt.app.domain.User;
 import org.mapstruct.Mapper;

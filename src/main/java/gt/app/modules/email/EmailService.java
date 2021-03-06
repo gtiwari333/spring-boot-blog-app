@@ -1,5 +1,6 @@
 package gt.app.modules.email;
 
+import gt.app.modules.email.dto.EmailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;

@@ -1,5 +1,6 @@
 package gt.app.modules.user;
 
+import gt.app.modules.user.dto.UserSignUpDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

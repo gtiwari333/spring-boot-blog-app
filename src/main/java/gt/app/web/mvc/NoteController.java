@@ -1,8 +1,8 @@
 package gt.app.web.mvc;
 
 import gt.app.domain.Note;
-import gt.app.modules.note.NoteCreateDto;
-import gt.app.modules.note.NoteEditDto;
+import gt.app.modules.note.dto.NoteCreateDto;
+import gt.app.modules.note.dto.NoteEditDto;
 import gt.app.modules.note.NoteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
