@@ -48,7 +48,7 @@ And open   `http://localhost:8080` on your browser
 - Swagger API Docs with UI  ( http://localhost:8080/swagger-ui.html)
 - @RestControllerAdvice, @ControllerAdvice demo
 - CRUD Note + File upload
-- Spring / Maven profiles for dev/prod/docker ...
+- Spring / Maven profiles for dev/prod ...
 - Dockerfile to run images
 - Docker maven plugin to publish images (follow docker-steps.md)
 - Deploy to Amazon EC2 ( follow docker-steps.md )

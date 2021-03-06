@@ -7,7 +7,5 @@ import java.util.Set;
 
 interface AuthorityRepository extends JpaRepository<Authority, String> {
 
-    Authority findByName(String authority);
-
     Set<Authority> findByNameIn(String... authorities);
 }

@@ -6,16 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 @Data
 @Builder
 public class EmailDto {
 
     String from;
-    Collection<String> to = new HashSet<>();
-    Collection<String> cc = new HashSet<>();
-    Collection<String> bcc = new HashSet<>();
+    Collection<String> to;
+    Collection<String> cc;
+    Collection<String> bcc;
     String subject;
     String content;
     boolean isHtml;
