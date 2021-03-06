@@ -13,9 +13,9 @@ import java.util.HashSet;
 public class EmailDto {
 
     String from;
-    Collection<String> to = new HashSet<>();
-    Collection<String> cc = new HashSet<>();
-    Collection<String> bcc = new HashSet<>();
+    Collection<String> to;
+    Collection<String> cc;
+    Collection<String> bcc;
     String subject;
     String content;
     boolean isHtml;
