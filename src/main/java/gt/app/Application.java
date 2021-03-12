@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -16,6 +17,7 @@ import java.util.Map;
 @SpringBootApplication
 @Slf4j
 @EnableConfigurationProperties(AppProperties.class)
+@EnableTransactionManagement(proxyTargetClass = true)
 public class Application {
 
     public static void main(String[] args) throws UnknownHostException {
