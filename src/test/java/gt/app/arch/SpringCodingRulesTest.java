@@ -78,6 +78,7 @@ class SpringCodingRulesTest extends ArchitectureTest {
             .should().onlyDependOnClassesThat().resideInAnyPackage(
                 DOMAIN_LAYER_PACKAGES, "java..", "lombok..", "javax..", "",
                 "com.fasterxml.jackson..", "org.hibernate.annotations",
+                "org.hibernate.engine.spi..", "org.hibernate.bytecode.enhance..", "org.hibernate.collection.spi..",
                 "org.apache.commons.lang3..", "org.springframework.security.core.."
             );
         rule.check(classes);
