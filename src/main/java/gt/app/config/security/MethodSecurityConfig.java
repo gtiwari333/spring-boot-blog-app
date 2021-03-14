@@ -1,7 +1,6 @@
 package gt.app.config.security;
 
 import gt.app.modules.user.AppPermissionEvaluatorService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
@@ -16,7 +15,7 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
     private final AppPermissionEvaluatorService permissionEvaluator;
     private final ApplicationContext applicationContext;
 
-    public MethodSecurityConfig(@Qualifier("permEvaluator") AppPermissionEvaluatorService permissionEvaluator, ApplicationContext applicationContext) {
+    public MethodSecurityConfig(AppPermissionEvaluatorService permissionEvaluator, ApplicationContext applicationContext) {
         this.permissionEvaluator = permissionEvaluator;
         this.applicationContext = applicationContext;
     }

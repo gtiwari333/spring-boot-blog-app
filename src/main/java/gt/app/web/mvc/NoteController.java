@@ -43,7 +43,7 @@ public class NoteController {
     }
 
     @GetMapping("/delete/{id}")
-    @PreAuthorize("@permEvaluator.hasAccess(#id, 'Note' )")
+    @PreAuthorize("@appPermissionEvaluatorService.hasAccess(#id, 'Note' )")
     public String deleteNote(@PathVariable Long id, RedirectAttributes redirectAttrs) {
 
         noteService.delete(id);
@@ -54,7 +54,7 @@ public class NoteController {
     }
 
     @GetMapping("/edit/{id}")
-    @PreAuthorize("@permEvaluator.hasAccess(#id, 'Note' )")
+    @PreAuthorize("@appPermissionEvaluatorService.hasAccess(#id, 'Note' )")
     public String startEditNote(Model model, @PathVariable Long id) {
         model.addAttribute("msg", "Add a new note");
         model.addAttribute("note", noteService.read(id));
@@ -62,7 +62,7 @@ public class NoteController {
     }
 
     @PostMapping("/edit")
-    @PreAuthorize("@permEvaluator.hasAccess(#noteDto.id, 'Note' )")
+    @PreAuthorize("@appPermissionEvaluatorService.hasAccess(#noteDto.id, 'Note' )")
     public String finishEditNote(Model model, NoteEditDto noteDto, RedirectAttributes redirectAttrs) {
         model.addAttribute("msg", "Add a new note");
 
