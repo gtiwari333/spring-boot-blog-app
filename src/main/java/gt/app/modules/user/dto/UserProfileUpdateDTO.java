@@ -20,6 +20,6 @@ public class UserProfileUpdateDTO {
     @Size(min = 2, max = 30)
     private String firstName;
 
-    @Size(min = 0, max = 30)
+    @Size(max = 30)
     private String lastName;
 }

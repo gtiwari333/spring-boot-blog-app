@@ -1,6 +1,7 @@
 package gt.app.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 public class User extends BaseEntity implements UserDetails {
@@ -20,7 +22,7 @@ public class User extends BaseEntity implements UserDetails {
     @Size(min = 2, max = 30)
     private String firstName;
 
-    @Size(min = 0, max = 30)
+    @Size(max = 30)
     private String lastName;
 
     @Column(length = 254, unique = true, nullable = false)

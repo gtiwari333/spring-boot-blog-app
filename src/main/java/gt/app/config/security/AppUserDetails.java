@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 @Getter
 public class AppUserDetails extends User {
 
-    private Long id;
-    private String firstName;
+    private final Long id;
+    private final String firstName;
 
-    private String lastName;
-    private String email;
+    private final String lastName;
+    private final String email;
 
     public AppUserDetails(Long id, String userName, String email, String password, String firstName, String lastName, Collection<Authority> authorities,
                           boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked) {

@@ -26,11 +26,13 @@ public class Application {
         app.setDefaultProperties(Map.of("spring.profiles.default", Constants.SPRING_PROFILE_DEVELOPMENT));
         Environment env = app.run(args).getEnvironment();
 
-        log.info("Access URLs:\n----------------------------------------------------------\n\t" +
-                "Local: \t\t\thttp://localhost:{}\n\t" +
-                "External: \t\thttp://{}:{}\n\t" +
-                "Environment: \t{} \n\t" +
-                "----------------------------------------------------------",
+        log.info("""
+                Access URLs:
+                ----------------------------------------------------------
+                \tLocal: \t\t\thttp://localhost:{}
+                \tExternal: \t\thttp://{}:{}
+                \tEnvironment: \t{}\s
+                \t----------------------------------------------------------""",
             env.getProperty("server.port"),
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"),
