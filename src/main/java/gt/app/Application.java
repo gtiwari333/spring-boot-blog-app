@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.domain.support.AuditingBeanFactoryPostProcessor;
-import org.springframework.http.HttpStatus;
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.nativex.hint.TypeHints;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -28,7 +27,6 @@ import java.util.Map;
 @EnableConfigurationProperties(AppProperties.class)
 @EnableTransactionManagement(proxyTargetClass = true)
 @TypeHints({
-    @TypeHint(types = HttpStatus.class),
     @TypeHint(types = AnnotationBeanConfigurerAspect.class),
     @TypeHint(types = AuditingBeanFactoryPostProcessor.class),
     @TypeHint(types = CreationTimestampGeneration.class),
