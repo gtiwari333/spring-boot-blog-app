@@ -4,6 +4,7 @@ import gt.app.domain.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -17,6 +18,6 @@ public class AuthorityService {
     }
 
     public Set<Authority> findByNameIn(String... roles) {
-        return authorityRepository.findByNameIn(roles);
+        return authorityRepository.findByNameIn(List.of(roles));
     }
 }
