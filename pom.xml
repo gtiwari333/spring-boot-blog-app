@@ -21,7 +21,7 @@
         <selenide.version>5.19.0</selenide.version>
         <google-guava.version>30.1.1-jre</google-guava.version>
 
-        <wro4j-sb-starter.version>0.8.1</wro4j-sb-starter.version>
+        <wro4j.version>1.8.0</wro4j.version>
 
         <!-- client deps -->
         <webjar-jquery.version>3.5.1</webjar-jquery.version>
@@ -86,11 +86,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>eu.michael-simons</groupId>
-            <artifactId>wro4j-spring-boot-starter</artifactId>
-            <version>${wro4j-sb-starter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -167,7 +162,10 @@
             <artifactId>guava</artifactId>
             <version>${google-guava.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
 
         <!-- test dependencies -->
         <dependency>
@@ -266,6 +264,34 @@
                         </processor>
                     </compilerArguments>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <version>${wro4j.version}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+                    <cssDestinationFolder>${project.build.directory}/classes/static/resources/wro4j</cssDestinationFolder>
+                    <wroFile>${basedir}/src/main/resources/wro.xml</wroFile>
+                    <extraConfigFile>${basedir}/src/main/resources/wro.properties</extraConfigFile>
+                </configuration>
+                <dependencies>
+                    <!-- For Java 11 compatibility -->
+                    <dependency>
+                        <groupId>org.mockito</groupId>
+                        <artifactId>mockito-core</artifactId>
+                        <version>${mockito.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
