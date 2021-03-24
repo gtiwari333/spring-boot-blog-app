@@ -15,11 +15,11 @@
     <groupId>gt.app</groupId>
 
     <properties>
-        <springdoc-openapi-ui.version>1.5.5</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>1.5.6</springdoc-openapi-ui.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
 
         <selenide.version>5.19.0</selenide.version>
-        <google-guava.version>30.1-jre</google-guava.version>
+        <google-guava.version>30.1.1-jre</google-guava.version>
 
         <wro4j-sb-starter.version>0.8.1</wro4j-sb-starter.version>
 
@@ -34,7 +34,7 @@
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
-        <puppycrawl.checkstyle.version>8.39</puppycrawl.checkstyle.version>
+        <puppycrawl.checkstyle.version>8.41</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
 
