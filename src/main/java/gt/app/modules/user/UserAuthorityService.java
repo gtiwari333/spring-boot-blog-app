@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true) idk why it needs to be commented.. i was getting following error:
+//Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userAuthorityService' defined in class path resource [gt/app/modules/user/UserAuthorityService.class]: Initialization of bean failed; nested exception is com.oracle.svm.core.jdk.UnsupportedFeatureError: Proxy class defined by interfaces [interface org.springframework.aop.SpringProxy, interface org.springframework.aop.framework.Advised, interface org.springframework.core.DecoratingProxy] not found. Generating proxy classes at runtime is not supported. Proxy classes need to be defined at image build time by specifying the list of interfaces that they implement. To define proxy classes use -H:DynamicProxyConfigurationFiles=<comma-separated-config-files> and -H:DynamicProxyConfigurationResources=<comma-separated-config-resources> options.
+//tried updating the proxy-config, but it got overridden by spring-boot:build-image goal
 public class UserAuthorityService {
 
     private final NoteService noteService;
