@@ -1,11 +1,14 @@
 package gt.app
 
+import gt.app.config.Constants
 import gt.app.web.rest.HelloResource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties = "server.port=8081")
+@ActiveProfiles(Constants.SPRING_PROFILE_TEST)
 class SpringContextSpec extends Specification {
 
     @Autowired(required = false)
