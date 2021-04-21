@@ -273,7 +273,7 @@
                 <version>${wro4j.version}</version>
                 <executions>
                     <execution>
-                        <phase>generate-resources</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
@@ -281,7 +281,8 @@
                 </executions>
                 <configuration>
                     <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
-                    <cssDestinationFolder>${project.build.directory}/classes/static/resources/wro4j</cssDestinationFolder>
+                    <cssDestinationFolder>${project.build.directory}/classes/static/css</cssDestinationFolder>
+                    <jsDestinationFolder>${project.build.directory}/classes/static/js</jsDestinationFolder>
                     <wroFile>${basedir}/src/main/resources/wro.xml</wroFile>
                     <extraConfigFile>${basedir}/src/main/resources/wro.properties</extraConfigFile>
                 </configuration>
