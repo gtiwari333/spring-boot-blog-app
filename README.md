@@ -21,7 +21,7 @@ The default username/passwords are listed on : gt.app.Application.initData, whic
 
 ### How to Run
 - Clone/Download and Import project into your IDE, compile and run Application.java 
-
+- Update run configuration to run maven goal `wro4j:run` Before Launch. It should be after 'Build' 
 OR
 
 - mvnw compile spring-boot:run   //if you don't have maven installed in your PC

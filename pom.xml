@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.4</version>
+        <version>2.5.0-RC1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -16,10 +16,10 @@
 
     <properties>
         <spring-native.version>0.9.1</spring-native.version>
-        <springdoc-openapi-ui.version>1.5.6</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>1.5.7</springdoc-openapi-ui.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
 
-        <selenide.version>5.20.1</selenide.version>
+        <selenide.version>5.20.3</selenide.version>
         <google-guava.version>30.1.1-jre</google-guava.version>
 
         <wro4j.version>1.8.0</wro4j.version>
@@ -31,7 +31,7 @@
 
 
         <!-- code quality -->
-        <archunit-junit5.version>0.17.0</archunit-junit5.version>
+        <archunit-junit5.version>0.18.0</archunit-junit5.version>
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
@@ -281,7 +281,7 @@
                 <version>${wro4j.version}</version>
                 <executions>
                     <execution>
-                        <phase>generate-resources</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
@@ -289,7 +289,8 @@
                 </executions>
                 <configuration>
                     <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
-                    <cssDestinationFolder>${project.build.directory}/classes/static/resources/wro4j</cssDestinationFolder>
+                    <cssDestinationFolder>${project.build.directory}/classes/static/css</cssDestinationFolder>
+                    <jsDestinationFolder>${project.build.directory}/classes/static/js</jsDestinationFolder>
                     <wroFile>${basedir}/src/main/resources/wro.xml</wroFile>
                     <extraConfigFile>${basedir}/src/main/resources/wro.properties</extraConfigFile>
                 </configuration>
