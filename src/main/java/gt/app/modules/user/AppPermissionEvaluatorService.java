@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service("permEvaluator")
+@Service
 public class AppPermissionEvaluatorService implements PermissionEvaluator {
 
     private final UserAuthorityService userAuthorityService;
