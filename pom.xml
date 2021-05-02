@@ -280,7 +280,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+                    <wroManagerFactory>
+                        ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory
+                    </wroManagerFactory>
                     <cssDestinationFolder>${project.build.directory}/classes/static/css</cssDestinationFolder>
                     <jsDestinationFolder>${project.build.directory}/classes/static/js</jsDestinationFolder>
                     <wroFile>${basedir}/src/main/resources/wro.xml</wroFile>
@@ -473,6 +475,13 @@
         </profile>
         <profile>
             <id>prod</id>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
             <properties>
                 <spring.profiles.active>prod</spring.profiles.active>
                 <build.profile>prod</build.profile>
