@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.0-RC1</version>
+        <version>2.5.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -18,10 +18,10 @@
         <springdoc-openapi-ui.version>1.5.7</springdoc-openapi-ui.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
 
-        <selenide.version>5.20.3</selenide.version>
+        <selenide.version>5.21.0</selenide.version>
         <google-guava.version>30.1.1-jre</google-guava.version>
 
-        <wro4j.version>1.8.0</wro4j.version>
+        <wro4j.version>1.10.1</wro4j.version>
 
         <!-- client deps -->
         <webjar-jquery.version>3.5.1</webjar-jquery.version>
@@ -34,7 +34,7 @@
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
-        <puppycrawl.checkstyle.version>8.41.1</puppycrawl.checkstyle.version>
+        <puppycrawl.checkstyle.version>8.42</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
 
@@ -490,18 +490,4 @@
 
     </profiles>
 
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
