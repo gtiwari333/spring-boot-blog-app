@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class AuditorResolver implements AuditorAware<User> {
 
