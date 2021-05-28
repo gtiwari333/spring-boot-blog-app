@@ -3,6 +3,7 @@ package gt.app.config;
 import gt.app.config.security.SecurityUtils;
 import gt.app.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ public class AuditorResolver implements AuditorAware<User> {
 
     private final EntityManager entityManager;
 
+    @NotNull
     @Override
     public Optional<User> getCurrentAuditor() {
 

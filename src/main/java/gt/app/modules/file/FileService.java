@@ -19,7 +19,7 @@ public class FileService {
     private final Path rootLocation;
 
     public FileService(AppProperties appProperties) {
-        this.rootLocation = Paths.get(appProperties.getFileStorage().getUploadFolder());
+        this.rootLocation = Paths.get(appProperties.fileStorage().uploadFolder());
     }
 
     public String store(ReceivedFile.FileGroup fileGroup, @NotNull MultipartFile file) {

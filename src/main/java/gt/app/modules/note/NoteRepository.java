@@ -19,7 +19,7 @@ interface NoteRepository extends JpaRepository<Note, Long> {
     Page<Note> findAll(Pageable pageable);
 
     @EntityGraph(attributePaths = {"createdByUser", "attachedFiles"})
-    Page<Note> findByCreatedByUser_IdOrderByCreatedDateDesc(Pageable pageable, Long userId);
+    Page<Note> findByCreatedByUserIdOrderByCreatedDateDesc(Pageable pageable, Long userId);
 
     @Query("select n.createdByUser.id from Note n where n.id=:id ")
     Long findCreatedByUserIdById(@Param("id") Long id);

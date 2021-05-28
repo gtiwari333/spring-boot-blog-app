@@ -42,11 +42,9 @@ public class AppPermissionEvaluatorService implements PermissionEvaluator {
     public boolean hasAccess(Long id, String targetEntity) {
         User curUser = SecurityUtils.getCurrentUserDetails();
 
-        if (!(curUser instanceof AppUserDetails)) {
+        if (!(curUser instanceof AppUserDetails appUser)) {
             throw new OperationNotAllowedException("Current SecurityContext doesn't have AppUserDetails ");
         }
-
-        AppUserDetails appUser = (AppUserDetails) curUser;
 
         return userAuthorityService.hasAccess(appUser, id, targetEntity);
     }

@@ -74,22 +74,22 @@ public class UserController {
 
     @GetMapping(value = "/password")
     public String updatePassword(Model model) {
-        model.addAttribute("user", new PasswordUpdateDTO());
+        model.addAttribute("user", PasswordUpdateDTO.of());
         return "user/password";
     }
 
     @PostMapping(value = "/password")
-    public String updatePassword(@Valid @ModelAttribute("user") PasswordUpdateDTO user, BindingResult bindingResult,
+    public String updatePassword(@Valid @ModelAttribute("user") PasswordUpdateDTO reqDto, BindingResult bindingResult,
                                  @AuthenticationPrincipal AppUserDetails loggedInUserDtl, RedirectAttributes redirectAttrs) {
 
         //do custom validation along with the BeanValidation
-        passwordUpdateValidator.validate(user, bindingResult, loggedInUserDtl);
+        passwordUpdateValidator.validate(reqDto, bindingResult, loggedInUserDtl);
 
         if (bindingResult.hasErrors()) {
             return "user/password";
         }
 
-        userService.updatePassword(user, loggedInUserDtl);
+        userService.updatePassword(reqDto, loggedInUserDtl);
 
         redirectAttrs.addFlashAttribute("success", "Password updated successfully");
 

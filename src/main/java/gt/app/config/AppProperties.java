@@ -1,16 +1,11 @@
 package gt.app.config;
 
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConfigurationProperties(prefix = "app-properties", ignoreUnknownFields = false)
-@Data
-public class AppProperties {
-
-    final FileStorage fileStorage = new FileStorage();
-
-    @Data
-    public static class FileStorage {
-        String uploadFolder;
+@ConstructorBinding
+public record AppProperties(FileStorage fileStorage) {
+    public static record FileStorage(String uploadFolder) {
     }
 }

@@ -1,31 +1,16 @@
 package gt.app.modules.email.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.Collection;
+import java.util.List;
 
-@Data
-@Builder
-public class EmailDto {
+public record EmailDto(String from, Collection<String> to, Collection<String> cc, Collection<String> bcc,
+                       String subject, String content, boolean isHtml, FileBArray[] files) {
 
-    String from;
-    Collection<String> to;
-    Collection<String> cc;
-    Collection<String> bcc;
-    String subject;
-    String content;
-    boolean isHtml;
-    FileBArray[] files;
+    public static EmailDto of(String from, Collection<String> to, String subject, String content) {
+        return new EmailDto(from, to, List.of(), List.of(), subject, content, false, new FileBArray[]{});
+    }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class FileBArray {
-        byte[] data;
-        String filename;
+    public static record FileBArray(byte[] data, String filename) {
     }
 
     @Override
