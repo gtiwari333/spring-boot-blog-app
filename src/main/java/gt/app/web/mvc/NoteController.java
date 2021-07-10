@@ -72,7 +72,7 @@ public class NoteController {
 
         noteService.update(noteDto);
 
-        redirectAttrs.addFlashAttribute("success", "Note with id " + noteDto.getId() + " is updated");
+        redirectAttrs.addFlashAttribute("success", "Note with id " + noteDto.id() + " is updated");
 
         return "redirect:/note/";
     }

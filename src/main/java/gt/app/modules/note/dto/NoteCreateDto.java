@@ -1,15 +1,8 @@
 package gt.app.modules.note.dto;
 
-import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 
-@Data
-public class NoteCreateDto {
-
-    @NotNull
-    MultipartFile[] files;
-    private String title;
-    private String content;
+public record NoteCreateDto(@NotNull MultipartFile[] files, String title, String content) {
 }

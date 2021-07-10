@@ -43,7 +43,7 @@ public class UserService {
         User user = userRepository.findOneByUniqueId(userDetails.getUsername())
             .orElseThrow(() -> new RecordNotFoundException("User", "login", userDetails.getUsername()));
 
-        user.setPassword(passwordEncoder.encode(toUpdate.getPwdPlaintext()));
+        user.setPassword(passwordEncoder.encode(toUpdate.pwdPlainText()));
         userRepository.save(user);
     }
 
@@ -57,12 +57,9 @@ public class UserService {
 
         userRepository.save(user);
 
-        EmailDto dto = EmailDto.builder()
-            .from("system@noteapp")
-            .to(Set.of(user.getEmail()))
-            .subject("NoteApp Account Created!")
-            .content("Thanks for signing up.")
-            .build();
+        EmailDto dto = EmailDto.of("system@noteapp", Set.of(user.getEmail()),
+            "NoteApp Account Created!",
+            "Thanks for signing up.");
 
         emailService.sendEmail(dto);
 

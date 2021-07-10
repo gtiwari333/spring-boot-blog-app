@@ -27,7 +27,7 @@ public class PasswordUpdateValidator implements Validator {
 
         PasswordUpdateDTO toCreate = (PasswordUpdateDTO) target;
 
-        if (StringUtils.containsIgnoreCase(toCreate.getPwdPlaintext(), principal.getUsername()) || StringUtils.containsIgnoreCase(principal.getUsername(), toCreate.getPwdPlaintext())) {
+        if (StringUtils.containsIgnoreCase(toCreate.pwdPlainText(), principal.getUsername()) || StringUtils.containsIgnoreCase(principal.getUsername(), toCreate.pwdPlainText())) {
             errors.rejectValue("pwdPlaintext", "user.weakpwd", "Weak password, choose another");
         }
 

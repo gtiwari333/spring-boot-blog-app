@@ -6,7 +6,6 @@ import gt.app.modules.file.FileDownloadUtil;
 import gt.app.modules.file.FileService;
 import gt.app.modules.file.ReceivedFileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,9 +34,9 @@ public class DownloadController {
             throw new IOException("File not found");
         }
 
-        ReceivedFile receivedFile = fileOpt.get();
+        var receivedFile = fileOpt.get();
 
-        Resource fileRes = fileService.loadAsResource(receivedFile.getFileGroup(), receivedFile.getStoredName());
+        var fileRes = fileService.loadAsResource(receivedFile.getFileGroup(), receivedFile.getStoredName());
 
         if (!fileRes.exists()) {
             throw new IOException("File not found");

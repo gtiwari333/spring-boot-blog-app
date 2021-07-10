@@ -23,7 +23,7 @@ public final class FileDownloadUtil {
 
 
     private static void handle(HttpServletResponse response, File file, String originalFileName, String mimeType) throws IOException {
-        try (FileInputStream in = new FileInputStream(file)) {
+        try (var in = new FileInputStream(file)) {
 
             // get MIME type of the file
 

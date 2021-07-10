@@ -31,7 +31,7 @@ public class NoteService {
     public Note createNote(NoteCreateDto dto) {
 
         List<ReceivedFile> files = new ArrayList<>();
-        for (MultipartFile mpf : dto.getFiles()) {
+        for (MultipartFile mpf : dto.files()) {
 
             if (mpf.isEmpty()) {
                 continue;
@@ -49,7 +49,7 @@ public class NoteService {
 
     public Note update(NoteEditDto dto) {
 
-        Optional<Note> noteOpt = noteRepository.findById(dto.getId());
+        Optional<Note> noteOpt = noteRepository.findById(dto.id());
         return noteOpt.map(note -> {
                 NoteMapper.INSTANCE.createToEntity(dto, note);
                 return save(note);
@@ -73,7 +73,7 @@ public class NoteService {
     }
 
     public Page<NoteReadDto> readAllByUser(Pageable pageable, Long userId) {
-        return noteRepository.findByCreatedByUser_IdOrderByCreatedDateDesc(pageable, userId)
+        return noteRepository.findByCreatedByUserIdOrderByCreatedDateDesc(pageable, userId)
             .map(NoteMapper.INSTANCE::mapForRead);
     }
 
