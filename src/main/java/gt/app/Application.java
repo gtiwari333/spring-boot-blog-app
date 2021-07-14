@@ -18,8 +18,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.core.DecoratingProxy;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.domain.support.AuditingBeanFactoryPostProcessor;
-import org.springframework.nativex.hint.ProxyHint;
-import org.springframework.nativex.hint.ProxyHints;
+import org.springframework.nativex.hint.JdkProxyHint;
+import org.springframework.nativex.hint.JdkProxyHints;
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.nativex.hint.TypeHints;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -41,9 +41,9 @@ import java.util.Map;
     @TypeHint(types = GeneratedValueGeneration.class),
     @TypeHint(types = EnumType.class),
 })
-@ProxyHints({
-    @ProxyHint(types = {UserAuthorityService.class, SpringProxy.class, Advised.class, DecoratingProxy.class}),
-    @ProxyHint(types = {AppUserDetailsService.class, SpringProxy.class, Advised.class, DecoratingProxy.class})
+@JdkProxyHints({
+    @JdkProxyHint(types = {UserAuthorityService.class, SpringProxy.class, Advised.class, DecoratingProxy.class}),
+    @JdkProxyHint(types = {AppUserDetailsService.class, SpringProxy.class, Advised.class, DecoratingProxy.class})
 })
 public class Application {
 
