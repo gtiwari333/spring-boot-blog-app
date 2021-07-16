@@ -27,7 +27,10 @@ public class DataCreator {
 
     @EventListener
     public void ctxRefreshed(ContextRefreshedEvent evt) {
+        initData();
+    }
 
+    public void initData(){
         log.info("Context Refreshed !!, Initializing Data... ");
 
         Authority adminAuthority = new Authority();
