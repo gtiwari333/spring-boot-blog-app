@@ -18,7 +18,7 @@ class UserServiceSpec extends Specification {
     UserService userService
 
     def setup() {
-        userRepository = Mock();
+        userRepository = Mock()
         passwordEncoder = NoOpPasswordEncoder.getInstance()
         authorityService = Mock()
         emailService = Mock()
