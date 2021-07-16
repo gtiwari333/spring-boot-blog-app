@@ -1,14 +1,17 @@
 package gt.app.frwk;
 
 import gt.app.DataCreator;
+import gt.app.config.MetadataExtractorIntegrator;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.metamodel.spi.MetamodelImplementor;
-import org.hibernate.persister.entity.AbstractEntityPersister;
+import org.hibernate.boot.Metadata;
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.PersistentClass;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,16 +20,19 @@ public class TestDataManager implements InitializingBean {
     final EntityManager em;
     final DataCreator dataCreator;
 
-    private List<String> tableNames;
+    private final List<String> tableNames = new ArrayList<>(); //shared
 
     @Override
     public void afterPropertiesSet() {
-        MetamodelImplementor metaModelImpl = (MetamodelImplementor) em.getMetamodel();
-        tableNames = metaModelImpl
-            .entityPersisters()
-            .values().stream()
-            .map(ep -> ((AbstractEntityPersister) ep).getTableName())
-            .toList();
+        Metadata metadata = MetadataExtractorIntegrator.INSTANCE.getMetadata();
+
+        for (Collection persistentClass : metadata.getCollectionBindings()) {
+            tableNames.add(persistentClass.getCollectionTable().getExportIdentifier());
+        }
+
+        for (PersistentClass persistentClass : metadata.getEntityBindings()) {
+            tableNames.add(persistentClass.getTable().getExportIdentifier());
+        }
 
     }
 
