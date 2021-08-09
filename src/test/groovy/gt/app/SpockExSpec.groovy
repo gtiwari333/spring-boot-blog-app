@@ -1,6 +1,6 @@
 package gt.app
 
-import spock.lang.Specification;
+import spock.lang.Specification
 
 class SpockExSpec extends Specification {
 

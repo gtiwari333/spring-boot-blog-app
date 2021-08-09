@@ -3,16 +3,24 @@ package gt.app.e2e;
 import gt.app.config.Constants;
 import gt.app.e2e.pageobj.*;
 import gt.app.frwk.BaseSeleniumTest;
+import gt.app.frwk.TestDataManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 
 import static com.codeborne.selenide.Condition.text;
 
-@DirtiesContext
 @ActiveProfiles(Constants.SPRING_PROFILE_TEST)
 class WebAppIT extends BaseSeleniumTest {
+
+    @Autowired
+    TestDataManager testDataManager;
+
+    @BeforeEach
+    void cleanDB(){
+        testDataManager.truncateTablesAndRecreate();
+    }
 
     @Test
     void testPublicPage() {
