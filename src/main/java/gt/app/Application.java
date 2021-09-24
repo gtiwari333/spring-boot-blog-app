@@ -33,18 +33,18 @@ import java.util.Map;
 @Slf4j
 @EnableConfigurationProperties(AppProperties.class)
 @EnableTransactionManagement(proxyTargetClass = true)
-@TypeHints({
-    @TypeHint(types = AnnotationBeanConfigurerAspect.class),
-    @TypeHint(types = AuditingBeanFactoryPostProcessor.class),
-    @TypeHint(types = CreationTimestampGeneration.class),
-    @TypeHint(types = UpdateTimestampGeneration.class),
-    @TypeHint(types = GeneratedValueGeneration.class),
-    @TypeHint(types = EnumType.class),
-})
-@JdkProxyHints({
-    @JdkProxyHint(types = {UserAuthorityService.class, SpringProxy.class, Advised.class, DecoratingProxy.class}),
-    @JdkProxyHint(types = {AppUserDetailsService.class, SpringProxy.class, Advised.class, DecoratingProxy.class})
-})
+//@TypeHints({
+//    @TypeHint(types = AnnotationBeanConfigurerAspect.class),
+//    @TypeHint(types = AuditingBeanFactoryPostProcessor.class),
+//    @TypeHint(types = CreationTimestampGeneration.class),
+//    @TypeHint(types = UpdateTimestampGeneration.class),
+//    @TypeHint(types = GeneratedValueGeneration.class),
+//    @TypeHint(types = EnumType.class),
+//})
+//@JdkProxyHints({
+//    @JdkProxyHint(types = {UserAuthorityService.class, SpringProxy.class, Advised.class, DecoratingProxy.class}),
+//    @JdkProxyHint(types = {AppUserDetailsService.class, SpringProxy.class, Advised.class, DecoratingProxy.class})
+//})
 public class Application {
 
     public static void main(String[] args) throws UnknownHostException {

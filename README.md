@@ -35,7 +35,7 @@ And open   `http://localhost:8080` on your browser
 ## Native Image
     
 create image: `mvn spring-boot:build-image -Pnative,docker`
-run image `docker run -p 8080:8080  docker.io/library/note-app:2.5.0`
+run image `docker run -p 8080:8080  docker.io/library/note-app:2.5.4`
 
 
 
