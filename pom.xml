@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.4</version>
+        <version>2.6.0-RC1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -15,10 +15,12 @@
     <groupId>gt.app</groupId>
 
     <properties>
-        <springdoc-openapi-ui.version>1.5.9</springdoc-openapi-ui.version>
-        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <java.version>17</java.version>
 
-        <selenide.version>5.22.3</selenide.version>
+        <springdoc-openapi-ui.version>1.5.10</springdoc-openapi-ui.version>
+        <mapstruct.version>1.5.0.Beta1</mapstruct.version>
+
+        <selenide.version>5.24.4</selenide.version>
         <google-guava.version>30.1.1-jre</google-guava.version>
 
         <wro4j.version>1.10.1</wro4j.version>
@@ -30,11 +32,11 @@
 
 
         <!-- code quality -->
-        <archunit-junit5.version>0.20.0</archunit-junit5.version>
-        <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
+        <archunit-junit5.version>0.21.0</archunit-junit5.version>
+        <sonar-maven-plugin.version>3.9.0.2155</sonar-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
-        <puppycrawl.checkstyle.version>8.44</puppycrawl.checkstyle.version>
+        <puppycrawl.checkstyle.version>9.0</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
 
@@ -49,16 +51,15 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>16</java.version>
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <groovy.version>3.0.7</groovy.version>
 
         <!-- for native image -->
         <repackage.classifier/>
-        <spring-native.version>0.10.3</spring-native.version>
+        <spring-native.version>0.11.0-M2</spring-native.version>
 
     </properties>
 
@@ -126,7 +127,6 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
             <scope>provided</scope>
-            <version>1.18.20</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -148,11 +148,11 @@
         <!-- end processor/code generators -->
 
         <!-- NOT SUPPORTED YET-->
-<!--        <dependency>-->
-<!--            <groupId>org.springdoc</groupId>-->
-<!--            <artifactId>springdoc-openapi-ui</artifactId>-->
-<!--            <version>${springdoc-openapi-ui.version}</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springdoc</groupId>-->
+        <!--            <artifactId>springdoc-openapi-ui</artifactId>-->
+        <!--            <version>${springdoc-openapi-ui.version}</version>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.webjars</groupId>
@@ -251,7 +251,7 @@
             <dependency>
                 <groupId>org.spockframework</groupId>
                 <artifactId>spock-bom</artifactId>
-                <version>2.0-M5-groovy-3.0</version>
+                <version>2.0-groovy-3.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -342,7 +342,7 @@
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.12.1</version>
+                <version>1.13.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -485,11 +485,11 @@
             </activation>
             <dependencies>
                 <!-- NOT SUPPORTED YET-->
-<!--                <dependency>-->
-<!--                    <groupId>org.springframework.boot</groupId>-->
-<!--                    <artifactId>spring-boot-devtools</artifactId>-->
-<!--                    <optional>true</optional>-->
-<!--                </dependency>-->
+                <!--                <dependency>-->
+                <!--                    <groupId>org.springframework.boot</groupId>-->
+                <!--                    <artifactId>spring-boot-devtools</artifactId>-->
+                <!--                    <optional>true</optional>-->
+                <!--                </dependency>-->
                 <dependency>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
@@ -536,7 +536,7 @@
                 <spring.profiles.active>dev</spring.profiles.active>
                 <build.profile>dev</build.profile>
                 <repackage.classifier>exec</repackage.classifier>
-                <native-buildtools.version>0.9.3</native-buildtools.version>
+                <native-buildtools.version>0.9.7.1</native-buildtools.version>
             </properties>
             <dependencies>
                 <dependency>
@@ -603,12 +603,28 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>spring-releases</id>
             <name>Spring Releases</name>
             <url>https://repo.spring.io/release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
