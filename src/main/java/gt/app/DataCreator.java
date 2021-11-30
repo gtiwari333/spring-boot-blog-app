@@ -27,7 +27,7 @@ public class DataCreator {
 
     @EventListener
     public void ctxRefreshed(ContextRefreshedEvent evt) {
-        initData();
+       initData();
     }
 
     public void initData(){
@@ -43,28 +43,29 @@ public class DataCreator {
 
         String pwd = "$2a$10$UtqWHf0BfCr41Nsy89gj4OCiL36EbTZ8g4o/IvFN2LArruHruiRXO"; // to make it faster //value is 'pass'
 
-        User adminUser = new User("system", "System", "Tiwari", "system@email");
-        adminUser.setPassword(pwd);
-        adminUser.setAuthorities(authorityService.findByNameIn(Constants.ROLE_ADMIN, Constants.ROLE_USER));
-        userService.save(adminUser);
+        try {
+            User adminUser = new User("system", "System", "Tiwari", "system@email");
+            adminUser.setPassword(pwd);
+            adminUser.setAuthorities(authorityService.findByNameIn(Constants.ROLE_ADMIN, Constants.ROLE_USER));
+            userService.save(adminUser);
 
-        User user1 = new User("user1", "Ganesh", "Tiwari", "gt@email");
-        user1.setPassword(pwd);
-        user1.setAuthorities(authorityService.findByNameIn(Constants.ROLE_USER));
-        userService.save(user1);
+            User user1 = new User("user1", "Ganesh", "Tiwari", "gt@email");
+            user1.setPassword(pwd);
+            user1.setAuthorities(authorityService.findByNameIn(Constants.ROLE_USER));
+            userService.save(user1);
 
+            User user2 = new User("user2", "Jyoti", "Kattel", "jk@email");
+            user2.setPassword(pwd);
+            user2.setAuthorities(authorityService.findByNameIn(Constants.ROLE_USER));
+            userService.save(user2);
 
-        User user2 = new User("user2", "Jyoti", "Kattel", "jk@email");
-        user2.setPassword(pwd);
-        user2.setAuthorities(authorityService.findByNameIn(Constants.ROLE_USER));
-        userService.save(user2);
-
-        createNote(adminUser, "Admin's First Note", "Content Admin 1");
-        createNote(adminUser, "Admin's Second Note", "Content Admin 2");
-        createNote(user1, "User1 Note", "Content User 1");
-        createNote(user2, "User2 Note", "Content User 2");
-
-
+            createNote(adminUser, "Admin's First Note", "Content Admin 1");
+            createNote(adminUser, "Admin's Second Note", "Content Admin 2");
+            createNote(user1, "User1 Note", "Content User 1");
+            createNote(user2, "User2 Note", "Content User 2");
+        }
+        catch (Exception e)
+        {}
     }
 
     void createNote(User user, String title, String content) {

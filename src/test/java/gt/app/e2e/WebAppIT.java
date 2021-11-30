@@ -17,10 +17,10 @@ class WebAppIT extends BaseSeleniumTest {
     @Autowired
     TestDataManager testDataManager;
 
-    @BeforeEach
-    void cleanDB(){
-        testDataManager.truncateTablesAndRecreate();
-    }
+//    @BeforeEach
+//    void cleanDB(){
+//        testDataManager.truncateTablesAndRecreate();
+//    }
 
     @Test
     void testPublicPage() {

@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "note")
 @Data
 public class Note extends BaseAuditingEntity {
-
+    
     private String title;
 
     private String content;
