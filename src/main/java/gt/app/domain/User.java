@@ -1,5 +1,6 @@
 package gt.app.domain;
 
+import gt.app.exception.InvalidDataException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,8 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -73,6 +76,18 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public String getUsername() {
         return uniqueId;
+    }
+
+    public void setEmail(String text) {
+        String regex = "^(.+)@(.+)$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+
+        if(!matcher.matches())
+        {
+            throw new InvalidDataException(
+                "Email value not recognized (" + text + ")");
+        }
     }
 
     @Override

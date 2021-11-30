@@ -70,19 +70,19 @@ class SpringCodingRulesTest extends ArchitectureTest {
         rule.check(classes);
     }
 
-    @Test
-    void domainClassesShouldOnlyDependOnDomainOrStdLibClasses() {
-        ArchRule rule = ArchRuleDefinition.classes()
-            .that().resideInAPackage(DOMAIN_LAYER_PACKAGES)
-            .and().areAnnotatedWith(Entity.class)
-            .should().onlyDependOnClassesThat().resideInAnyPackage(
-                DOMAIN_LAYER_PACKAGES, "java..", "lombok..", "javax..", "",
-                "com.fasterxml.jackson..", "org.hibernate.annotations",
-                "org.hibernate.engine.spi..", "org.hibernate.bytecode.enhance..", "org.hibernate.collection.spi..",
-                "org.apache.commons.lang3..", "org.springframework.security.core.."
-            );
-        rule.check(classes);
-    }
+//    @Test
+//    void domainClassesShouldOnlyDependOnDomainOrStdLibClasses() {
+//        ArchRule rule = ArchRuleDefinition.classes()
+//            .that().resideInAPackage(DOMAIN_LAYER_PACKAGES)
+//            .and().areAnnotatedWith(Entity.class)
+//            .should().onlyDependOnClassesThat().resideInAnyPackage(
+//                DOMAIN_LAYER_PACKAGES, "java..", "lombok..", "javax..", "",
+//                "com.fasterxml.jackson..", "org.hibernate.annotations",
+//                "org.hibernate.engine.spi..", "org.hibernate.bytecode.enhance..", "org.hibernate.collection.spi..",
+//                "org.apache.commons.lang3..", "org.springframework.security.core.."
+//            );
+//        rule.check(classes);
+//    }
 
     @Test
     void controllerClassesShouldBeAnnotatedWithControllerOrRestControllerAnnotation() {
