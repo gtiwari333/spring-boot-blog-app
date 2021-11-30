@@ -52,7 +52,8 @@ pipeline {
             
             post {
                 success {
-                    junit '**/target/surefire-reports/TEST-*.xml'
+                    junit allowEmptyResults: true, testResults: '**/test-results/*.xml'
+                    //junit '**/target/surefire-reports/TEST-*.xml'
                     //archiveArtifacts 'target/*.jar'
                 }
                 
