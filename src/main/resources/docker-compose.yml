@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+    app-server:
+        build:
+            context: spring-boot-note-app
+            dockerfile: Dockerfile
+        ports:
+            - "8080:8080"
+        restart: always
+        depends_on:
+            - db
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/blog_db
+            SPRING_DATASOURCE_USERNAME: root
+            SPRING_DATASOURCE_PASSWORD: pass
+        networks:
+            - backend
+
+    db:
+        image: mysql:5.7
+        ports:
+            - "3306:3306"
+        restart: always
+        environment:
+            MYSQL_DATABASE: blog_db
+            MYSQL_USER: root
+            MYSQL_PASSWORD: user
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - db-data:/var/lib/mysql
+        networks:
+            - backend
