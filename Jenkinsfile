@@ -29,7 +29,7 @@ pipeline {
                 
                 git branch: 'master', url: 'https://github.com/espada1317/spring-boot-blog-app.git'
                 
-                bat "mvn install -Dmaven.test.skip=true"
+                bat "mvn clean install -Dmaven.test.skip=true"
             }
             
             post {
