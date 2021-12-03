@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk17
+FROM adoptopenjdk/openjdk11
 VOLUME /tmp
 VOLUME /X/attachments
 COPY target/*.jar spring-boot-note-app.jar
