@@ -251,7 +251,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>${build.profile}-${project.version}-app</finalName>
+        <finalName>spring-boot-note-app</finalName>
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
 
