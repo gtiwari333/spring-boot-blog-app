@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import javax.persistence.Entity;
 
-class SpringCodingRulesTest extends ArchitectureTest {
+public class SpringCodingRulesTest extends ArchitectureTest {
 
     @Test
     void springSingletonComponentsShouldOnlyHaveFinalFields() {

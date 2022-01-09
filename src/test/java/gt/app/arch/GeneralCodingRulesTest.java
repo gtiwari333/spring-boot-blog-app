@@ -13,7 +13,7 @@ import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyP
 import static com.tngtech.archunit.lang.conditions.ArchConditions.dependOnClassesThat;
 import static com.tngtech.archunit.library.GeneralCodingRules.*;
 
-class GeneralCodingRulesTest extends ArchitectureTest {
+public class GeneralCodingRulesTest extends ArchitectureTest {
 
 
     private static final ArchCondition<JavaClass> USE_PACKAGES_FROM_TRANSITIVE_DEPENDENCIES =

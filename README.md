@@ -33,7 +33,7 @@ OR
 And open   `http://localhost:8080` on your browser
 
 ## Native Image
-    
+run  `sdk use java 21.3.0.r17-grl (or whatever the version is latest/supported` to use graalvm jdk 
 create image: `mvn spring-boot:build-image -Pnative,docker`
 run image `docker run -p 8080:8080  docker.io/library/note-app:2.5.4`
 

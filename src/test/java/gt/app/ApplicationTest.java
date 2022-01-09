@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @Slf4j
 @ActiveProfiles(Constants.SPRING_PROFILE_TEST)
-class ApplicationTest {
+public class ApplicationTest {
 
     @Test
     void contextLoads() {

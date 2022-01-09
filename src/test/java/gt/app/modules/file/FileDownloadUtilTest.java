@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FileDownloadUtilTest {
+public class FileDownloadUtilTest {
 
     @Test
     void downloadFile() throws IOException {

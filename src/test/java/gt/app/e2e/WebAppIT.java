@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static com.codeborne.selenide.Condition.text;
 
 @ActiveProfiles(Constants.SPRING_PROFILE_TEST)
-class WebAppIT extends BaseSeleniumTest {
+public class WebAppIT extends BaseSeleniumTest {
 
     @Autowired
     TestDataManager testDataManager;

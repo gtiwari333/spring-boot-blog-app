@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles(Constants.SPRING_PROFILE_TEST)
-class UserResourceIT {
+public class UserResourceIT {
 
     @Test
     void getAccount3xx(@Autowired MockMvc mvc) throws Exception {
