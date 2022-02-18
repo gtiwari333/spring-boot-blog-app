@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11
+FROM openjdk:17
 VOLUME /tmp
 VOLUME /X/attachments
 COPY target/*.jar app.jar
