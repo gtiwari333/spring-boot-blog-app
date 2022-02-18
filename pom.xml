@@ -57,7 +57,6 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
-        <groovy.version>3.0.9</groovy.version>
 
     </properties>
 
@@ -242,7 +241,7 @@
             <dependency>
                 <groupId>org.spockframework</groupId>
                 <artifactId>spock-bom</artifactId>
-                <version>2.1-M2-groovy-3.0</version>
+                <version>2.2-M1-groovy-4.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -268,6 +267,8 @@
                             lombok.launch.AnnotationProcessorHider$AnnotationProcessor,org.mapstruct.ap.MappingProcessor
                         </processor>
                     </compilerArguments>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
 
@@ -305,7 +306,7 @@
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.13.0</version>
+                <version>1.13.1</version>
                 <executions>
                     <execution>
                         <goals>
