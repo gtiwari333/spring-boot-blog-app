@@ -18,11 +18,12 @@
         <div class="card-deck mb-3 text-center">
 
 
-            <div th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">
-                <h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>
-                <p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>
-                <a th:href="@{/}">Back to Home Page</a>
-            </div>
+            <!-- #response not detected -->
+<!--            <div th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">-->
+<!--                <h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>-->
+<!--                <p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>-->
+<!--                <a th:href="@{/}">Back to Home Page</a>-->
+<!--            </div>-->
 
         </div>
 

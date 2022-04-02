@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class User extends BaseEntity implements UserDetails {
+public class AppUser extends BaseEntity implements UserDetails {
     @Basic(fetch = FetchType.LAZY)
     @Lob
     byte[] avatar;
@@ -95,11 +95,11 @@ public class User extends BaseEntity implements UserDetails {
         return active;
     }
 
-    public User() {
+    public AppUser() {
 
     }
 
-    public User(String uniqueId, String firstName, String lastName, String email) {
+    public AppUser(String uniqueId, String firstName, String lastName, String email) {
         this.uniqueId = uniqueId;
         this.firstName = firstName;
         this.lastName = lastName;

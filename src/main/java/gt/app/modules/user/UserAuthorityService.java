@@ -1,8 +1,8 @@
 package gt.app.modules.user;
 
 import gt.app.config.security.AppUserDetails;
+import gt.app.domain.AppUser;
 import gt.app.domain.Note;
-import gt.app.domain.User;
 import gt.app.modules.note.NoteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class UserAuthorityService {
             return true;
         }
 
-        if (User.class.getSimpleName().equalsIgnoreCase(entity)) {
+        if (AppUser.class.getSimpleName().equalsIgnoreCase(entity)) {
             return id.equals(curUser.getId());
         }
 

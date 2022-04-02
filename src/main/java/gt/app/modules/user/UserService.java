@@ -2,7 +2,7 @@ package gt.app.modules.user;
 
 import gt.app.config.Constants;
 import gt.app.config.security.AppUserDetails;
-import gt.app.domain.User;
+import gt.app.domain.AppUser;
 import gt.app.exception.RecordNotFoundException;
 import gt.app.modules.email.EmailService;
 import gt.app.modules.email.dto.EmailDto;
@@ -29,7 +29,7 @@ public class UserService {
     private final EmailService emailService;
 
     public void update(UserProfileUpdateDTO toUpdate, AppUserDetails userDetails) {
-        User user = userRepository.findOneByUniqueId(userDetails.getUsername())
+        AppUser user = userRepository.findOneByUniqueId(userDetails.getUsername())
             .orElseThrow(() -> new RecordNotFoundException("User", "login", userDetails.getUsername()));
 
         user.setFirstName(toUpdate.getFirstName());
@@ -40,16 +40,16 @@ public class UserService {
     }
 
     public void updatePassword(PasswordUpdateDTO toUpdate, AppUserDetails userDetails) {
-        User user = userRepository.findOneByUniqueId(userDetails.getUsername())
+        AppUser user = userRepository.findOneByUniqueId(userDetails.getUsername())
             .orElseThrow(() -> new RecordNotFoundException("User", "login", userDetails.getUsername()));
 
         user.setPassword(passwordEncoder.encode(toUpdate.pwdPlainText()));
         userRepository.save(user);
     }
 
-    public User create(UserSignUpDTO toCreate) {
+    public AppUser create(UserSignUpDTO toCreate) {
 
-        var user = new User(toCreate.getUniqueId(), toCreate.getFirstName(), toCreate.getLastName(), toCreate.getEmail());
+        var user = new AppUser(toCreate.getUniqueId(), toCreate.getFirstName(), toCreate.getLastName(), toCreate.getEmail());
 
         user.setPassword(passwordEncoder.encode(toCreate.getPwdPlaintext()));
 
@@ -67,14 +67,14 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        User author = userRepository.findByIdAndActiveIsTrue(id)
+        AppUser author = userRepository.findByIdAndActiveIsTrue(id)
             .orElseThrow(() -> new RecordNotFoundException("User", "id", id));
 
         author.setActive(false);
         userRepository.save(author);
     }
 
-    public User save(User u) {
+    public AppUser save(AppUser u) {
         return userRepository.save(u);
     }
 }

@@ -4,8 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConfigurationProperties(prefix = "app-properties", ignoreUnknownFields = false)
-@ConstructorBinding
 public record AppProperties(FileStorage fileStorage) {
-    public static record FileStorage(String uploadFolder) {
+    public record FileStorage(String uploadFolder) {
     }
 }
