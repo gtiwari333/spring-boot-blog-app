@@ -4,7 +4,7 @@
 <head th:replace="_fragments/header :: head(~{this :: title}, ~{this :: .custom-link})">
     <title> Opps!</title>
     <!-- we can do the following to add extra css on this page -->
-        <link class="custom-link" th:href="@{/static/css/some-custom-this-page-only.css}"/>
+    <link class="custom-link" th:href="@{/static/css/some-custom-this-page-only.css}"/>
 </head>
 <body>
 
@@ -19,11 +19,10 @@
 
 
             <!-- #response not detected -->
-<!--            <div th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">-->
-<!--                <h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>-->
-<!--                <p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>-->
-<!--                <a th:href="@{/}">Back to Home Page</a>-->
-<!--            </div>-->
+            <div>
+                <p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>
+                <a th:href="@{/}">Back to Home Page</a>
+            </div>
 
         </div>
 
@@ -33,7 +32,7 @@
 </div>
 
 <div th:replace="_fragments/footer :: js-imports(~{this :: .custom-script})">
-        <script class="custom-script" th:src="@{/static/js/custom.js}"></script>
+    <script class="custom-script" th:src="@{/static/js/custom.js}"></script>
 </div>
 
 </body>
