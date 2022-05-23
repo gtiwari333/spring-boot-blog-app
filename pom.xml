@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.0-M2</version>
+        <version>3.0.0-M3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -18,12 +18,12 @@
 
         <!-- Spring6 not supported yet https://github.com/springdoc/springdoc-openapi/issues/1284
             Caused by: java.lang.ClassNotFoundException: javax.servlet.http.HttpServletRequest-->
-        <springdoc-openapi-ui.version>2.0.0-SNAPSHOT</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>2.0.0-M2</springdoc-openapi-ui.version>
         <mapstruct.version>1.5.0.RC1</mapstruct.version>
 
-        <selenide.version>6.3.5</selenide.version>
+        <selenide.version>6.5.0</selenide.version>
         <!-- selenide 6+ uses selenium 4. Spring Boot Dep Mgmt still provides v3 -->
-        <selenium.version>4.1.1</selenium.version>
+        <selenium.version>4.1.4</selenium.version>
 
         <google-guava.version>31.1-jre</google-guava.version>
 
@@ -37,10 +37,10 @@
 
         <!-- code quality -->
         <archunit-junit5.version>0.23.1</archunit-junit5.version>
-        <sonar-maven-plugin.version>3.9.0.2155</sonar-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
-        <puppycrawl.checkstyle.version>10.1</puppycrawl.checkstyle.version>
+        <puppycrawl.checkstyle.version>10.2</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
 
@@ -58,7 +58,7 @@
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M6</maven-surefire-plugin.version>
 
     </properties>
 
