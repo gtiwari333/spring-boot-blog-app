@@ -1,7 +1,7 @@
 package gt.app.modules.user
 
 import gt.app.config.Constants
-import gt.app.domain.User
+import gt.app.domain.AppUser
 import gt.app.modules.email.EmailService
 import gt.app.modules.user.dto.UserSignUpDTO
 import org.springframework.security.crypto.password.NoOpPasswordEncoder
@@ -30,7 +30,7 @@ class UserServiceSpec extends Specification {
         def toCreate = new UserSignUpDTO(uniqueId: 'U01', pwdPlaintext: 'pass', lastName: 'last1', firstName: 'first', email: 'gg@email')
 
         when:
-        User user = userService.create(toCreate)
+        AppUser user = userService.create(toCreate)
 
         then:
         user.password == toCreate.pwdPlaintext //noop encoder

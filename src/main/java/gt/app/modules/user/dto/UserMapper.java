@@ -1,6 +1,6 @@
 package gt.app.modules.user.dto;
 
-import gt.app.domain.User;
+import gt.app.domain.AppUser;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -16,7 +16,7 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     @Mapping(source = "uniqueId", target = "login")
-    UserDTO userToUserDto(User user);
+    UserDTO userToUserDto(AppUser user);
 
     default List<String> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
         return authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());

@@ -1,20 +1,20 @@
 package gt.app.modules.user;
 
-import gt.app.domain.User;
+import gt.app.domain.AppUser;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-interface UserRepository extends JpaRepository<User, Long> {
+interface UserRepository extends JpaRepository<AppUser, Long> {
 
     @EntityGraph(attributePaths = {"authorities"})
-    Optional<User> findOneWithAuthoritiesByUniqueId(String uniqueId);
+    Optional<AppUser> findOneWithAuthoritiesByUniqueId(String uniqueId);
 
-    Optional<User> findOneByUniqueId(String uniqueId);
+    Optional<AppUser> findOneByUniqueId(String uniqueId);
 
     boolean existsByUniqueId(String uniqueId);
 
-    Optional<User> findByIdAndActiveIsTrue(Long id);
+    Optional<AppUser> findByIdAndActiveIsTrue(Long id);
 
 }

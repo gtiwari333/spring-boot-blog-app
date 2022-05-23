@@ -9,7 +9,8 @@ spring:
     jpa:
         show-sql: false
         open-in-view: false
-
+        properties:
+            hibernate.globally_quoted_identifiers: true
     mail:
         host: localhost
         port: 25
