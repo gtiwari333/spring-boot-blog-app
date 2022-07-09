@@ -11,5 +11,7 @@ spring:
         jpa:
             repositories:
                 bootstrap-mode: lazy
+    jmx:
+        enabled: false
 logging.level:
     ROOT: ERROR
