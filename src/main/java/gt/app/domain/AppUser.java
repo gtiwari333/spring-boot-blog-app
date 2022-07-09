@@ -12,6 +12,7 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Table(name="APP_USER")
 @Data
 public class AppUser extends BaseEntity implements UserDetails {
     @Basic(fetch = FetchType.LAZY)

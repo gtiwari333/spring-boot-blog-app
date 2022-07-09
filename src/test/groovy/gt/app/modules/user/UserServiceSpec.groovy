@@ -11,6 +11,7 @@ import spock.lang.Specification
 class UserServiceSpec extends Specification {
 
     UserRepository userRepository
+    LiteUserRepository liteUserRepository
     PasswordEncoder passwordEncoder
     AuthorityService authorityService
     EmailService emailService
@@ -22,7 +23,7 @@ class UserServiceSpec extends Specification {
         passwordEncoder = NoOpPasswordEncoder.getInstance()
         authorityService = Mock()
         emailService = Mock()
-        userService = new UserService(userRepository, passwordEncoder, authorityService, emailService)
+        userService = new UserService(userRepository, passwordEncoder, authorityService, emailService, liteUserRepository)
     }
 
     def 'create user'() {

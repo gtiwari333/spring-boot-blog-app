@@ -3,6 +3,7 @@ package gt.app.modules.user;
 import gt.app.config.Constants;
 import gt.app.config.security.AppUserDetails;
 import gt.app.domain.AppUser;
+import gt.app.domain.LiteUser;
 import gt.app.exception.RecordNotFoundException;
 import gt.app.modules.email.EmailService;
 import gt.app.modules.email.dto.EmailDto;
@@ -28,23 +29,25 @@ public class UserService {
     private final AuthorityService authorityService;
     private final EmailService emailService;
 
+    private final LiteUserRepository liteUserRepository;
+
     public void update(UserProfileUpdateDTO toUpdate, AppUserDetails userDetails) {
-        AppUser user = userRepository.findOneByUniqueId(userDetails.getUsername())
+        LiteUser user = liteUserRepository.findOneByUniqueId(userDetails.getUsername())
             .orElseThrow(() -> new RecordNotFoundException("User", "login", userDetails.getUsername()));
 
         user.setFirstName(toUpdate.getFirstName());
         user.setLastName(toUpdate.getLastName());
         user.setEmail(toUpdate.getEmail());
 
-        userRepository.save(user);
+        liteUserRepository.save(user);
     }
 
     public void updatePassword(PasswordUpdateDTO toUpdate, AppUserDetails userDetails) {
-        AppUser user = userRepository.findOneByUniqueId(userDetails.getUsername())
+        LiteUser user = liteUserRepository.findOneByUniqueId(userDetails.getUsername())
             .orElseThrow(() -> new RecordNotFoundException("User", "login", userDetails.getUsername()));
 
         user.setPassword(passwordEncoder.encode(toUpdate.pwdPlainText()));
-        userRepository.save(user);
+        liteUserRepository.save(user);
     }
 
     public AppUser create(UserSignUpDTO toCreate) {
@@ -67,14 +70,16 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        AppUser author = userRepository.findByIdAndActiveIsTrue(id)
+        LiteUser author = liteUserRepository.findByIdAndActiveIsTrue(id)
             .orElseThrow(() -> new RecordNotFoundException("User", "id", id));
 
         author.setActive(false);
-        userRepository.save(author);
+        liteUserRepository.save(author);
     }
 
     public AppUser save(AppUser u) {
         return userRepository.save(u);
     }
+
+
 }

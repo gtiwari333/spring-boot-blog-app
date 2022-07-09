@@ -2,6 +2,8 @@ package gt.app.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class Note extends BaseAuditingEntity {
     private String content;
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     private List<ReceivedFile> attachedFiles = new ArrayList<>();
 
 }
