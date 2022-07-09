@@ -1,5 +1,6 @@
 package gt.app;
 
+import gt.app.config.AppProperties;
 import gt.app.config.Constants;
 import gt.app.domain.AppUser;
 import gt.app.domain.Authority;
@@ -16,6 +17,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import java.io.File;
 
 @Component
 @Profile({Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_TEST, Constants.SPRING_PROFILE_DOCKER})
@@ -29,6 +31,8 @@ public class DataCreator {
 
     final EntityManager entityManager;
 
+    final AppProperties appProperties;
+
     @EventListener
     public void ctxRefreshed(ContextRefreshedEvent evt) {
         initData();
@@ -36,6 +40,8 @@ public class DataCreator {
 
     public void initData(){
         log.info("Context Refreshed !!, Initializing Data... ");
+
+        new File(appProperties.fileStorage().uploadFolder() + File.separator +"attachments").mkdirs();
 
         Authority adminAuthority = new Authority();
         adminAuthority.setName(Constants.ROLE_ADMIN);
