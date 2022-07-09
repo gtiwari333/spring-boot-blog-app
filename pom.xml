@@ -18,7 +18,7 @@
 
         <!-- Spring6 not supported yet https://github.com/springdoc/springdoc-openapi/issues/1284
             Caused by: java.lang.ClassNotFoundException: javax.servlet.http.HttpServletRequest-->
-        <springdoc-openapi-ui.version>2.0.0-M2</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>2.0.0-M3</springdoc-openapi-ui.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
 
         <selenide.version>6.6.6</selenide.version>
