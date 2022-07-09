@@ -11,8 +11,6 @@ interface UserRepository extends JpaRepository<AppUser, Long> {
     @EntityGraph(attributePaths = {"authorities"})
     Optional<AppUser> findOneWithAuthoritiesByUniqueId(String uniqueId);
 
-    Optional<AppUser> findOneByUniqueId(String uniqueId);
-
     boolean existsByUniqueId(String uniqueId);
 
     Optional<AppUser> findByIdAndActiveIsTrue(Long id);

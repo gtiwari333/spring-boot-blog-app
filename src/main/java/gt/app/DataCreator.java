@@ -1,8 +1,10 @@
 package gt.app;
 
+import gt.app.config.AppProperties;
 import gt.app.config.Constants;
 import gt.app.domain.AppUser;
 import gt.app.domain.Authority;
+import gt.app.domain.LiteUser;
 import gt.app.domain.Note;
 import gt.app.modules.note.NoteService;
 import gt.app.modules.user.AuthorityService;
@@ -14,6 +16,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import java.io.File;
+
 @Component
 @Profile({Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_TEST, Constants.SPRING_PROFILE_DOCKER})
 @RequiredArgsConstructor
@@ -24,6 +29,9 @@ public class DataCreator {
     final UserService userService;
     final NoteService noteService;
 
+    final EntityManager entityManager;
+
+    final AppProperties appProperties;
 
     @EventListener
     public void ctxRefreshed(ContextRefreshedEvent evt) {
@@ -32,6 +40,8 @@ public class DataCreator {
 
     public void initData(){
         log.info("Context Refreshed !!, Initializing Data... ");
+
+        new File(appProperties.fileStorage().uploadFolder() + File.separator +"attachments").mkdirs();
 
         Authority adminAuthority = new Authority();
         adminAuthority.setName(Constants.ROLE_ADMIN);
@@ -69,7 +79,7 @@ public class DataCreator {
 
     void createNote(AppUser user, String title, String content) {
         var n = new Note();
-        n.setCreatedByUser(user);
+        n.setCreatedByUser(entityManager.getReference(LiteUser.class, user.getId()));
         n.setTitle(title);
         n.setContent(content);
 

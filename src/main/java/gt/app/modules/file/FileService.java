@@ -77,6 +77,6 @@ public class FileService {
     }
 
     private Path getStoredFilePath(ReceivedFile.FileGroup fileGroup, String fileIdentifier) throws IOException {
-        return rootLocation.resolveSibling(getSubFolder(fileGroup)).resolve(fileIdentifier);
+        return rootLocation.resolve(getSubFolder(fileGroup)).resolve(fileIdentifier);
     }
 }

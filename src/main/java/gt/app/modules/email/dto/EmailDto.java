@@ -10,7 +10,7 @@ public record EmailDto(String from, Collection<String> to, Collection<String> cc
         return new EmailDto(from, to, List.of(), List.of(), subject, content, false, new FileBArray[]{});
     }
 
-    public static record FileBArray(byte[] data, String filename) {
+    public record FileBArray(byte[] data, String filename) {
     }
 
     @Override

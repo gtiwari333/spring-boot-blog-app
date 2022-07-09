@@ -12,6 +12,7 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Table(name="APP_USER")
 @Data
 public class AppUser extends BaseEntity implements UserDetails {
     @Basic(fetch = FetchType.LAZY)
@@ -41,20 +42,18 @@ public class AppUser extends BaseEntity implements UserDetails {
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
         inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
     private Set<Authority> authorities = new HashSet<>();
-    /*
-     * TODO: BLOGIT http://stackoverflow.com/questions/3383169/hibernate-jpa-mysql-and- tinyint1-for-boolean-instead-of-bit-or-char
-     */
-    @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
-    private boolean active = false;
 
-    @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
-    private boolean accountNonExpired;
+    @Column(nullable = false)
+    private Boolean active = false;
 
-    @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
-    private boolean accountNonLocked;
+    @Column(nullable = false)
+    private Boolean accountNonExpired;
 
-    @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
-    private boolean credentialsNonExpired;
+    @Column(nullable = false)
+    private Boolean accountNonLocked;
+
+    @Column(nullable = false)
+    private Boolean credentialsNonExpired;
 
     private String activationKey;
 

@@ -1,6 +1,5 @@
 package gt.app.modules.file;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.util.MimeTypeUtils;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,7 +38,7 @@ public final class FileDownloadUtil {
             // This will download the file to the user's computer
             response.setHeader("Content-Disposition", "attachment; filename=" + originalFileName);
 
-            IOUtils.copy(in, response.getOutputStream());
+            in.transferTo(response.getOutputStream());
 
             response.getOutputStream().flush();
         }

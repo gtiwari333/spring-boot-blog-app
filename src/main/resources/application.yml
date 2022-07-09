@@ -9,12 +9,15 @@ spring:
     jpa:
         show-sql: false
         open-in-view: false
-
+        properties:
+            hibernate.globally_quoted_identifiers: true
     mail:
         host: localhost
         port: 25
         username:
         password:
+    main:
+        lazy-initialization: true
 
 server:
     port: 8080
@@ -38,4 +41,4 @@ wro4j:
 
 app-properties:
     file-storage:
-        upload-folder: /X/uploads
+        upload-folder: ${java.io.tmpdir}

@@ -19,15 +19,15 @@
         <!-- Spring6 not supported yet https://github.com/springdoc/springdoc-openapi/issues/1284
             Caused by: java.lang.ClassNotFoundException: javax.servlet.http.HttpServletRequest-->
         <springdoc-openapi-ui.version>2.0.0-M2</springdoc-openapi-ui.version>
-        <mapstruct.version>1.5.0.RC1</mapstruct.version>
+        <mapstruct.version>1.5.2.Final</mapstruct.version>
 
-        <selenide.version>6.5.0</selenide.version>
+        <selenide.version>6.6.6</selenide.version>
         <!-- selenide 6+ uses selenium 4. Spring Boot Dep Mgmt still provides v3 -->
-        <selenium.version>4.1.4</selenium.version>
+        <selenium.version>4.2.2</selenium.version>
 
         <google-guava.version>31.1-jre</google-guava.version>
 
-        <wro4j.version>1.10.1</wro4j.version>
+        <wro4j.version>1.9.0</wro4j.version>
 
         <!-- client deps -->
         <webjar-jquery.version>3.5.1</webjar-jquery.version>
@@ -40,7 +40,7 @@
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
-        <puppycrawl.checkstyle.version>10.2</puppycrawl.checkstyle.version>
+        <puppycrawl.checkstyle.version>10.3.1</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
 
@@ -58,7 +58,7 @@
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven-surefire-plugin.version>3.0.0-M6</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
 
     </properties>
 
@@ -135,6 +135,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-indexer</artifactId>
             <optional>true</optional>
         </dependency>
 
