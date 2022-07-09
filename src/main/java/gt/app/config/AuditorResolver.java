@@ -1,7 +1,6 @@
 package gt.app.config;
 
 import gt.app.config.security.SecurityUtils;
-import gt.app.domain.AppUser;
 import gt.app.domain.LiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;

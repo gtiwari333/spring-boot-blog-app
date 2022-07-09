@@ -1,8 +1,6 @@
 package gt.app.modules.user;
 
-import gt.app.domain.AppUser;
 import gt.app.domain.LiteUser;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
