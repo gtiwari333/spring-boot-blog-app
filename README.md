@@ -84,15 +84,9 @@ Perform scan:
 
 mvn sonar:sonar
 
+### Dependency/plugin version checker
 
-## Screenshots:
+    mvn versions:display-dependency-updates
+    mvn versions:display-plugin-updates
 
-#### Public View
-![](screenshots/public-view.png)
-
-#### Logged in Feed View
-![](screenshots/logged-in-feed-view.png)
-
-#### Logged in List View
-![](screenshots/logged-in-note-list-view.png)
 
