@@ -10,7 +10,7 @@ import spock.lang.Specification
 @SpringBootTest
 @ActiveProfiles(Constants.SPRING_PROFILE_TEST)
 class SpringContextSpec extends Specification {
-
+//this fails due to incompatibility between spring 6 and spock, comment until a fix is released
 //    @Autowired
 //    private HelloResource webController
 
