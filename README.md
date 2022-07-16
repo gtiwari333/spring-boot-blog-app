@@ -30,7 +30,7 @@ The default username/passwords are listed on : gt.app.Application.initData, whic
 
 OR
 
-- mvn compile spring-boot:run //if you have maven installed in your PC
+- mvnw compile spring-boot:run //if you have maven installed in your PC
 
 And open   `http://localhost:8080` on your browser
 
@@ -38,15 +38,15 @@ And open   `http://localhost:8080` on your browser
 
 ##### Running full tests
 
-`mvn clean test`
+`mvnw clean test`
 
 ##### Running unit tests only (it uses maven surefire plugin)
 
-`mvn  compiler:testCompile resources:testResources  surefire:test`
+`mvnw  compiler:testCompile resources:testResources  surefire:test`
 
 ##### Running integration tests only (it uses maven-failsafe-plugin)
 
-`mvn  compiler:testCompile resources:testResources  failsafe:integration-test`
+`mvnw  compiler:testCompile resources:testResources  failsafe:integration-test`
 
 ## Code Quality
 
@@ -58,8 +58,8 @@ Run sonarqube server using docker
 `docker run -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest`
 
 Perform scan:
-`mvn sonar:sonar`
-mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
+`mvnw sonar:sonar`
+mvnw sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
 
 View Reports in SonarQube web ui:
 
@@ -114,7 +114,7 @@ Future: do more stuff
 
 ### Dependency/plugin version checker
 
-    mvn versions:display-dependency-updates
-    mvn versions:display-plugin-updates
+    mvnw versions:display-dependency-updates
+    mvnw versions:display-plugin-updates
 
 
