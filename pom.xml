@@ -23,8 +23,6 @@
         <!-- selenide 6+ uses selenium 4. Spring Boot Dep Mgmt still provides v3 -->
         <selenium.version>4.2.2</selenium.version>
 
-        <google-guava.version>31.1-jre</google-guava.version>
-
         <wro4j.version>1.9.0</wro4j.version>
 
         <!-- client deps -->
@@ -34,7 +32,7 @@
 
 
         <!-- code quality -->
-        <archunit-junit5.version>0.23.1</archunit-junit5.version>
+        <archunit-junit5.version>1.0.0-rc1</archunit-junit5.version>
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
@@ -58,6 +56,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
         <google.error-prone.compiler.version>2.14.0</google.error-prone.compiler.version>
+        <groovy.maven.plugin.version>1.13.1</groovy.maven.plugin.version>
 
     </properties>
 
@@ -168,11 +167,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${google-guava.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
@@ -226,20 +220,7 @@
             <artifactId>spock-spring</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.spockframework</groupId>
-            <artifactId>spock-junit4</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- Optional dependencies for using Spock -->
-        <dependency> <!-- enables mocking of classes without default constructor (together with ByteBuddy or CGLIB) -->
-            <groupId>org.objenesis</groupId>
-            <artifactId>objenesis</artifactId>
-            <version>3.2</version>
-            <scope>test</scope>
-        </dependency>
 
-        <!-- test only dependencies -->
     </dependencies>
 
     <dependencyManagement>
@@ -247,7 +228,7 @@
             <dependency>
                 <groupId>org.spockframework</groupId>
                 <artifactId>spock-bom</artifactId>
-                <version>2.2-M1-groovy-4.0</version>
+                <version>2.2-M3-groovy-4.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -318,20 +299,12 @@
                     <wroFile>${basedir}/src/main/resources/wro.xml</wroFile>
                     <extraConfigFile>${basedir}/src/main/resources/wro.properties</extraConfigFile>
                 </configuration>
-                <dependencies>
-                    <!-- For Java 11 compatibility -->
-                    <dependency>
-                        <groupId>org.mockito</groupId>
-                        <artifactId>mockito-core</artifactId>
-                        <version>${mockito.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.13.1</version>
+                <version>${groovy.maven.plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
