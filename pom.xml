@@ -42,7 +42,6 @@
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
 
-
         <!-- test properties -->
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <jacoco.utReportFolder>${project.build.directory}/jacoco/test</jacoco.utReportFolder>
@@ -332,7 +331,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <!-- we need to do mvn  compiler:testCompile resources:testResources  surefire:test-->
+                <!-- we need to do `mvn  compiler:testCompile resources:testResources  surefire:test` to run unit tests separately-->
                 <configuration>
                     <runOrder>alphabetical</runOrder>
                     <reportsDirectory>${junit.utReportFolder}</reportsDirectory>
@@ -348,7 +347,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <!-- we need to do mvn  compiler:testCompile resources:testResources  failsafe:integration-test -->
+                <!-- we need to do `mvn  compiler:testCompile resources:testResources  failsafe:integration-test` to run integration tests separately -->
                 <configuration>
                     <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                     <runOrder>alphabetical</runOrder>
@@ -362,15 +361,15 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>integration-test</id>
+                        <id>failsafe-integration-test</id>
                         <goals>
                             <goal>integration-test</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>verify</id>
+                        <id>failsafe-verify</id>
                         <goals>
-                            <goal>verify</goal>
+                            <goal>integration-test</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -390,6 +389,31 @@
                         <version>${puppycrawl.checkstyle.version}</version>
                     </dependency>
                 </dependencies>
+                <executions>
+                    <execution>
+                        <id>verify-checkstyle</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>verify-spotbugs</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludeFilterFile>spot-bugs.filter-exclude.xml</excludeFilterFile>
+                </configuration>
             </plugin>
 
             <plugin>
