@@ -2,6 +2,9 @@ package gt.app.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
@@ -12,7 +15,7 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name="APP_USER")
+@Table(name = "APP_USER")
 @Data
 public class AppUser extends BaseEntity implements UserDetails {
     @Basic(fetch = FetchType.LAZY)
@@ -41,6 +44,8 @@ public class AppUser extends BaseEntity implements UserDetails {
         name = "user_authority",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
         inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
+    @Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 5)
     private Set<Authority> authorities = new HashSet<>();
 
     @Column(nullable = false)
