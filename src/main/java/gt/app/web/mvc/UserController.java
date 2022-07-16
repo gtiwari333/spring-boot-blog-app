@@ -1,12 +1,13 @@
 package gt.app.web.mvc;
 
 import gt.app.config.security.AppUserDetails;
-import gt.app.modules.user.*;
+import gt.app.modules.user.PasswordUpdateValidator;
+import gt.app.modules.user.UserService;
+import gt.app.modules.user.UserSignupValidator;
 import gt.app.modules.user.dto.PasswordUpdateDTO;
 import gt.app.modules.user.dto.UserProfileUpdateDTO;
 import gt.app.modules.user.dto.UserSignUpDTO;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,6 @@ import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 public class UserController {
 
     private final UserService userService;

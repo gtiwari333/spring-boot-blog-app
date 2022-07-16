@@ -50,7 +50,8 @@ And open   `http://localhost:8080` on your browser
 
 ## Code Quality
 
-The `checkstyle` and `spotbugs` plugin are run as part of maven `test-compile` lifecycle phase.
+##### The `error-prone` runs at compile time.
+##### The `checkstyle` and `spotbugs` plugin are run as part of maven `test-compile` lifecycle phase.
 
 ##### SonarQube scan
 

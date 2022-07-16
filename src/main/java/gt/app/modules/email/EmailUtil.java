@@ -1,14 +1,12 @@
 package gt.app.modules.email;
 
 import gt.app.exception.InvalidDataException;
-import lombok.experimental.UtilityClass;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.util.Collection;
 import java.util.function.Function;
 
-@UtilityClass
 public class EmailUtil {
 
     static Function<String, InternetAddress> toInternetAddr() {

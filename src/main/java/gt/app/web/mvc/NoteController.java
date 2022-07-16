@@ -5,7 +5,6 @@ import gt.app.modules.note.dto.NoteCreateDto;
 import gt.app.modules.note.dto.NoteEditDto;
 import gt.app.modules.note.NoteService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/note")
 @RequiredArgsConstructor
-@Slf4j
 public class NoteController {
 
     final NoteService noteService;

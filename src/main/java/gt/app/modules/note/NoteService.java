@@ -8,7 +8,6 @@ import gt.app.modules.note.dto.NoteEditDto;
 import gt.app.modules.note.dto.NoteMapper;
 import gt.app.modules.note.dto.NoteReadDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,9 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class NoteService {
 
