@@ -42,6 +42,6 @@ public class DownloadController {
             throw new IOException("File not found");
         }
 
-        FileDownloadUtil.downloadFile(response, fileRes.getFile(), receivedFile.getOriginalFileName());
+        FileDownloadUtil.downloadFile(response, fileRes.getURL(), receivedFile.getOriginalFileName());
     }
 }
