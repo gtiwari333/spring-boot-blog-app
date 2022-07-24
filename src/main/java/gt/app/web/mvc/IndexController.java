@@ -4,7 +4,6 @@ import gt.app.config.security.AppUserDetails;
 import gt.app.domain.Note;
 import gt.app.modules.note.NoteService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-@Slf4j
 @RequiredArgsConstructor
 public class IndexController {
 

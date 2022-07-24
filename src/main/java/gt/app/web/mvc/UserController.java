@@ -9,7 +9,6 @@ import gt.app.modules.user.dto.UserProfileUpdateDTO;
 import gt.app.modules.user.dto.UserSignUpDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 public class UserController {
 
     private final UserService userService;

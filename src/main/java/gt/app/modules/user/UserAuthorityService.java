@@ -5,13 +5,11 @@ import gt.app.domain.AppUser;
 import gt.app.domain.Note;
 import gt.app.modules.note.NoteService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("appSecurity")
 @RequiredArgsConstructor
-@Slf4j
 @Transactional(readOnly = true)
 public class UserAuthorityService {
 
