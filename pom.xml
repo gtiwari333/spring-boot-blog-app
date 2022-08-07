@@ -19,12 +19,12 @@
         <springdoc-openapi-ui.version>1.6.9</springdoc-openapi-ui.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
 
-        <selenide.version>6.6.6</selenide.version>
+        <selenide.version>6.7.1</selenide.version>
         <!-- selenide 6+ uses selenium 4. Spring Boot Dep Mgmt still provides v3 -->
-        <selenium.version>4.2.2</selenium.version>
+        <selenium.version>4.3.0</selenium.version>
 
         <wro4j.version>1.9.0</wro4j.version>
-
+        <spock.version>2.2-M3-groovy-4.0</spock.version>
         <!-- client deps -->
         <webjar-jquery.version>3.5.1</webjar-jquery.version>
         <webjar-bootstrap.version>4.5.0</webjar-bootstrap.version>
@@ -36,7 +36,7 @@
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
-        <puppycrawl.checkstyle.version>10.3.1</puppycrawl.checkstyle.version>
+        <puppycrawl.checkstyle.version>10.3.2</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
 
@@ -59,6 +59,9 @@
         <groovy.maven.plugin.version>1.13.1</groovy.maven.plugin.version>
         <modernizer-maven-plugin.version>2.4.0</modernizer-maven-plugin.version>
         <spotbugs.plugin.version>4.7.1.1</spotbugs.plugin.version>
+        <findsecbugs-plugin.version>1.12.0</findsecbugs-plugin.version>
+        <sb-contrib-plugin.version>7.4.7</sb-contrib-plugin.version>
+        <owasp-dependency-check-plugin.version>7.1.1</owasp-dependency-check-plugin.version>
     </properties>
 
 
@@ -233,7 +236,7 @@
             <dependency>
                 <groupId>org.spockframework</groupId>
                 <artifactId>spock-bom</artifactId>
-                <version>2.2-M3-groovy-4.0</version>
+                <version>${spock.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -451,8 +454,36 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <effort>Max</effort>
+                    <threshold>High</threshold>
+                    <failOnError>true</failOnError>
                     <excludeFilterFile>spot-bugs.filter-exclude.xml</excludeFilterFile>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.h3xstream.findsecbugs</groupId>
+                            <artifactId>findsecbugs-plugin</artifactId>
+                            <version>${findsecbugs-plugin.version}</version>
+                        </plugin>
+                        <plugin>
+                            <groupId>com.mebigfatguy.sb-contrib</groupId>
+                            <artifactId>sb-contrib</artifactId>
+                            <version>${sb-contrib-plugin.version}</version>
+                        </plugin>
+                    </plugins>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>${owasp-dependency-check-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>

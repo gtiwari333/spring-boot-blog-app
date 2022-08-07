@@ -71,7 +71,7 @@ public class UserService {
         LiteUser author = liteUserRepository.findByIdAndActiveIsTrue(id)
             .orElseThrow(() -> new RecordNotFoundException("User", "id", id));
 
-        author.setActive(false);
+        author.setActive(Boolean.FALSE);
         liteUserRepository.save(author);
     }
 

@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -108,10 +109,10 @@ public class AppUser extends BaseEntity implements UserDetails {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.accountNonExpired = true;
-        this.accountNonLocked = true;
-        this.credentialsNonExpired = true;
-        this.active = true;
+        this.accountNonExpired = Boolean.TRUE;
+        this.accountNonLocked = Boolean.TRUE;
+        this.credentialsNonExpired = Boolean.TRUE;
+        this.active = Boolean.TRUE;
     }
 
     @Override
@@ -126,5 +127,25 @@ public class AppUser extends BaseEntity implements UserDetails {
             ", accountNonLocked=" + accountNonLocked +
             ", credentialsNonExpired=" + credentialsNonExpired +
             '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        AppUser appUser = (AppUser) o;
+        return Objects.equals(uniqueId, appUser.uniqueId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), uniqueId);
     }
 }
