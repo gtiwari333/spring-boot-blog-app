@@ -17,7 +17,7 @@ import jakarta.persistence.Entity;
 
 class SpringCodingRulesTest extends ArchitectureTest {
 
-    @Test
+//    @Test  //https://github.com/spring-projects-experimental/spring-native/issues/1597
     void springSingletonComponentsShouldOnlyHaveFinalFields() {
         ArchRule rule = ArchRuleDefinition.classes()
             .that().areAnnotatedWith(Service.class)
