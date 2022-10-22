@@ -1,18 +1,14 @@
 package gt.app.modules.user;
 
-import gt.app.config.security.AppUserDetails;
 import gt.app.modules.user.dto.PasswordUpdateDTO;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-@RequiredArgsConstructor
 @Component
 public class PasswordUpdateValidator implements Validator {
-
-    final UserRepository userRepository;
 
     @Override
     public boolean supports(Class clazz) {
@@ -23,7 +19,7 @@ public class PasswordUpdateValidator implements Validator {
     public void validate(Object target, Errors errors) {
     }
 
-    public void validate(Object target, Errors errors, AppUserDetails principal) {
+    public void validate(Object target, Errors errors, UserDetails principal) {
 
         PasswordUpdateDTO toCreate = (PasswordUpdateDTO) target;
 

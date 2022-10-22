@@ -26,11 +26,11 @@ The default username/passwords are listed on : gt.app.Application.initData, whic
 - Update run configuration to run maven goal `wro4j:run` Before Launch. It should be after 'Build'
   OR
 
-- mvnw compile spring-boot:run //if you don't have maven installed in your PC
+- ./mvnw compile spring-boot:run //if you don't have maven installed in your PC
 
 OR
 
-- mvnw compile spring-boot:run //if you have maven installed in your PC
+- ./mvnw compile spring-boot:run //if you have maven installed in your PC
 
 And open   `http://localhost:8080` on your browser
 
@@ -38,20 +38,21 @@ And open   `http://localhost:8080` on your browser
 
 ##### Running full tests
 
-`mvnw clean test`
+`./mvnw clean test`
 
 ##### Running unit tests only (it uses maven surefire plugin)
 
-`mvnw  compiler:testCompile resources:testResources  surefire:test`
+`./mvnw  compiler:testCompile resources:testResources  surefire:test`
 
 ##### Running integration tests only (it uses maven-failsafe-plugin)
 
-`mvnw  compiler:testCompile resources:testResources  failsafe:integration-test`
+`./mvnw  compiler:testCompile resources:testResources  failsafe:integration-test`
 
 ## Code Quality
 
 ##### The `error-prone` runs at compile time.
-##### The `modernizer` `checkstyle` and `spotbugs` plugin are run as part of maven `test-compile` lifecycle phase.
+
+##### The `modernizer` `checkstyle` and `spotbugs` plugin are run as part of maven `test-compile` lifecycle phase. use `mvn spotbugs:gui' to
 
 ##### SonarQube scan
 
@@ -59,8 +60,8 @@ Run sonarqube server using docker
 `docker run -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest`
 
 Perform scan:
-`mvnw sonar:sonar`
-mvnw sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
+`./mvnw sonar:sonar`
+./mvnw sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
 
 View Reports in SonarQube web ui:
 
@@ -71,7 +72,18 @@ View Reports in SonarQube web ui:
   in: `curl -u admin:admin -X POST "http://localhost:9000/api/users/change_password?login=admin&previousPassword=admin&password=NEW_PASSWORD"`
 - if you change the password, make sure the update `-Dsonar.password=admin` when you run sonarqube next time
 
+### Dependency vulnerability scan
+
+Owasp dependency check plugin is configured. Run `./mvnw dependency-check:check` to run scan and
+open `dependency-check-report.html` from target to see the report.
+
+### Dependency/plugin version checker
+
+    ./mvnw versions:display-dependency-updates
+    ./mvnw versions:display-plugin-updates
+
 ### Included Features/Samples
+
 - Modular application
 - Data JPA with User/Authority/Note/ReceivedFile entities, example of EntityGraph
 - Default test data created while running the app
@@ -112,10 +124,4 @@ Future: do more stuff
 - background jobs with Quartz
 - Liquibase/Flyway change log
 - Integrate Markdown editor for writing notes
-
-### Dependency/plugin version checker
-
-    mvnw versions:display-dependency-updates
-    mvnw versions:display-plugin-updates
-
 

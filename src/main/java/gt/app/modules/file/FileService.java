@@ -34,7 +34,7 @@ public class FileService {
 
             return fileIdentifier;
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new StorageException("Failed to store file " + file, e);
         }
     }
@@ -50,7 +50,7 @@ public class FileService {
                 throw new IOException("Could not read file: " + targetPath);
 
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new RetrievalException("Could not read file: " + fileIdentifier + " , group " + fileGroup, e);
         }
     }

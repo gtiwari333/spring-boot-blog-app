@@ -36,7 +36,11 @@ public class AppPermissionEvaluatorService implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(Authentication auth, Serializable targetId, String targetType, Object permission) {
-        return hasAccess((Long) targetId, targetType);
+        if (targetId instanceof Long longTargetId) {
+            return hasAccess(longTargetId, targetType);
+        } else {
+            throw new OperationNotAllowedException("Invalid id type " + targetId.getClass() + ". Expected Long");
+        }
     }
 
     public boolean hasAccess(Long id, String targetEntity) {
