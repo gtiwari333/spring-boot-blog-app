@@ -23,7 +23,7 @@
 
         <selenide.version>6.9.0</selenide.version>
         <!-- selenide 6+ uses selenium 4. Spring Boot Dep Mgmt still provides v3 -->
-        <selenium.version>4.3.0</selenium.version>
+        <selenium.version>4.5.2</selenium.version>
 
         <wro4j.version>1.9.0</wro4j.version>
         <spock.version>2.3-groovy-4.0</spock.version>

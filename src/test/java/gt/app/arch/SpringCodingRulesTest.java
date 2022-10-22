@@ -79,6 +79,7 @@ class SpringCodingRulesTest extends ArchitectureTest {
                 DOMAIN_LAYER_PACKAGES, "java..", "lombok..", "jakarta..", "",
                 "com.fasterxml.jackson..", "org.hibernate.annotations",
                 "org.hibernate.engine.spi..", "org.hibernate.bytecode.enhance..", "org.hibernate.collection.spi..",
+                "org.hibernate.internal.util.collections..", //required for native image
                 "org.apache.commons.lang3..", "org.springframework.security.core.."
             );
         rule.check(classes);
