@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
 
-class UserServiceSpec extends Specification {
+class AppUserServiceSpec extends Specification {
 
     UserRepository userRepository
     LiteUserRepository liteUserRepository

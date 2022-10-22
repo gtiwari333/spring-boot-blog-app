@@ -1,8 +1,8 @@
 package gt.app.modules.user;
 
 import gt.app.config.security.AppUserDetails;
-import gt.app.domain.Note;
 import gt.app.domain.AppUser;
+import gt.app.domain.Note;
 import gt.app.modules.note.NoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

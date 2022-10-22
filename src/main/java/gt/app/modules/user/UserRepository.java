@@ -16,4 +16,6 @@ interface UserRepository extends JpaRepository<AppUser, Long> {
     @Transactional(readOnly = true)
     boolean existsByUniqueId(String uniqueId);
 
+    Optional<AppUser> findByIdAndActiveIsTrue(Long id);
+
 }

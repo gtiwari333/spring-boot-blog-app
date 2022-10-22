@@ -1,9 +1,10 @@
 package gt.app.modules.file;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.util.MimeTypeUtils;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.net.URL;
 
 public final class FileDownloadUtil {

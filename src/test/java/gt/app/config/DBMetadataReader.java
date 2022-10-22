@@ -7,7 +7,7 @@ import org.hibernate.mapping.*;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.Iterator;
 
 //@Component disabled since class is not actually used and was added for my blog

@@ -32,11 +32,11 @@ public class SecurityConfig{
         http
             .headers().frameOptions().sameOrigin()
             .and()
-                .authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/admin/**").hasAuthority(Constants.ROLE_ADMIN)
-                .antMatchers("/user/**").hasAuthority(Constants.ROLE_USER)
-                .antMatchers("/api/**").authenticated()//individual api will be secured differently
+                .authorizeHttpRequests()
+                .requestMatchers(AUTH_WHITELIST).permitAll()
+                .requestMatchers("/admin/**").hasAuthority(Constants.ROLE_ADMIN)
+                .requestMatchers("/user/**").hasAuthority(Constants.ROLE_USER)
+                .requestMatchers("/api/**").authenticated()//individual api will be secured differently
                 .anyRequest().authenticated() //this one will catch the rest patterns
             .and()
                 .csrf().disable()
