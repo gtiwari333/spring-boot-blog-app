@@ -586,7 +586,8 @@
                 <dependency>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
-                    <scope>runtime</scope>
+                    <!-- required at compile time for graalvm native compile -->
+<!--                    <scope>runtime</scope>-->
                 </dependency>
             </dependencies>
             <properties>
