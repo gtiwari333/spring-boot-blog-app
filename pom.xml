@@ -69,22 +69,6 @@
 
     <dependencies>
 
-        <!--
-         https://github.com/spring-projects-experimental/spring-native/issues/1729
-         these two are required by `./mvnw native:compile -Pnative` but not the `./mvnw spring-boot:build-image -Pnative`
-         possibly a version mismatch.
-         -->
-        <dependency>
-            <groupId>com.rometools</groupId>
-            <artifactId>rome</artifactId>
-            <version>1.18.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-serialization-core-jvm</artifactId>
-            <version>1.4.1</version>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
