@@ -42,3 +42,7 @@ wro4j:
 app-properties:
     file-storage:
         upload-folder: ${java.io.tmpdir}
+
+
+springdoc:
+    enable-native-support: true
