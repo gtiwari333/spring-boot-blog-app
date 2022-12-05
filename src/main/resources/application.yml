@@ -17,7 +17,7 @@ spring:
         username:
         password:
     main:
-        lazy-initialization: true
+        lazy-initialization: false
 
 server:
     port: 8080
