@@ -56,7 +56,8 @@ public class NoteService {
     }
 
     public NoteReadDto read(Long id) {
-        return noteRepository.findById(id).map(noteMapper::mapForRead).orElseThrow();
+        return noteRepository.findById(id)
+            .map(noteMapper::mapForRead).orElseThrow();
     }
 
     public Note save(Note note) {
@@ -64,11 +65,13 @@ public class NoteService {
     }
 
     public Page<NoteReadDto> readAll(Pageable pageable) {
-        return noteRepository.findAll(pageable).map(noteMapper::mapForRead);
+        return noteRepository.findAll(pageable)
+            .map(noteMapper::mapForRead);
     }
 
     public Page<NoteReadDto> readAllByUser(Pageable pageable, Long userId) {
-        return noteRepository.findByCreatedByUserIdOrderByCreatedDateDesc(pageable, userId).map(noteMapper::mapForRead);
+        return noteRepository.findByCreatedByUserIdOrderByCreatedDateDesc(pageable, userId)
+            .map(noteMapper::mapForRead);
     }
 
     public void delete(Long id) {

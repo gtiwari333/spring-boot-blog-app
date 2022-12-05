@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuditorResolver implements AuditorAware<LiteUser> {
 
-      private final EntityManager entityManager;
+    private final EntityManager entityManager;
 
     @Override
     public Optional<LiteUser> getCurrentAuditor() {
