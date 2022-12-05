@@ -32,7 +32,7 @@ import java.util.Map;
 @Slf4j
 @EnableConfigurationProperties(AppProperties.class)
 @EnableTransactionManagement(proxyTargetClass = true)
-@ImportRuntimeHints(MyRuntimeHints.class)
+@ImportRuntimeHints(MyRuntimeHints.class) //required for GraalVMNativeImage::
 public class Application {
 
     public static void main(String[] args) throws UnknownHostException {
@@ -57,6 +57,7 @@ public class Application {
 
 }
 
+//required for GraalVMNativeImage::
 class MyRuntimeHints implements RuntimeHintsRegistrar {
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {

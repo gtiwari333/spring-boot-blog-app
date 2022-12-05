@@ -581,8 +581,10 @@
                 <dependency>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
-                    <!-- required at compile time for graalvm native compile -->
-<!--                    <scope>runtime</scope>-->
+                    <!-- GraalVMNativeImage: required at compile time for graalvm native compile -->
+                    <!--target/spring-aot/main/sources/org/springframework/boot/autoconfigure/h2/H2ConsoleAutoConfiguration__BeanDefinitions.java:4:25
+                        java: package org.h2.server.web does not exist-->
+                    <!--<scope>runtime</scope>-->
                 </dependency>
             </dependencies>
             <properties>
