@@ -83,7 +83,7 @@ open `dependency-check-report.html` from target to see the report.
     ./mvnw versions:display-plugin-updates
 
 ### Included Features/Samples
-
+- GraalVM native image generation
 - Modular application
 - Data JPA with User/Authority/Note/ReceivedFile entities, example of EntityGraph
 - Default test data created while running the app
@@ -103,8 +103,7 @@ open `dependency-check-report.html` from target to see the report.
 - Docker maven plugin to publish images (follow docker-steps.md)
 - Deploy to Amazon EC2 ( follow docker-steps.md )
 - Code Generation: lombok, mapstruct
-- H2 db for local, Console enabled for local ( http://localhost:8080/h2-console/, db url: jdbc:h2:mem:testdb, username:
-  sa)
+- H2 db for local, Console enabled for local ( http://localhost:8080/h2-console/, db url: jdbc:h2:mem:testdb, username:sa)
 - MySQL or any other SQL db can be configured for prod/docker etc profiles
 - User/User_Authority entity and repository/services
     - login, logout, home pages based on user role
