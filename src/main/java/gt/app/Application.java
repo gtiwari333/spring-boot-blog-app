@@ -10,8 +10,6 @@ import gt.app.modules.note.dto.NoteReadDto;
 import gt.app.modules.user.AppPermissionEvaluatorService;
 import gt.app.modules.user.dto.PasswordUpdateDTO;
 import gt.app.modules.user.dto.UserDTO;
-import jakarta.persistence.EntityGraph;
-import jakarta.persistence.NamedEntityGraph;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
@@ -59,28 +57,9 @@ public class Application {
 
 }
 
-//until https://github.com/spring-projects/spring-data-jpa/issues/2681 gets released/
-
-/**
- * currently getting this error https://github.com/spring-projects-experimental/spring-native/issues/1728
- * Caused by: java.lang.IllegalArgumentException: The EntityGraph-Feature requires at least a JPA 2.1 persistence provider
- * at org.springframework.util.Assert.isTrue(Assert.java:121) ~[na:na]
- * at org.springframework.data.jpa.repository.query.Jpa21Utils.tryGetFetchGraph(Jpa21Utils.java:103) ~[na:na]
- * at org.springframework.data.jpa.repository.query.Jpa21Utils.getFetchGraphHint(Jpa21Utils.java:76) ~[na:na]
- * at org.springframework.data.jpa.repository.query.AbstractJpaQuery.applyEntityGraphConfiguration(AbstractJpaQuery.java:250) ~[note-app:3.0.0-RC1]
- * at org.springframework.data.jpa.repository.query.AbstractJpaQuery.createQuery(AbstractJpaQuery.java:234) ~[note-app:3.0.0-RC1]
- * at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:193) ~[na:na]
- * at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:90) ~[note-app:3.0.0-RC1]
- * at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:148) ~[note-app:3.0.0-RC1]
- * at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:136) ~[note-app:3.0.0-RC1]
- * at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:137) ~[note-app:3.0.0-RC1]
- */
 class MyRuntimeHints implements RuntimeHintsRegistrar {
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-        hints.reflection().registerType(NamedEntityGraph.class,
-            hint -> hint.onReachableType(EntityGraph.class).withMembers(MemberCategory.INVOKE_PUBLIC_METHODS));
-
         //record and dto classes -> get/set not found
         hints
             .reflection()
