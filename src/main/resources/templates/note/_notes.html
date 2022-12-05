@@ -40,7 +40,7 @@
 
         <div class="card-body">
             <p class="card-text"><span th:text="${note.content}"></span></p>
-            <div th:if="${note.files.size()>0}">
+            <div th:if="${note.getFileSize()>0}">
                 <hr/>
                 Attachments:
                 <span th:each="file : ${note.files}">

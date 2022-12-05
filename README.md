@@ -125,3 +125,26 @@ Future: do more stuff
 - Liquibase/Flyway change log
 - Integrate Markdown editor for writing notes
 
+### Dependency/plugin version checker
+
+    `./mvnw versions:display-dependency-updates`
+    `./mvnw versions:display-plugin-updates`
+
+## Generate native executable:
+- Required: GraalVM 22.3+ (for Spring Boot 3) 
+- Install using sdkman 
+    `sdk install java  22.3.r17.ea-nik`
+    `sdk use java  22.3.r17.ea-nik`
+
+- Create native executable `./mvnw native:compile -Pnative,dev`
+- Run it   `./target/note-app`
+
+OR
+
+- Generate docker image with native executable `./mvnw spring-boot:build-image -Pnative,dev`
+- Run it `docker run --rm -p 8080:8080 docker.io/library/note-app:3.0.0-RC1`
+
+
+## Native Test:
+- Run with `./mvnw test -PnativeTest`
+- Spring Boot 3.0.0: native-test is not working due to spock ( and possibly other dependencies too) 

@@ -5,12 +5,9 @@ import gt.app.domain.ReceivedFile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface NoteMapper {
-
-    NoteMapper INSTANCE = Mappers.getMapper(NoteMapper.class);
 
     @Mapping(source = "createdByUser.id", target = "userId")
     @Mapping(source = "createdByUser.uniqueId", target = "username")

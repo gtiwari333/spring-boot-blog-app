@@ -25,6 +25,8 @@ public class NoteService {
     private final NoteRepository noteRepository;
     private final FileService fileService;
 
+    private final NoteMapper noteMapper;
+
     public Note createNote(NoteCreateDto dto) {
 
         List<ReceivedFile> files = new ArrayList<>();
@@ -38,7 +40,7 @@ public class NoteService {
             files.add(new ReceivedFile(FILE_GROUP, mpf.getOriginalFilename(), fileId));
         }
 
-        Note note = NoteMapper.INSTANCE.createToEntity(dto);
+        Note note = noteMapper.createToEntity(dto);
         note.getAttachedFiles().addAll(files);
 
         return save(note);
@@ -48,16 +50,14 @@ public class NoteService {
 
         Optional<Note> noteOpt = noteRepository.findById(dto.id());
         return noteOpt.map(note -> {
-                NoteMapper.INSTANCE.createToEntity(dto, note);
-                return save(note);
-            }
-        ).orElseThrow();
+            noteMapper.createToEntity(dto, note);
+            return save(note);
+        }).orElseThrow();
     }
 
     public NoteReadDto read(Long id) {
         return noteRepository.findById(id)
-            .map(NoteMapper.INSTANCE::mapForRead)
-            .orElseThrow();
+            .map(noteMapper::mapForRead).orElseThrow();
     }
 
     public Note save(Note note) {
@@ -66,12 +66,12 @@ public class NoteService {
 
     public Page<NoteReadDto> readAll(Pageable pageable) {
         return noteRepository.findAll(pageable)
-            .map(NoteMapper.INSTANCE::mapForRead);
+            .map(noteMapper::mapForRead);
     }
 
     public Page<NoteReadDto> readAllByUser(Pageable pageable, Long userId) {
         return noteRepository.findByCreatedByUserIdOrderByCreatedDateDesc(pageable, userId)
-            .map(NoteMapper.INSTANCE::mapForRead);
+            .map(noteMapper::mapForRead);
     }
 
     public void delete(Long id) {

@@ -2,11 +2,11 @@ package gt.app.config;
 
 import gt.app.config.security.SecurityUtils;
 import gt.app.domain.LiteUser;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
-import jakarta.persistence.EntityManager;
 import java.util.Optional;
 
 @Component

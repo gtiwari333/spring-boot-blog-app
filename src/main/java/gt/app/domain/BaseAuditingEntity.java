@@ -3,10 +3,10 @@ package gt.app.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
@@ -26,7 +26,7 @@ abstract class BaseAuditingEntity extends BaseEntity {
     @JsonIgnore//ignore completely to avoid StackOverflow exception by User.createdByUser logic, use DTO
     private LiteUser createdByUser;
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(name = "created_date", nullable = false)
     private Instant createdDate;
 
@@ -36,7 +36,7 @@ abstract class BaseAuditingEntity extends BaseEntity {
     @JsonIgnore//ignore completely to avoid StackOverflow exception by User.lastModifiedByUser logic, use DTO
     private LiteUser lastModifiedByUser;
 
-    @UpdateTimestamp
+    @LastModifiedDate
     @Column(name = "last_modified_date")
     private Instant lastModifiedDate;
 }
