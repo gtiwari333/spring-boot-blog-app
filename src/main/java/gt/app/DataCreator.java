@@ -9,7 +9,7 @@ import gt.app.domain.Note;
 import gt.app.modules.note.NoteService;
 import gt.app.modules.user.AuthorityService;
 import gt.app.modules.user.UserService;
-import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -17,7 +17,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import jakarta.persistence.EntityManager;
 import java.io.File;
 
 @Component
@@ -30,9 +29,7 @@ public class DataCreator {
     final UserService userService;
     final NoteService noteService;
 
-    //https://github.com/spring-projects-experimental/spring-native/issues/1597
-    @PersistenceContext
-    EntityManager entityManager;
+    final EntityManager entityManager;
 
     final AppProperties appProperties;
 
@@ -41,10 +38,10 @@ public class DataCreator {
         initData();
     }
 
-    public void initData(){
+    public void initData() {
         log.info("Context Refreshed !!, Initializing Data... ");
 
-        new File(appProperties.fileStorage().uploadFolder() + File.separator +"attachments").mkdirs();
+        new File(appProperties.fileStorage().uploadFolder() + File.separator + "attachments").mkdirs();
 
         Authority adminAuthority = new Authority();
         adminAuthority.setName(Constants.ROLE_ADMIN);
