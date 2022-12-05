@@ -131,7 +131,7 @@ Future: do more stuff
     `./mvnw versions:display-plugin-updates`
 
 ## Generate native executable:
-- Required: GraalVM 22.3+ (for Spring Boot 3.0.0-RC1) 
+- Required: GraalVM 22.3+ (for Spring Boot 3) 
 - Install using sdkman 
     `sdk install java  22.3.r17.ea-nik`
     `sdk use java  22.3.r17.ea-nik`
@@ -147,4 +147,4 @@ OR
 
 ## Native Test:
 - Run with `./mvnw test -PnativeTest`
-- Spring Boot 3.0.0-RC1: native-test is not working due to spock ( and possibly other dependencies too) 
+- Spring Boot 3.0.0: native-test is not working due to spock ( and possibly other dependencies too) 
