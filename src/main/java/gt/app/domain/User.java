@@ -3,8 +3,8 @@ package gt.app.domain;
 import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;

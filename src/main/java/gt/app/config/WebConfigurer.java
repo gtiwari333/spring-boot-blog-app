@@ -10,9 +10,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.FilterRegistration;
+import jakarta.servlet.ServletContext;
 import java.util.EnumSet;
 
 @Configuration
@@ -42,7 +42,7 @@ public class WebConfigurer implements ServletContextInitializer {
     }
 
     @Bean
-    public FilterRegistrationBean<ReqLogFilter> loggingFilter() {
+    FilterRegistrationBean<ReqLogFilter> loggingFilter() {
         FilterRegistrationBean<ReqLogFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new ReqLogFilter());
