@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 @Getter
 public class AppUserDetails extends User {
 
+    private static final long serialVersionUID = 1;
+
     private Long id;
     private String firstName;
 
@@ -48,9 +50,15 @@ public class AppUserDetails extends User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         AppUserDetails that = (AppUserDetails) o;
         return id.equals(that.id);
     }

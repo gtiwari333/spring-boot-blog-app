@@ -30,25 +30,25 @@ public class SecurityConfig {
         "/" //landing page is allowed for all
     };
 
-    private final AppUserDetailsService appUserDetailsService;
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
-            .userDetailsService(appUserDetailsService)
-            .passwordEncoder(passwordEncoder());
-    }
+//    private final AppUserDetailsService appUserDetailsService;
+//
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+//        authenticationManagerBuilder
+//            .userDetailsService(appUserDetailsService)
+//            .passwordEncoder(passwordEncoder());
+//    }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .headers().frameOptions().sameOrigin()
             .and()
-                .authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/admin/**").hasAuthority(Constants.ROLE_ADMIN)
-                .antMatchers("/user/**").hasAuthority(Constants.ROLE_USER)
-                .antMatchers("/api/**").authenticated()//individual api will be secured differently
+                .authorizeHttpRequests()
+                .requestMatchers(AUTH_WHITELIST).permitAll()
+                .requestMatchers("/admin/**").hasAuthority(Constants.ROLE_ADMIN)
+                .requestMatchers("/user/**").hasAuthority(Constants.ROLE_USER)
+                .requestMatchers("/api/**").authenticated()//individual api will be secured differently
                 .anyRequest().authenticated() //this one will catch the rest patterns
             .and()
                 .csrf().disable()

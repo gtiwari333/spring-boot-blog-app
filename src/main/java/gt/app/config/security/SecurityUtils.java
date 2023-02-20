@@ -40,8 +40,7 @@ public final class SecurityUtils {
     public static Long getCurrentUserId() {
 
         User user = getCurrentUserDetails();
-        if (user instanceof AppUserDetails) {
-            AppUserDetails appUserDetails = (AppUserDetails) user;
+        if (user instanceof AppUserDetails appUserDetails) {
             return appUserDetails.getId();
         }
         return null;

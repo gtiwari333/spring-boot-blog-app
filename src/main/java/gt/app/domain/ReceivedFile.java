@@ -2,7 +2,6 @@ package gt.app.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,7 +16,6 @@ import java.util.UUID;
 public class ReceivedFile {
 
     @Id
-    @Type(type = "uuid-char")
     UUID id;
 
     Instant receivedDate;

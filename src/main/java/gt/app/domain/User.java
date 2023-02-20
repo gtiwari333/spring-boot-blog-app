@@ -12,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@Table(name="APP_USER")
 public class User extends BaseEntity implements UserDetails {
     @Basic(fetch = FetchType.LAZY)
     @Lob
@@ -45,7 +46,7 @@ public class User extends BaseEntity implements UserDetails {
      * TODO: BLOGIT http://stackoverflow.com/questions/3383169/hibernate-jpa-mysql-and- tinyint1-for-boolean-instead-of-bit-or-char
      */
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
-    private boolean active = false;
+    private boolean active;
 
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private boolean accountNonExpired;

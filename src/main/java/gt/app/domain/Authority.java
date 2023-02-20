@@ -11,6 +11,8 @@ import jakarta.persistence.Id;
 @Setter
 public class Authority implements GrantedAuthority {
 
+    private static final long serialVersionUID = 1;
+
     @Id
     @Column(length = 16)
     private String name;
@@ -22,8 +24,12 @@ public class Authority implements GrantedAuthority {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Authority authority1 = (Authority) o;
 

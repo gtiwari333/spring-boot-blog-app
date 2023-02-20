@@ -19,7 +19,7 @@ public class ErrorControllerAdvice {
     public String exception(final Throwable throwable, final Model model) {
         log.error("Exception during execution of application", throwable);
 
-        String errorMessage = (throwable != null ? throwable.getMessage() : "Unknown error");
+        String errorMessage = throwable != null ? throwable.getMessage() : "Unknown error";
         model.addAttribute("errorMessage", errorMessage);
         return "error";
     }

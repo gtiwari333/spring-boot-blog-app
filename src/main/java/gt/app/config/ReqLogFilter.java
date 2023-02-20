@@ -17,8 +17,7 @@ class ReqLogFilter implements Filter {
 
         req.put("req.remoteHost", request.getRemoteHost());
 
-        if (request instanceof HttpServletRequest) {
-            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        if (request instanceof HttpServletRequest httpServletRequest) {
             req.put("req.requestURI", httpServletRequest.getRequestURI());
             StringBuffer requestURL = httpServletRequest.getRequestURL();
             if (requestURL != null) {
