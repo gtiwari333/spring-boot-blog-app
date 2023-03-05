@@ -38,7 +38,7 @@ And open   `http://localhost:8080` on your browser
 
 ##### Running full tests
 
-`./mvnw clean test`
+`./mvnw clean verify`
 
 ##### Running unit tests only (it uses maven surefire plugin)
 
