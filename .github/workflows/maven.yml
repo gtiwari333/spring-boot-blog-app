@@ -17,19 +17,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Remove FireFox
-      run: sudo apt-get --purge autoremove firefox
-      
     - name: Install FireFox
       run: sudo apt install -y firefox 
     
-    - name: Display version and location of geckodriver/firefox
-      run: |
-        echo "geckodriver/firefox"
-        which geckodriver
-        geckodriver --version
-        which firefox
-        firefox --version  
+    - name: install xvfb
+      run: sudo apt-get install xvfb
     
     - name: Set up JDK 17
       uses: actions/setup-java@v1
