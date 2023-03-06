@@ -17,6 +17,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
+    - name: Remove FireFox
+      run: sudo apt-get --purge autoremove firefox
+      
     - name: Install FireFox
       run: sudo apt install -y firefox 
     
