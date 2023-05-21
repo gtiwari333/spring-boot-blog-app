@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class NoteService {
         return save(note);
     }
 
+    @Transactional
     public Note update(NoteEditDto dto) {
 
         Optional<Note> noteOpt = noteRepository.findById(dto.id());
@@ -55,6 +57,7 @@ public class NoteService {
         }).orElseThrow();
     }
 
+    @Transactional
     public NoteReadDto read(Long id) {
         return noteRepository.findById(id)
             .map(noteMapper::mapForRead).orElseThrow();
@@ -64,11 +67,13 @@ public class NoteService {
         return noteRepository.save(note);
     }
 
+    @Transactional
     public Page<NoteReadDto> readAll(Pageable pageable) {
         return noteRepository.findAll(pageable)
             .map(noteMapper::mapForRead);
     }
 
+    @Transactional
     public Page<NoteReadDto> readAllByUser(Pageable pageable, Long userId) {
         return noteRepository.findByCreatedByUserIdOrderByCreatedDateDesc(pageable, userId)
             .map(noteMapper::mapForRead);
