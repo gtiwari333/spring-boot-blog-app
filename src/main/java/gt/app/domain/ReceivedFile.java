@@ -13,6 +13,7 @@ import java.util.UUID;
 @Entity
 @Data
 @NoArgsConstructor
+@SuppressWarnings("DirectReturn")
 public class ReceivedFile {
 
     @Id

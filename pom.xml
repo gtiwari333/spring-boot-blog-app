@@ -14,6 +14,7 @@
     <groupId>gt.app</groupId>
 
     <properties>
+        <error-prone.patch-args/>
         <java.version>17</java.version>
 
         <springdoc-openapi-ui.version>2.1.0</springdoc-openapi-ui.version>
@@ -54,7 +55,9 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven-surefire-plugin.version>3.1.0</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.1.0</maven-failsafe-plugin.version>
-        <google.error-prone.compiler.version>2.19.1</google.error-prone.compiler.version>
+        <!-- https://github.com/PicnicSupermarket/error-prone-support/issues/686  not yet compatible with 2.20 -->
+        <version.error-prone>2.19.1-picnic-1</version.error-prone>
+        <version.error-prone-support>0.11.1</version.error-prone-support>
         <groovy.maven.plugin.version>2.1.0</groovy.maven.plugin.version>
         <modernizer-maven-plugin.version>2.6.0</modernizer-maven-plugin.version>
         <spotbugs.plugin.version>4.7.3.4</spotbugs.plugin.version>
@@ -297,17 +300,51 @@
                     <target>17</target>
                     <compilerArgs>
                         <arg>-XDcompilePolicy=simple</arg>
-                        <arg>-Xplugin:ErrorProne</arg>
+                        <!-- this will fix mapstruct -->
+                        <arg>-Amapstruct.defaultComponentModel=spring</arg>
+                        <arg>-Amapstruct.defaultInjectionStrategy=constructor</arg>
+                        <!-- Enable and configure Error Prone. -->
+                        <arg>
+                            -Xplugin:ErrorProne
+                            -Xep:NestedInstanceOfConditions:OFF -Xep:ParameterName:OFF -Xep:SameNameButDifferent:OFF
+
+                            -XepAllErrorsAsWarnings
+                            -XepAllSuggestionsAsWarnings
+                            -XepAllDisabledChecksAsWarnings
+                            -XepDisableWarningsInGeneratedCode
+                            -XepExcludedPaths:\Q${project.build.directory}${file.separator}\E.*
+                            -Xep:AndroidJdkLibsChecker:OFF
+                            -Xep:Java7ApiChecker:OFF
+                            -Xep:Java8ApiChecker:OFF
+                            <!-- We generally discourage `var` use. -->
+                            -Xep:Varifier:OFF
+                            <!-- Refaster name pattern example:
+                            -XepOpt:Refaster:NamePattern=^(?!(Immutable.*Rules)).*
+                            -->
+
+                            <!--
+                            START Error Prone Support configuration.
+                            -->
+                            <!-- XXX: Enable once sufficiently configurable. -->
+                            -Xep:LexicographicalAnnotationListing:OFF
+                            <!-- XXX: Enable once false positives no longer  have a major performance impact. -->
+                            -Xep:MethodReferenceUsage:OFF
+                            <!-- XXX: Disabled as it is not a clear  improvement. -->
+                            -Xep:StringJoin:OFF
+                            -XepOpt:ErrorProneSupport:IgnoreClasspathCompat=true
+                            <!--
+                            END Error Prone Support configuration.
+                            -->
+
+                            <!-- Append additional custom arguments. -->
+                            ${error-prone.patch-args}
+                        </arg>
+                        <arg>-XDcompilePolicy=simple</arg>
                         <!-- this will fix mapstruct -->
                         <arg>-Amapstruct.defaultComponentModel=spring</arg>
                         <arg>-Amapstruct.defaultInjectionStrategy=constructor</arg>
                     </compilerArgs>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>com.google.errorprone</groupId>
-                            <artifactId>error_prone_core</artifactId>
-                            <version>${google.error-prone.compiler.version}</version>
-                        </path>
+                    <annotationProcessorPaths combine.children="append">
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
@@ -317,6 +354,24 @@
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${mapstruct.version}</version>
+                        </path>
+                        <!-- Picnic's Error Prone fork. -->
+                        <path>
+                            <groupId>com.github.PicnicSupermarket.error-prone</groupId>
+                            <artifactId>error_prone_core</artifactId>
+                            <version>${version.error-prone}</version>
+                        </path>
+                        <!-- Error Prone Support's additional bug checkers. -->
+                        <path>
+                            <groupId>tech.picnic.error-prone-support</groupId>
+                            <artifactId>error-prone-contrib</artifactId>
+                            <version>${version.error-prone-support}</version>
+                        </path>
+                        <!-- Error Prone Support's Refaster templates. -->
+                        <path>
+                            <groupId>tech.picnic.error-prone-support</groupId>
+                            <artifactId>refaster-runner</artifactId>
+                            <version>${version.error-prone-support}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -502,13 +557,13 @@
                 <artifactId>dependency-check-maven</artifactId>
                 <version>${owasp-dependency-check-plugin.version}</version>
                 <!-- should be manually run, uncomment it needs to be a part of build pipeline-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
+                <!--                <executions>-->
+                <!--                    <execution>-->
+                <!--                        <goals>-->
+                <!--                            <goal>check</goal>-->
+                <!--                        </goals>-->
+                <!--                    </execution>-->
+                <!--                </executions>-->
             </plugin>
 
             <plugin>
@@ -621,6 +676,24 @@
             </properties>
         </profile>
 
+        <profile>
+            <!-- this profile  configures Error Prone to try and automatically fix in the source code. -->
+            <id>errorPronePatch</id>
+            <properties>
+                <error-prone.patch-args>-XepPatchChecks:${error-prone.patch-checks} -XepPatchLocation:IN_PLACE
+                </error-prone.patch-args>
+                <!-- One can override this value to specify which checks should be patched. -->
+                <error-prone.patch-checks/>
+            </properties>
+        </profile>
+
     </profiles>
 
+    <repositories>
+        <!-- picnic dependencies -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 </project>
