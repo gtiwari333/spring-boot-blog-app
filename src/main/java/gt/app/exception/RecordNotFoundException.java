@@ -11,6 +11,6 @@ public class RecordNotFoundException extends RuntimeException {
     }
 
     public RecordNotFoundException(String requestedObjectName, String requestedByField, Object requestedByParam) {
-        super(String.format("%s not found with %s = '%s'", requestedObjectName, requestedByField, requestedByParam));
+        super("%s not found with %s = '%s'".formatted(requestedObjectName, requestedByField, requestedByParam));
     }
 }

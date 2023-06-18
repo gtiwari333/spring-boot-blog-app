@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/signup")
-    public String register(@Valid @ModelAttribute("user") UserSignUpDTO user, BindingResult bindingResult,
+    public String register(@Valid @ModelAttribute UserSignUpDTO user, BindingResult bindingResult,
                            RedirectAttributes redirectAttrs) {
 
         //do custom validation along with the BeanValidation
@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/profile")
-    public String updateProfile(@Valid @ModelAttribute("user") UserProfileUpdateDTO user, BindingResult bindingResult,
+    public String updateProfile(@Valid @ModelAttribute UserProfileUpdateDTO user, BindingResult bindingResult,
                                 @AuthenticationPrincipal AppUserDetails loggedInUserDtl, RedirectAttributes redirectAttrs) {
 
         if (bindingResult.hasErrors()) {

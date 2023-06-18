@@ -19,7 +19,7 @@
         <springdoc-openapi-ui.version>2.1.0</springdoc-openapi-ui.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
 
-        <selenide.version>6.14.1</selenide.version>
+        <selenide.version>6.15.0</selenide.version>
 
         <wro4j.version>1.9.0</wro4j.version>
         <spock.version>2.4-M1-groovy-4.0</spock.version>
@@ -34,7 +34,7 @@
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
-        <puppycrawl.checkstyle.version>10.11.0</puppycrawl.checkstyle.version>
+        <puppycrawl.checkstyle.version>10.12.0</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
 
@@ -183,12 +183,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -293,8 +287,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
                     <compilerArgs>
                         <arg>-XDcompilePolicy=simple</arg>
                         <arg>-Xplugin:ErrorProne</arg>
@@ -319,6 +311,7 @@
                             <version>${mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
+                    <release>${java.version}</release>
                 </configuration>
             </plugin>
 
@@ -561,6 +554,30 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openrewrite.maven</groupId>
+                <artifactId>rewrite-maven-plugin</artifactId>
+                <version>5.2.1</version>
+                <configuration>
+                    <activeRecipes>
+                        <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_1</recipe>
+                        <recipe>org.openrewrite.java.migrate.UpgradeToJava17</recipe>
+                    </activeRecipes>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-spring</artifactId>
+                        <version>5.0.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-migrate-java</artifactId>
+                        <version>2.0.1</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
         </plugins>

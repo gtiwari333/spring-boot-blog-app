@@ -48,8 +48,10 @@ public class Authority implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return "Authority{" +
-            "authority='" + name + '\'' +
+        return """
+            Authority{\
+            authority='\
+            """ + name + '\'' +
             '}';
     }
 }
