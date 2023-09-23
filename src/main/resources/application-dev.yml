@@ -15,7 +15,9 @@ spring:
     mvc:
         static-path-pattern: /static/**
     jpa:
-        show-sql: true
+        show-sql: false
+    datasource:
+        url: jdbc:h2:mem:testdb
     h2:
         console:
             enabled: true #Access from http://localhost:8080/h2-console/

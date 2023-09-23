@@ -27,7 +27,7 @@ logging.level:
     org.springframework.security: INFO
     org.springframework.security.web: INFO
     org.hibernate: INFO
-    ROOT: WARN
+    ROOT: INFO
     gt: DEBUG
 
 
