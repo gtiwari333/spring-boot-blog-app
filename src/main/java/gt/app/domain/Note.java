@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "note")
 @Data
+@SuppressWarnings("DirectReturn")
 public class Note extends BaseAuditingEntity {
 
     private String title;

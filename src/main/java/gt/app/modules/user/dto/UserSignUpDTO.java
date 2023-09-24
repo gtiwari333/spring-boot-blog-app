@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@SuppressWarnings("DirectReturn")
 public class UserSignUpDTO extends UserProfileUpdateDTO {
 
     @NotNull

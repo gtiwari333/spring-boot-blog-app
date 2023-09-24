@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Data
+@SuppressWarnings("DirectReturn")
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfileUpdateDTO {

@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name="APP_USER")
 @Data
+@SuppressWarnings("DirectReturn")
 public class LiteUser extends BaseEntity {
 
     @Column(nullable = false)
