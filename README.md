@@ -14,7 +14,7 @@ The default username/passwords are listed on : gt.app.Application.initData, whic
 
 ### Requirements
 
-- JDK 17+
+- JDK 21+
 - Lombok configured on IDE
     - http://ganeshtiwaridotcomdotnp.blogspot.com/2016/03/configuring-lombok-on-intellij.html
     - For eclipse, download the lombok jar, run it, and point to eclipse installation
