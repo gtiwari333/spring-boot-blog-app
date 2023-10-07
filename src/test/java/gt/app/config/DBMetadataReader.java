@@ -24,9 +24,7 @@ public class DBMetadataReader implements InitializingBean {
         //Collection tables
         for (Collection c : metadata.getCollectionBindings()) {
             log.info("Collection table: {}", c.getCollectionTable().getQualifiedTableName());
-            for (Iterator<Column> it = c.getCollectionTable().getColumnIterator();
-                 it.hasNext(); ) {
-                Column property = it.next();
+            for (Column property : c.getCollectionTable().getColumns()) {
                 log.info("   {}   {} ", property.getName(), property.getSqlType());
             }
         }
@@ -40,20 +38,13 @@ public class DBMetadataReader implements InitializingBean {
             KeyValue identifier = pc.getIdentifier();
 
             //PK
-            for (Iterator<Selectable> it = identifier.getColumnIterator();
-                 it.hasNext(); ) {
-                Column column = (Column) it.next();
+            for (Column column : identifier.getColumns()) {
                 log.info("    PK: {}  {}", column.getName(), column.getSqlType());
             }
 
             //property/columns
-            for (Iterator it = pc.getPropertyIterator();
-                 it.hasNext(); ) {
-                Property property = (Property) it.next();
-
-                for (Iterator columnIterator = property.getColumnIterator();
-                     columnIterator.hasNext(); ) {
-                    Column column = (Column) columnIterator.next();
+            for (Property property : pc.getProperties()) {
+                for (Column column : property.getColumns()) {
                     log.info("    {}  {}", column.getName(), column.getSqlType());
                 }
             }
