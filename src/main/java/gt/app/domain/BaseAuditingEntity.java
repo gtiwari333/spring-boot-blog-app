@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
+
 import java.time.Instant;
 
 @MappedSuperclass
@@ -22,12 +23,12 @@ abstract class BaseAuditingEntity extends BaseEntity {
 
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_user_id", updatable = false)
+    @JoinColumn(name = "created_by_user_id", updatable = false, nullable = false)
     @JsonIgnore//ignore completely to avoid StackOverflow exception by User.createdByUser logic, use DTO
     private LiteUser createdByUser;
 
     @CreatedDate
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "created_date", updatable = false, nullable = false)
     private Instant createdDate;
 
     @LastModifiedBy
