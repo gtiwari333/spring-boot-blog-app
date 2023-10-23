@@ -14,7 +14,7 @@ public abstract class BaseSeleniumTest {
     @BeforeAll
     public static void init() {
         Configuration.headless = true;
-        Configuration.browser = Browsers.FIREFOX;
+        Configuration.browser = Browsers.CHROME;
 
 
         Configuration.baseUrl = "http://localhost:8081";

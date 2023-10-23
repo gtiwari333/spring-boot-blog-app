@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.0-M3</version>
+        <version>3.2.0-RC1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -19,7 +19,9 @@
         <springdoc-openapi-ui.version>2.2.0</springdoc-openapi-ui.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
 
-        <selenide.version>6.19.0</selenide.version>
+        <!-- remove selenium version override after selenide 7 is released -->
+        <selenium.version>4.12.1</selenium.version>
+        <selenide.version>6.19.1</selenide.version>
 
         <wro4j.version>1.9.0</wro4j.version>
         <spock.version>2.4-M1-groovy-4.0</spock.version>
