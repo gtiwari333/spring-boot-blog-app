@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.0-RC1</version>
+        <version>3.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -16,10 +16,10 @@
     <properties>
         <java.version>21</java.version>
 
-        <springdoc-openapi-ui.version>2.2.0</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>2.3.0</springdoc-openapi-ui.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
 
-        <selenide.version>7.0.1</selenide.version>
+        <selenide.version>7.0.3</selenide.version>
 
         <wro4j.version>1.9.0</wro4j.version>
         <spock.version>2.4-M1-groovy-4.0</spock.version>
@@ -30,11 +30,11 @@
 
 
         <!-- code quality -->
-        <archunit-junit5.version>1.1.0</archunit-junit5.version>
+        <archunit-junit5.version>1.2.0</archunit-junit5.version>
         <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.3.0</maven.checkstyle.plugin.version>
-        <puppycrawl.checkstyle.version>10.12.4</puppycrawl.checkstyle.version>
+        <puppycrawl.checkstyle.version>10.12.5</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
 
@@ -645,24 +645,24 @@
         </profile>
 
     </profiles>
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>spring-milestones</id>-->
+<!--            <name>Spring Milestones</name>-->
+<!--            <url>https://repo.spring.io/milestone</url>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+<!--    <pluginRepositories>-->
+<!--        <pluginRepository>-->
+<!--            <id>spring-milestones</id>-->
+<!--            <name>Spring Milestones</name>-->
+<!--            <url>https://repo.spring.io/milestone</url>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--            </snapshots>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
 </project>
