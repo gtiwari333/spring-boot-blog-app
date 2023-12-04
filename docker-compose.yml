@@ -1,3 +1,4 @@
+# spring boot initializes this docker-compose (with local profile) if `spring.docker.compose.profiles.active=local` property is set
 version: '3'
 services:
     emailhog:
@@ -7,16 +8,25 @@ services:
             - 1025:1025
         networks:
             - note-app-network
-#    mysql:
-#        image: 'mysql:8.0.30'
-#        environment:
-#            - MYSQL_ROOT_PASSWORD=password
-#            - MYSQL_DATABASE=seedapp
-#        ports:
-#            - 3306:3306
-#        command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
-#        networks:
-#            - note-app-network
+        profiles:
+            - mailHog
+    mysql:
+        image: 'mysql'
+        environment:
+            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_DATABASE=noteappdb
+        ports:
+            - 3306:3306
+        command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+        networks:
+            - note-app-network
+        labels:
+            #org.springframework.boot.ignore: true #use this to omit this from initialization
+            # this will be sent to org.springframework.boot.docker.compose.service.connection.jdbc.JdbcUrlBuilder.build to build jdbc URL
+            org.springframework.boot.jdbc.parameters: useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
+        profiles:
+            - mysql
+
 volumes:
     esdata1:
         driver: local

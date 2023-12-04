@@ -1,0 +1,4 @@
+# 'default' profile gets selected when we do not specify any profile
+spring:
+    profiles:
+        active: dev

@@ -79,5 +79,7 @@ public class UserService {
         return userRepository.save(u);
     }
 
-
+    public boolean existsByUniqueId(String username) {
+        return userRepository.existsByUniqueId(username);
+    }
 }

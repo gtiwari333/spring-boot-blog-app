@@ -18,7 +18,6 @@ spring:
         password:
     main:
         lazy-initialization: false
-
 server:
     port: 8080
 
@@ -39,10 +38,12 @@ wro4j:
     filter-url: /wro4j # this is the default, needs to be used in secConfig and the htmls
 
 
+# custom properties for this project
 app-properties:
     file-storage:
         upload-folder: ${java.io.tmpdir}
 
 
-springdoc:
+spring-doc:
     enable-native-support: true
+    show-actuator: true

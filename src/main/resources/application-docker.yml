@@ -1,8 +1,16 @@
-spring:
-    #Access from http://localhost:8080/h2-console/, db url: jdbc:h2:mem:testdb, username: sa
-    h2:
-        console:
-            enabled: true
+# meant to be used locally with docker-compose
+#NOTE: do not run docker-compose separately when running app with this profile. kill the containers if they are running
 
-server:
-    port: 8080
+# if you run the app with this `docker` spring profile, `all` docker-compose profile will be selected
+# which will initialize MySQL. Also the jdbc url will be automatically created based on the docker-compose.yml file
+spring:
+    docker:
+        compose:
+            profiles:
+                active:
+                    - mysql
+                    - mailHog
+
+spring.jpa.hibernate.ddl-auto: update
+
+

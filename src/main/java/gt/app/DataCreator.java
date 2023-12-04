@@ -2,13 +2,11 @@ package gt.app;
 
 import gt.app.config.AppProperties;
 import gt.app.config.Constants;
-import gt.app.domain.AppUser;
-import gt.app.domain.Authority;
-import gt.app.domain.LiteUser;
-import gt.app.domain.Note;
+import gt.app.domain.*;
 import gt.app.modules.note.NoteService;
 import gt.app.modules.user.AuthorityService;
 import gt.app.modules.user.UserService;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -16,8 +14,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import jakarta.persistence.EntityManager;
 import java.io.File;
+import java.util.stream.Stream;
 
 @Component
 @Profile({Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_TEST, Constants.SPRING_PROFILE_DOCKER})
@@ -38,11 +36,22 @@ public class DataCreator {
         initData();
     }
 
-    public void initData(){
+    public void initData() {
         log.info("Context Refreshed !!, Initializing Data... ");
 
-        new File(appProperties.fileStorage().uploadFolder() + File.separator +"attachments").mkdirs();
+        File uploadFolder = new File(appProperties.fileStorage().uploadFolder());
+        if (!uploadFolder.exists()) {
+            if (uploadFolder.mkdirs() && Stream.of(ReceivedFile.FileGroup.values()).allMatch(f -> new File(uploadFolder.getAbsolutePath()).mkdir())) {
+                log.info("Upload folder created successfully");
+            } else {
+                log.info("Failure to create upload folder");
+            }
+        }
 
+        if (userService.existsByUniqueId("system")) {
+            log.info("DB already initialized !!!");
+            return;
+        }
         Authority adminAuthority = new Authority();
         adminAuthority.setName(Constants.ROLE_ADMIN);
         authorityService.save(adminAuthority);

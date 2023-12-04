@@ -18,6 +18,10 @@ spring:
         show-sql: false
     datasource:
         url: jdbc:h2:mem:testdb
-    h2:
+    h2: #dev uses H2 and 'emailhog' docker container from docker-compose
         console:
             enabled: true #Access from http://localhost:8080/h2-console/
+    docker:
+        compose:
+            profiles:
+                active: mailHog

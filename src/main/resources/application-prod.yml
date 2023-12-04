@@ -1,4 +1,12 @@
-# setup mysql url and credentials
-#spring:
-#    datasource:
-#        url:
+#NOTE: do not run docker-compose separately when running app with this profile. kill the containers if they are running
+
+# if you run the app with this `prod` spring profile, `all` docker-compose profile will be selected
+# which will initialize MySQL. Also the jdbc url will be automatically created based on the docker-compose.yml file
+spring:
+    docker:
+        compose:
+            profiles.active:
+                - mysql
+                - mailHog
+
+#spring.jpa.hibernate.ddl-auto: none #should use liquibase//TODO:

@@ -604,10 +604,7 @@
                 <dependency>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
-                    <!-- GraalVMNativeImage: required at compile time for graalvm native compile -->
-                    <!--target/spring-aot/main/sources/org/springframework/boot/autoconfigure/h2/H2ConsoleAutoConfiguration__BeanDefinitions.java:4:25
-                        java: package org.h2.server.web does not exist-->
-                    <!--<scope>runtime</scope>-->
+                    <scope>runtime</scope>
                 </dependency>
             </dependencies>
             <properties>
@@ -619,8 +616,8 @@
             <id>docker</id>
             <dependencies>
                 <dependency>
-                    <groupId>com.h2database</groupId>
-                    <artifactId>h2</artifactId>
+                    <groupId>com.mysql</groupId>
+                    <artifactId>mysql-connector-j</artifactId>
                     <scope>runtime</scope>
                 </dependency>
             </dependencies>
@@ -633,8 +630,8 @@
             <id>prod</id>
             <dependencies>
                 <dependency>
-                    <groupId>mysql</groupId>
-                    <artifactId>mysql-connector-java</artifactId>
+                    <groupId>com.mysql</groupId>
+                    <artifactId>mysql-connector-j</artifactId>
                     <scope>runtime</scope>
                 </dependency>
             </dependencies>
