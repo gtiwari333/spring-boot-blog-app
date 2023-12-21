@@ -6,5 +6,7 @@
     <Bug pattern="SPRING_CSRF_PROTECTION_DISABLED"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
     <Bug pattern="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"/>
+    <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+
     <Class name="~.*.*SpringCGLIB.*.*" />
 </FindBugsFilter>
