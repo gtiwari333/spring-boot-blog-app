@@ -8,8 +8,7 @@ spring:
         compose:
             profiles:
                 active:
-                    - mysql
-                    - mailHog
+                    - all
 
 spring.jpa.hibernate.ddl-auto: update
 

@@ -10,6 +10,7 @@ services:
             - note-app-network
         profiles:
             - mailHog
+            - all
     mysql:
         image: 'mysql'
         environment:
@@ -25,7 +26,7 @@ services:
             # this will be sent to org.springframework.boot.docker.compose.service.connection.jdbc.JdbcUrlBuilder.build to build jdbc URL
             org.springframework.boot.jdbc.parameters: useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
         profiles:
-            - mysql
+            - all
 
 volumes:
     esdata1:

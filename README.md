@@ -19,6 +19,7 @@ The default username/passwords are listed on : gt.app.Application.initData, whic
     - http://ganeshtiwaridotcomdotnp.blogspot.com/2016/03/configuring-lombok-on-intellij.html
     - For eclipse, download the lombok jar, run it, and point to eclipse installation
 - Maven (optional)
+- Docker
 
 ### How to Run
 
@@ -33,6 +34,27 @@ OR
 - ./mvnw compile spring-boot:run //if you have maven installed in your PC
 
 And open   `http://localhost:8080` on your browser
+
+Optionally, you can start the docker containers yourself using:
+
+`docker-compose --profile mailHog up` to start just the mailHog container(required by default 'dev' profile)
+
+Or
+
+`docker-compose --profile all up` to start both mailHog and mysql (if you want to use 'docker' or 'prod' profile)
+
+`sudo chmod 666 /var/run/docker.sock` to fix following error
+``` 
+org.springframework.boot.docker.compose.core.ProcessExitException: 'docker version --format {{.Client.Version}}' failed with exit code 1.
+
+Stdout:
+20.10.24
+
+
+Stderr:
+Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: 
+    Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/version": dial unix /var/run/docker.sock: connect: permission denied
+```
 
 ## Run Tests
 
@@ -147,3 +169,126 @@ OR
 ## Native Test:
 - Run with `./mvnw test -PnativeTest`
 - Spring Boot 3.0.0: native-test is not working due to spock ( and possibly other dependencies too) 
+
+
+
+# Results after enabling virtual thread
+
+ab -k -c 10 -n 2000 http://localhost:8080/
+
+
+
+Before 
+```
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       1
+Processing:     3    4   0.9      4       9
+Waiting:        3    4   0.8      4       8
+Total:          3    4   0.9      4       9
+
+Percentage of the requests served within a certain time (ms)
+  50%      4
+  66%      4
+  75%      5
+  80%      5
+  90%      5
+  95%      6
+  98%      7
+  99%      8
+ 100%      9 (longest request)
+
+```
+
+
+After
+``` 
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       1
+Processing:     3    4   0.7      4       9
+Waiting:        3    4   0.7      4       8
+Total:          3    5   0.7      4       9
+WARNING: The median and mean for the total time are not within a normal deviation
+        These results are probably not that reliable.
+
+Percentage of the requests served within a certain time (ms)
+  50%      4
+  66%      5
+  75%      5
+  80%      5
+  90%      5
+  95%      6
+  98%      6
+  99%      7
+ 100%      9 (longest request)
+
+```
+
+
+After introducing a delay to simulate slow blocking API and thousand concurrent requests. Its similar for less concurrent request. Virtual thread outperforms when we have too many concurrent requests.
+
+
+ab  -c 1000 -n 15000 http://localhost:8080/
+
+```java
+public class IndexController {
+
+    @GetMapping({"/", ""})
+    public String index(Model model, Pageable pageable) throws InterruptedException {
+        Thread.sleep(1500);
+        ...
+    }
+```
+
+before
+
+``` 
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   19 132.4      0    1030
+Processing:  1529 7341 918.6   7547    7631
+Waiting:     1528 7340 918.7   7547    7630
+Total:       1555 7359 905.6   7548    7817
+
+Percentage of the requests served within a certain time (ms)
+  50%   7548
+  66%   7552
+  75%   7556
+  80%   7558
+  90%   7570
+  95%   7585
+  98%   7611
+  99%   7628
+ 100%   7817 (longest request)
+
+```
+
+after
+
+AMAZING  !!!
+
+
+``` 
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    1   4.7      0      23
+Processing:  1503 1526  60.8   1507    1919
+Waiting:     1503 1526  60.8   1506    1918
+Total:       1503 1528  64.4   1507    1940
+
+Percentage of the requests served within a certain time (ms)
+  50%   1507
+  66%   1510
+  75%   1514
+  80%   1519
+  90%   1559
+  95%   1664
+  98%   1804
+  99%   1867
+ 100%   1940 (longest request)
+
+
+```
+ 

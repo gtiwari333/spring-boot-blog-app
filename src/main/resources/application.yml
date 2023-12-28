@@ -18,6 +18,9 @@ spring:
         password:
     main:
         lazy-initialization: false
+    threads:
+        virtual:
+            enabled: true
 server:
     port: 8080
 
@@ -47,3 +50,4 @@ app-properties:
 spring-doc:
     enable-native-support: true
     show-actuator: true
+
