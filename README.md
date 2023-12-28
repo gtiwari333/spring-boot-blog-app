@@ -19,6 +19,7 @@ The default username/passwords are listed on : gt.app.Application.initData, whic
     - http://ganeshtiwaridotcomdotnp.blogspot.com/2016/03/configuring-lombok-on-intellij.html
     - For eclipse, download the lombok jar, run it, and point to eclipse installation
 - Maven (optional)
+- Docker
 
 ### How to Run
 
@@ -33,6 +34,14 @@ OR
 - ./mvnw compile spring-boot:run //if you have maven installed in your PC
 
 And open   `http://localhost:8080` on your browser
+
+Optionally, you can start the docker containers yourself using:
+
+`docker-compose --profile mailHog up` to start just the mailHog container(required by default 'dev' profile)
+
+Or
+
+`docker-compose --profile all up` to start both mailHog and mysql (if you want to use 'docker' or 'prod' profile)
 
 ## Run Tests
 

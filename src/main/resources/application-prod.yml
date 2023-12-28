@@ -6,7 +6,6 @@ spring:
     docker:
         compose:
             profiles.active:
-                - mysql
-                - mailHog
+                - all
 
 #spring.jpa.hibernate.ddl-auto: none #should use liquibase//TODO:
