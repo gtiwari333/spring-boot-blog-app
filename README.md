@@ -151,11 +151,19 @@ Future: do more stuff
     `./mvnw versions:display-dependency-updates`
     `./mvnw versions:display-plugin-updates`
 
+## Create docker image using buildpack
+
+    ./mvnw spring-boot:build-image
+
+    docker run --rm -p 8080:8080 docker.io/library/note-app:3.2.1
+
+
 ## Generate native executable:
 - Required: GraalVM 22.3+ (for Spring Boot 3) 
 - Install using sdkman 
-    `sdk install java  22.3.r17.ea-nik`
-    `sdk use java  22.3.r17.ea-nik`
+- https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.developing-your-first-application.native-build-tools.prerequisites
+    `sdk install java  22.3.r17-nik`
+    `sdk use java  22.3.r17-nik`
 
 - Create native executable `./mvnw native:compile -Pnative,dev`
 - Run it   `./target/note-app`
@@ -163,7 +171,7 @@ Future: do more stuff
 OR
 
 - Generate docker image with native executable `./mvnw spring-boot:build-image -Pnative,dev`
-- Run it `docker run --rm -p 8080:8080 docker.io/library/note-app:3.0.0-RC1`
+- Run it `docker run --rm -p 8080:8080 docker.io/library/note-app:3.2.1`
 
 
 ## Native Test:

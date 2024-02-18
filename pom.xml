@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.1</version>
+        <version>3.2.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -17,9 +17,9 @@
         <java.version>21</java.version>
 
         <springdoc-openapi-ui.version>2.3.0</springdoc-openapi-ui.version>
-        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <mapstruct.version>1.6.0.Beta1</mapstruct.version>
 
-        <selenide.version>7.0.3</selenide.version>
+        <selenide.version>7.1.0</selenide.version>
 
         <wro4j.version>1.9.0</wro4j.version>
         <spock.version>2.4-M1-groovy-4.0</spock.version>
@@ -34,7 +34,7 @@
         <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.3.0</maven.checkstyle.plugin.version>
-        <puppycrawl.checkstyle.version>10.12.5</puppycrawl.checkstyle.version>
+        <puppycrawl.checkstyle.version>10.13.0</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
 
@@ -561,31 +561,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.openrewrite.maven</groupId>
-                <artifactId>rewrite-maven-plugin</artifactId>
-                <version>5.2.1</version>
-                <configuration>
-                    <activeRecipes>
-                        <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_1</recipe>
-                        <recipe>org.openrewrite.java.migrate.UpgradeToJava17</recipe>
-                    </activeRecipes>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.openrewrite.recipe</groupId>
-                        <artifactId>rewrite-spring</artifactId>
-                        <version>5.0.1</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.openrewrite.recipe</groupId>
-                        <artifactId>rewrite-migrate-java</artifactId>
-                        <version>2.0.1</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
         </plugins>
     </build>
 
