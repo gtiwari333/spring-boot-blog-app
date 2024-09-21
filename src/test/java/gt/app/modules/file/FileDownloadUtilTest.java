@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.util.MimeTypeUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +23,6 @@ class FileDownloadUtilTest {
 
 
         assertThat(resp.getHeader("Content-Disposition")).isEqualTo("attachment; filename=original.txt");
-        //assertThat(resp.getContentLength()).isEqualTo(toDownload.length());
         assertThat(resp.getContentType()).isEqualTo(MimeTypeUtils.APPLICATION_OCTET_STREAM.getType());
 
         assertThat(resp.getContentAsString()).contains("Some Content");
@@ -45,7 +42,6 @@ class FileDownloadUtilTest {
 
 
         assertThat(resp.getHeader("Content-Disposition")).isEqualTo("attachment; filename=original.txt");
-        //assertThat(resp.getContentLength()).isEqualTo(toDownload.length());
         assertThat(resp.getContentType()).isEqualTo("mimetype");
 
         assertThat(resp.getContentAsString()).contains("Some Content");

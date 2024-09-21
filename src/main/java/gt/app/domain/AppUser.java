@@ -3,6 +3,9 @@ package gt.app.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -16,6 +19,9 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "APP_USER")
+@Getter
+@Setter
+@NoArgsConstructor
 public class AppUser extends BaseEntity implements UserDetails {
     @Basic(fetch = FetchType.LAZY)
     @Lob
@@ -96,90 +102,6 @@ public class AppUser extends BaseEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return active;
-    }
-
-    public byte[] getAvatar() {
-        return avatar;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getUniqueId() {
-        return uniqueId;
-    }
-
-    public String getActivationKey() {
-        return activationKey;
-    }
-
-    public String getResetKey() {
-        return resetKey;
-    }
-
-    public void setAvatar(byte[] avatar) {
-        this.avatar = avatar;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public void setAccountNonExpired(Boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    public void setAccountNonLocked(Boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
-    }
-
-    public void setActivationKey(String activationKey) {
-        this.activationKey = activationKey;
-    }
-
-    public void setResetKey(String resetKey) {
-        this.resetKey = resetKey;
-    }
-
-    public AppUser() {
-
     }
 
     public AppUser(String uniqueId, String firstName, String lastName, String email) {

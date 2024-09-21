@@ -21,16 +21,8 @@ public class NoteController {
 
     final NoteService noteService;
 
-    @GetMapping("/add")
-    public String startAddNote(Model model) {
-        model.addAttribute("msg", "Add a new note");
-        model.addAttribute("note", new Note());
-        return "note/add-note";
-    }
-
     @PostMapping("/add")
     public String finishAddNote(NoteCreateDto noteDto, RedirectAttributes redirectAttrs) {
-
         //TODO:validate and return to GET:/add on errors
 
         Note note = noteService.createNote(noteDto);
@@ -43,7 +35,6 @@ public class NoteController {
     @GetMapping("/delete/{id}")
     @PreAuthorize("@permEvaluator.hasAccess(#id, 'Note' )")
     public String deleteNote(@PathVariable Long id, RedirectAttributes redirectAttrs) {
-
         noteService.delete(id);
 
         redirectAttrs.addFlashAttribute("success", "Note with id " + id + " is deleted");
@@ -63,10 +54,7 @@ public class NoteController {
     @PreAuthorize("@permEvaluator.hasAccess(#noteDto.id, 'Note' )")
     public String finishEditNote(Model model, NoteEditDto noteDto, RedirectAttributes redirectAttrs) {
         model.addAttribute("msg", "Add a new note");
-
-
         //TODO:validate and return to GET:/edit/{id} on errors
-
 
         noteService.update(noteDto);
 
