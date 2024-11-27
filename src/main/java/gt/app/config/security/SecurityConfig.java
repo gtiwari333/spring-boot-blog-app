@@ -35,6 +35,8 @@ public class SecurityConfig {
         "/swagger-ui/**",
         "/swagger-ui.html/**",
         "/signup/**",
+        "/graphiql/**",
+        "/graphql/**",
         "/" //landing page is allowed for all
     };
 

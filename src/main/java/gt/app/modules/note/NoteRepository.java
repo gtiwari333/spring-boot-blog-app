@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.graphql.data.GraphQlRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@GraphQlRepository
 interface NoteRepository extends JpaRepository<Note, Long> {
 
     @EntityGraph(attributePaths = {"createdByUser"})

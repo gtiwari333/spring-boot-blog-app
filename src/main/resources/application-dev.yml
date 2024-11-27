@@ -15,7 +15,7 @@ spring:
     mvc:
         static-path-pattern: /static/**
     jpa:
-        show-sql: false
+        show-sql: true
     datasource:
         url: jdbc:h2:mem:testdb
     h2: #dev uses H2 and 'emailhog' docker container from docker-compose
@@ -25,3 +25,6 @@ spring:
         compose:
             profiles:
                 active: mailHog
+    graphql:
+        graphiql:
+            enabled: true
