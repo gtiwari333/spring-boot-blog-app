@@ -1,0 +1,43 @@
+type Note {
+    id: ID!
+    title: String!
+    createdByUser: User!
+    content: String!
+}
+
+type User {
+    id: ID!
+    uniqueId: String!
+}
+
+
+input NoteInput {
+    title: String!
+    author: String
+}
+
+type Query {
+    notes(note: NoteInput): [Note]!
+    noteById(id: ID!): Note
+}
+
+#Test1:
+#query MyQuery {
+#  noteById(id: "1") {
+#    id
+#    title
+#    content
+#    createdByUser {
+#      id
+#      uniqueId
+#    }
+#  }
+#}
+
+#Test2
+#query Q2 {
+#  notes(note: {title: "Admin's First Note"}) {
+#    id
+#    content
+#  }
+#}
