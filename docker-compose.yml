@@ -18,7 +18,6 @@ services:
             - "MYSQL_DATABASE=noteappdb"
         ports:
             - 3306:3306
-        command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
         networks:
             - note-app-network
         labels:
@@ -28,14 +27,12 @@ services:
         profiles:
             - all
 
-volumes:
-    esdata1:
-        driver: local
 networks:
     note-app-network:
         driver: bridge
 
 
 #run using
-#docker-compose -f docker-compose.yml up
-# or just docker-compose up
+#docker-compose --profile all up OR
+#docker-compose --profile mailHog up
+

@@ -6,11 +6,9 @@ import gt.app.domain.Note;
 import gt.app.modules.note.NoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service("appSecurity")
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class UserAuthorityService {
 
     private final NoteService noteService;

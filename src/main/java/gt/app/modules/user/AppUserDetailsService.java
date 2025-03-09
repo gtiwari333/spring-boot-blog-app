@@ -5,7 +5,6 @@ import gt.app.domain.AppUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -24,7 +23,6 @@ public class AppUserDetailsService implements org.springframework.security.core.
             .orElseThrow(() -> new UsernameNotFoundException(" User with login:" + email + " was not found in the " + " database "));
     }
 
-    @Transactional(readOnly = true)
     public AppUserDetails getCustomUserDetails(AppUser user) {
 
         return new AppUserDetails(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getAuthorities(),

@@ -15,6 +15,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.stream.Stream;
 
 @Component
@@ -39,9 +40,9 @@ public class DataCreator {
     public void initData() {
         log.info("Context Refreshed !!, Initializing Data... ");
 
-        File uploadFolder = new File(appProperties.fileStorage().uploadFolder());
+        File uploadFolder = Path.of(appProperties.fileStorage().uploadFolder()).toFile();
         if (!uploadFolder.exists()) {
-            if (uploadFolder.mkdirs() && Stream.of(ReceivedFile.FileGroup.values()).allMatch(f -> new File(uploadFolder.getAbsolutePath()).mkdir())) {
+            if (uploadFolder.mkdirs() && Stream.of(ReceivedFile.FileGroup.values()).allMatch(f ->   Path.of(uploadFolder.getAbsolutePath()).toFile().mkdir())) {
                 log.info("Upload folder created successfully");
             } else {
                 log.info("Failure to create upload folder");
