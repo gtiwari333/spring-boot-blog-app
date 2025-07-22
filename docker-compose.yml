@@ -1,5 +1,4 @@
 # spring boot initializes this docker-compose (with local profile) if `spring.docker.compose.profiles.active=local` property is set
-version: '3'
 services:
     emailhog:
         image: 'mailhog/mailhog'
