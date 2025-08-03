@@ -3,7 +3,9 @@ package gt.app.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
 @EqualsAndHashCode(callSuper = true)
