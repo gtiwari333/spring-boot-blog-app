@@ -33,11 +33,11 @@
 
 
         <!-- code quality -->
-        <archunit-junit5.version>1.4.0</archunit-junit5.version>
+        <archunit-junit5.version>1.4.1</archunit-junit5.version>
         <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
-        <puppycrawl.checkstyle.version>10.21.4</puppycrawl.checkstyle.version>
+        <puppycrawl.checkstyle.version>12.0.0</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
 
 
@@ -55,15 +55,15 @@
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
-        <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
-        <google.error-prone.compiler.version>2.19.1</google.error-prone.compiler.version>
+        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
+        <google.error-prone.compiler.version>2.42.0</google.error-prone.compiler.version>
         <groovy.maven.plugin.version>4.2.1</groovy.maven.plugin.version>
-        <modernizer-maven-plugin.version>3.1.0</modernizer-maven-plugin.version>
-        <spotbugs.plugin.version>4.9.2.0</spotbugs.plugin.version>
-        <findsecbugs-plugin.version>1.12.0</findsecbugs-plugin.version>
-        <sb-contrib-plugin.version>7.6.0</sb-contrib-plugin.version>
-        <owasp-dependency-check-plugin.version>12.1.0</owasp-dependency-check-plugin.version>
+        <modernizer-maven-plugin.version>3.2.0</modernizer-maven-plugin.version>
+        <spotbugs.plugin.version>4.9.6.0</spotbugs.plugin.version>
+        <findsecbugs-plugin.version>1.14.0</findsecbugs-plugin.version>
+        <sb-contrib-plugin.version>7.6.15</sb-contrib-plugin.version>
+        <owasp-dependency-check-plugin.version>12.1.6</owasp-dependency-check-plugin.version>
     </properties>
 
 
@@ -83,21 +83,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.tomcat.embed</groupId>
-                    <artifactId>tomcat-embed-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.tomcat.embed</groupId>
-                    <artifactId>tomcat-embed-websocket</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.experimental</groupId>
-            <artifactId>tomcat-embed-programmatic</artifactId>
-            <version>${tomcat.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -327,6 +312,7 @@
                     <compilerArgs>
                         <arg>-XDcompilePolicy=simple</arg>
                         <arg>-Xplugin:ErrorProne</arg>
+                        <arg>--should-stop=ifError=FLOW</arg>
                         <!-- this will fix mapstruct -->
                         <arg>-Amapstruct.defaultComponentModel=spring</arg>
                         <arg>-Amapstruct.defaultInjectionStrategy=constructor</arg>
