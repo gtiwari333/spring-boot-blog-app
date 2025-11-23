@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.0-M1</version>
+        <version>4.0.0</version>
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
@@ -18,13 +18,14 @@
         <build.profile>dev</build.profile>
         <java.version>21</java.version>
 
-        <springdoc-openapi-ui.version>2.8.9</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>3.0.0</springdoc-openapi-ui.version>
         <mapstruct.version>1.6.3</mapstruct.version>
 
-        <selenide.version>7.9.4</selenide.version>
+        <selenide.version>7.12.0</selenide.version>
 
         <wro4j.version>2.1.1</wro4j.version>
-        <spock.version>2.4-M5-groovy-4.0</spock.version>
+        <spock.version>2.4-M6-groovy-4.0</spock.version>
+        <groovy.version>4.0.29</groovy.version>
         <!-- client deps -->
         <webjar-jquery.version>3.5.1</webjar-jquery.version>
         <webjar-bootstrap.version>4.5.0</webjar-bootstrap.version>
@@ -57,7 +58,7 @@
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
         <google.error-prone.compiler.version>2.19.1</google.error-prone.compiler.version>
-        <groovy.maven.plugin.version>4.1.1</groovy.maven.plugin.version>
+        <groovy.maven.plugin.version>4.2.1</groovy.maven.plugin.version>
         <modernizer-maven-plugin.version>3.1.0</modernizer-maven-plugin.version>
         <spotbugs.plugin.version>4.9.2.0</spotbugs.plugin.version>
         <findsecbugs-plugin.version>1.12.0</findsecbugs-plugin.version>
@@ -81,7 +82,7 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.tomcat.embed</groupId>
@@ -194,6 +195,11 @@
         <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -264,18 +270,18 @@
             <plugin>
                 <groupId>org.openrewrite.maven</groupId>
                 <artifactId>rewrite-maven-plugin</artifactId>
-                <version>6.15.0</version>
+                <version>6.24.0</version>
                 <configuration>
                     <exportDatatables>true</exportDatatables>
                     <activeRecipes>
-                        <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_4</recipe>
+                        <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_5</recipe>
                     </activeRecipes>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-spring</artifactId>
-                        <version>6.11.1</version>
+                        <version>6.19.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -647,24 +653,24 @@
         </profile>
 
     </profiles>
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>spring-milestones</id>-->
+<!--            <name>Spring Milestones</name>-->
+<!--            <url>https://repo.spring.io/milestone</url>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+<!--    <pluginRepositories>-->
+<!--        <pluginRepository>-->
+<!--            <id>spring-milestones</id>-->
+<!--            <name>Spring Milestones</name>-->
+<!--            <url>https://repo.spring.io/milestone</url>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--            </snapshots>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
 </project>
