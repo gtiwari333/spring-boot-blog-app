@@ -5,10 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.*;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManager;
-import java.util.Iterator;
 
 //@Component disabled since class is not actually used and was added for my blog
 @RequiredArgsConstructor

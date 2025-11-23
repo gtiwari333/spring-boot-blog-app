@@ -1,7 +1,7 @@
 package gt.app.config;
 
 import org.hibernate.jpa.boot.spi.IntegratorProvider;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
+import org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;

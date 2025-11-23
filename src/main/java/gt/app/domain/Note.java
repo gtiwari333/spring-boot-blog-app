@@ -1,7 +1,7 @@
 package gt.app.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -10,10 +10,10 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "note")
-@Data
+@Getter
+@Setter
 public class Note extends BaseAuditingEntity {
 
     private String title;

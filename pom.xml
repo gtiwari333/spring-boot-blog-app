@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.6</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>4.0.0</version>
+        <relativePath/>
+        <!-- lookup parent from repository -->
     </parent>
 
     <artifactId>note-app</artifactId>
     <groupId>gt.app</groupId>
 
     <properties>
+        <build.profile>dev</build.profile>
         <java.version>21</java.version>
 
-        <springdoc-openapi-ui.version>2.8.13</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>3.0.0</springdoc-openapi-ui.version>
         <mapstruct.version>1.6.3</mapstruct.version>
 
-        <selenide.version>7.11.1</selenide.version>
+        <selenide.version>7.12.0</selenide.version>
 
-        <wro4j.version>1.9.0</wro4j.version>
+        <wro4j.version>2.1.1</wro4j.version>
         <spock.version>2.4-M6-groovy-4.0</spock.version>
+        <groovy.version>4.0.29</groovy.version>
         <!-- client deps -->
         <webjar-jquery.version>3.5.1</webjar-jquery.version>
         <webjar-bootstrap.version>4.5.0</webjar-bootstrap.version>
@@ -79,7 +82,7 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -121,6 +124,11 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok-mapstruct-binding</artifactId>
+            <version>0.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -172,6 +180,11 @@
         <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -213,7 +226,8 @@
             <scope>test</scope>
         </dependency>
         <!-- Optional dependencies for using Spock -->
-        <dependency> <!-- enables mocking of classes without default constructor (together with ByteBuddy or CGLIB) -->
+        <dependency>
+            <!-- enables mocking of classes without default constructor (together with ByteBuddy or CGLIB) -->
             <groupId>org.objenesis</groupId>
             <artifactId>objenesis</artifactId>
             <version>3.4</version>
@@ -238,7 +252,24 @@
         <finalName>${build.profile}-${project.version}-app</finalName>
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
-
+            <plugin>
+                <groupId>org.openrewrite.maven</groupId>
+                <artifactId>rewrite-maven-plugin</artifactId>
+                <version>6.24.0</version>
+                <configuration>
+                    <exportDatatables>true</exportDatatables>
+                    <activeRecipes>
+                        <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_5</recipe>
+                    </activeRecipes>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-spring</artifactId>
+                        <version>6.19.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -255,24 +286,24 @@
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.hibernate.orm.tooling</groupId>
-                <artifactId>hibernate-enhance-maven-plugin</artifactId>
-                <version>${hibernate.version}</version>
-                <executions>
-                    <execution>
-                        <id>enhance</id>
-                        <goals>
-                            <goal>enhance</goal>
-                        </goals>
-                        <configuration>
-                            <enableLazyInitialization>true</enableLazyInitialization>
-                            <enableDirtyTracking>true</enableDirtyTracking>
-                            <enableAssociationManagement>true</enableAssociationManagement>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.hibernate.orm.tooling</groupId>-->
+<!--                <artifactId>hibernate-enhance-maven-plugin</artifactId>-->
+<!--                <version>${hibernate.version}</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>enhance</id>-->
+<!--                        <goals>-->
+<!--                            <goal>enhance</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <enableLazyInitialization>true</enableLazyInitialization>-->
+<!--                            <enableDirtyTracking>true</enableDirtyTracking>-->
+<!--                            <enableAssociationManagement>true</enableAssociationManagement>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -301,6 +332,11 @@
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
                         </path>
                     </annotationProcessorPaths>
                     <release>${java.version}</release>
