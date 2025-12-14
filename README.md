@@ -2,6 +2,8 @@
 
 #### More complex version is here: https://github.com/gtiwari333/spring-boot-web-application-seed
 
+<a href="https://www.buymeacoffee.com/gtiwari333" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/arial-blue.png" alt="Buy Me A Coffee" style="height: 42px !important;width: 180px !important;" height="42px" width="180px"></a>
+
 ### Intro
 
 This is a simple micro blogging application where you can post a note/blog with attachments and other can view it.
