@@ -29,6 +29,7 @@ public class SecurityConfig {
         "/swagger-ui.html/**",
         "/signup/**",
         "/h2-console/**",
+        "/debug/**",
         "/" //landing page is allowed for all
     };
 
