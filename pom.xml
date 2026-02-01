@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.1</version>
+        <version>3.5.10</version>
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
@@ -18,7 +18,7 @@
         <build.profile>dev</build.profile>
         <java.version>21</java.version>
 
-        <springdoc-openapi-ui.version>3.0.0</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>2.8.15</springdoc-openapi-ui.version>
         <mapstruct.version>1.6.3</mapstruct.version>
 
         <selenide.version>7.12.0</selenide.version>
@@ -35,7 +35,7 @@
         <!-- code quality -->
         <archunit-junit5.version>1.4.1</archunit-junit5.version>
         <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
         <puppycrawl.checkstyle.version>12.0.0</puppycrawl.checkstyle.version>
         <puppycrawl.checkstyle.config.file>src/main/resources/checkstyle.xml</puppycrawl.checkstyle.config.file>
@@ -60,7 +60,7 @@
         <google.error-prone.compiler.version>2.42.0</google.error-prone.compiler.version>
         <groovy.maven.plugin.version>4.2.1</groovy.maven.plugin.version>
         <modernizer-maven-plugin.version>3.2.0</modernizer-maven-plugin.version>
-        <spotbugs.plugin.version>4.9.6.0</spotbugs.plugin.version>
+        <spotbugs.plugin.version>4.9.8.2</spotbugs.plugin.version>
         <findsecbugs-plugin.version>1.14.0</findsecbugs-plugin.version>
         <sb-contrib-plugin.version>7.6.15</sb-contrib-plugin.version>
         <owasp-dependency-check-plugin.version>12.1.6</owasp-dependency-check-plugin.version>
@@ -82,7 +82,7 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -180,14 +180,14 @@
         <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-thymeleaf-test</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.tngtech.archunit</groupId>
             <artifactId>archunit-junit5-engine</artifactId>
@@ -195,8 +195,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security-test</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -212,10 +212,10 @@
             <artifactId>h2</artifactId>
             <!-- dev profile uses h2 -->
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-h2console</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-h2console</artifactId>-->
+<!--        </dependency>-->
 
         <!-- spock deps -->
         <dependency>
@@ -255,6 +255,26 @@
         <finalName>${build.profile}-${project.version}-app</finalName>
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
+
+            <plugin>
+                <groupId>org.openrewrite.maven</groupId>
+                <artifactId>rewrite-maven-plugin</artifactId>
+                <version>6.28.1</version> <!-- Check for the latest version -->
+                <configuration>
+                    <activeRecipes>
+                        <recipe>org.openrewrite.quarkus.spring.SpringBootToQuarkus</recipe>
+                    </activeRecipes>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-spring-to-quarkus</artifactId>
+                        <version>0.4.3</version> <!-- Check for the latest version -->
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+
             <plugin>
                 <groupId>org.openrewrite.maven</groupId>
                 <artifactId>rewrite-maven-plugin</artifactId>
@@ -285,22 +305,22 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.hibernate.orm</groupId>
-                <artifactId>hibernate-maven-plugin</artifactId>
-                <version>${hibernate.version}</version>
-                <executions>
-                    <execution>
-                        <id>enhance</id>
-                        <goals>
-                            <goal>enhance</goal>
-                        </goals>
-                        <configuration>
-                            <enableAssociationManagement>true</enableAssociationManagement>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.hibernate.orm</groupId>-->
+<!--                <artifactId>hibernate-maven-plugin</artifactId>-->
+<!--                <version>${hibernate.version}</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>enhance</id>-->
+<!--                        <goals>-->
+<!--                            <goal>enhance</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <enableAssociationManagement>true</enableAssociationManagement>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
