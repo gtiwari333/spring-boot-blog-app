@@ -1,39 +1,36 @@
 package gt.app.config.security;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 
 /**
  * Utility class for Spring Security.
  */
+
+import io.quarkus.arc.Arc;
+import io.quarkus.security.identity.SecurityIdentity;
+
 public final class SecurityUtils {
 
     private SecurityUtils() {
     }
 
     /**
-     * @return PK ( ID ) of current id
+     * @return PK ( ID ) of current user
      */
     public static Long getCurrentUserId() {
+        AppUserDetails details = getCurrentUserDetails();
+        return (details != null) ? details.getId() : null;
+    }
 
-        User user = getCurrentUserDetails();
-        if (user instanceof AppUserDetails appUserDetails) {
-            return appUserDetails.getId();
+    public static AppUserDetails getCurrentUserDetails() {
+        // Programmatically lookup the SecurityIdentity bean from the CDI container
+        SecurityIdentity identity = Arc.container().instance(SecurityIdentity.class).get();
+
+        if (identity != null && !identity.isAnonymous()) {
+            var principal = identity.getPrincipal();
+            if (principal instanceof AppUserDetails details) {
+                return details;
+            }
         }
         return null;
-    }
-
-    public static User getCurrentUserDetails() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        return getCurrentUserDetails(authentication);
-    }
-
-    public static User getCurrentUserDetails(Authentication authentication) {
-        User userDetails = null;
-        if (authentication != null && authentication.getPrincipal() instanceof User) {
-            userDetails = (User) authentication.getPrincipal();
-        }
-        return userDetails;
     }
 }

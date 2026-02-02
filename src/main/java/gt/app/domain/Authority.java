@@ -1,7 +1,7 @@
 package gt.app.domain;
 
+import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,16 +9,12 @@ import jakarta.persistence.Id;
 
 @Entity
 @Setter
-public class Authority implements GrantedAuthority {
+@Getter
+public class Authority  {
 
     @Id
     @Column(length = 16)
     private String name;
-
-    @Override
-    public String getAuthority() {
-        return name;
-    }
 
     public Authority() {
     }

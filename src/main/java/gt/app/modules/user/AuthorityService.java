@@ -1,20 +1,20 @@
 package gt.app.modules.user;
 
 import gt.app.domain.Authority;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 
-@Service
+@ApplicationScoped
 @RequiredArgsConstructor
 public class AuthorityService {
 
-    final AuthorityRepository authorityRepository;
+    final  AuthorityRepository authorityRepository;
 
     public void save(Authority auth) {
-        authorityRepository.save(auth);
+        authorityRepository.persist(auth);
     }
 
     public Set<Authority> findByNameIn(String... roles) {

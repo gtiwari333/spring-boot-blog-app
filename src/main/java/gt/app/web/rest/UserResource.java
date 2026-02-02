@@ -1,19 +1,18 @@
 package gt.app.web.rest;
 
+import gt.app.config.security.AppUserDetails;
 import gt.app.config.security.SecurityUtils;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/api")
+@Path("/api")
 @RequiredArgsConstructor
 public class UserResource {
 
-    @GetMapping("/account")
-    public User getAccount() {
+    @GET
+    @Path("/account")
+    public AppUserDetails getAccount() {
         return SecurityUtils.getCurrentUserDetails();
     }
 }

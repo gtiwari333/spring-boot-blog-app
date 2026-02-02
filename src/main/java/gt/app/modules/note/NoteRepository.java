@@ -1,26 +1,43 @@
 package gt.app.modules.note;
 
 import gt.app.domain.Note;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
+import jakarta.enterprise.context.ApplicationScoped;
+import java.util.List;
 import java.util.Optional;
 
-interface NoteRepository extends JpaRepository<Note, Long> {
+@ApplicationScoped
+public class NoteRepository implements PanacheRepository<Note> {
 
-    @EntityGraph(attributePaths = {"createdByUser", "attachedFiles"})
-    Optional<Note> findById(Long id);
+    // Equivalent to @EntityGraph: Use HQL 'fetch' to join associations
+    public Optional<Note> findByIdWithDetails(Long id) {
+        return find("from Note n left join fetch n.createdByUser left join fetch n.attachedFiles where n.id = ?1", id)
+            .singleResultOptional();
+    }
 
-    @EntityGraph(attributePaths = {"createdByUser", "attachedFiles"})
-    Page<Note> findAll(Pageable pageable);
+    // findAll with pagination and fetching
+    public List<Note> findAllWithDetails(Page page) {
+        return find("from Note n left join fetch n.createdByUser left join fetch n.attachedFiles")
+            .page(page)
+            .list();
+    }
 
-    @EntityGraph(attributePaths = {"createdByUser", "attachedFiles"})
-    Page<Note> findByCreatedByUserIdOrderByCreatedDateDesc(Pageable pageable, Long userId);
+    // findByCreatedByUserIdOrderByCreatedDateDesc equivalent
+    public List<Note> findByUserWithDetails(Long userId, Page page) {
+        return find("from Note n left join fetch n.createdByUser left join fetch n.attachedFiles " +
+                "where n.createdByUser.id = ?1",
+            Sort.by("createdDate").descending(),
+            userId)
+            .page(page)
+            .list();
+    }
 
-    @Query("select n.createdByUser.id from Note n where n.id=:id ")
-    Long findCreatedByUserIdById(@Param("id") Long id);
+    // Custom projection query
+    public Long findCreatedByUserIdById(Long id) {
+        return find("select n.createdByUser.id from Note n where n.id = ?1", id)
+            .project(Long.class)
+            .singleResult();
+    }
 }

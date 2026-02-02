@@ -1,8 +1,8 @@
 package gt.app.modules.note.dto;
 
-import org.springframework.web.multipart.MultipartFile;
+import io.vertx.ext.web.FileUpload;
 
 import jakarta.validation.constraints.NotNull;
 
-public record NoteCreateDto(@NotNull MultipartFile[] files, String title, String content) {
+public record NoteCreateDto(@NotNull FileUpload[] files, String title, String content) {
 }

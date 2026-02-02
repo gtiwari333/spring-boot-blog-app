@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>note-app</artifactId>
@@ -14,7 +14,6 @@
         <springdoc-openapi-ui.version>2.8.15</springdoc-openapi-ui.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok.version>1.18.42</lombok.version>
-
         <selenide.version>7.12.0</selenide.version>
 
         <wro4j.version>2.1.1</wro4j.version>
@@ -75,12 +74,11 @@
             <artifactId>quarkus-hibernate-validator</artifactId>
         </dependency>
 
-
-        <!-- security-->
-<!--        <dependency>-->
-<!--            <groupId>org.thymeleaf.extras</groupId>-->
-<!--            <artifactId>thymeleaf-extras-springsecurity6</artifactId>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; security&ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.thymeleaf.extras</groupId>-->
+        <!--            <artifactId>thymeleaf-extras-springsecurity6</artifactId>-->
+        <!--        </dependency>-->
 
         <!-- processors/code generators -->
         <dependency>
@@ -107,7 +105,14 @@
             <scope>provided</scope>
         </dependency>
 
+
         <!-- end processor/code generators -->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.springdoc</groupId>-->
+        <!--            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>-->
+        <!--            <version>${springdoc-openapi-ui.version}</version>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.webjars</groupId>
@@ -130,11 +135,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-thymeleaf-test</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-thymeleaf-test</artifactId>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.tngtech.archunit</groupId>
             <artifactId>archunit-junit5-engine</artifactId>
@@ -146,11 +151,6 @@
             <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.security</groupId>-->
-<!--            <artifactId>spring-security-test</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>com.codeborne</groupId>
@@ -182,10 +182,6 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-elytron-security-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-health</artifactId>
         </dependency>
         <dependency>
@@ -204,10 +200,10 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-spring-web</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-h2console</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-spring-data-jpa</artifactId>
+        </dependency>
 
         <!-- spock deps -->
         <dependency>
@@ -255,7 +251,6 @@
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
 
-
             <plugin>
                 <groupId>org.openrewrite.maven</groupId>
                 <artifactId>rewrite-maven-plugin</artifactId>
@@ -277,22 +272,22 @@
                     </dependency>
                 </dependencies>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.hibernate.orm</groupId>-->
-<!--                <artifactId>hibernate-maven-plugin</artifactId>-->
-<!--                <version>${hibernate.version}</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>enhance</id>-->
-<!--                        <goals>-->
-<!--                            <goal>enhance</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <enableAssociationManagement>true</enableAssociationManagement>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.hibernate.orm</groupId>-->
+            <!--                <artifactId>hibernate-maven-plugin</artifactId>-->
+            <!--                <version>${hibernate.version}</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>enhance</id>-->
+            <!--                        <goals>-->
+            <!--                            <goal>enhance</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <enableAssociationManagement>true</enableAssociationManagement>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
@@ -430,98 +425,98 @@
                 </executions>
             </plugin>
 
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-checkstyle-plugin</artifactId>-->
-<!--                <version>${maven.checkstyle.plugin.version}</version>-->
-<!--                <configuration>-->
-<!--                    <configLocation>${puppycrawl.checkstyle.config.file}</configLocation>-->
-<!--                </configuration>-->
-<!--                <dependencies>-->
-<!--                    <dependency>-->
-<!--                        <groupId>com.puppycrawl.tools</groupId>-->
-<!--                        <artifactId>checkstyle</artifactId>-->
-<!--                        <version>${puppycrawl.checkstyle.version}</version>-->
-<!--                    </dependency>-->
-<!--                </dependencies>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>verify-checkstyle</id>-->
-<!--                        <phase>test-compile</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven.checkstyle.plugin.version}</version>
+                <configuration>
+                    <configLocation>${puppycrawl.checkstyle.config.file}</configLocation>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${puppycrawl.checkstyle.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>verify-checkstyle</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-<!--            <plugin>-->
-<!--                <groupId>org.gaul</groupId>-->
-<!--                <artifactId>modernizer-maven-plugin</artifactId>-->
-<!--                <version>${modernizer-maven-plugin.version}</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>modernizer</id>-->
-<!--                        <phase>test-compile</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>modernizer</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <configuration>-->
-<!--                    <javaVersion>${java.version}</javaVersion>-->
-<!--                    <ignoreGeneratedClasses>true</ignoreGeneratedClasses>-->
-<!--                    <ignoreClassNamePatterns>-->
-<!--                        <classNamePattern>.*SpringCGLIB.*</classNamePattern>-->
-<!--                    </ignoreClassNamePatterns>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.gaul</groupId>
+                <artifactId>modernizer-maven-plugin</artifactId>
+                <version>${modernizer-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>modernizer</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>modernizer</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <javaVersion>${java.version}</javaVersion>
+                    <ignoreGeneratedClasses>true</ignoreGeneratedClasses>
+                    <ignoreClassNamePatterns>
+                        <classNamePattern>.*SpringCGLIB.*</classNamePattern>
+                    </ignoreClassNamePatterns>
+                </configuration>
+            </plugin>
 
-<!--            <plugin>-->
-<!--                <groupId>com.github.spotbugs</groupId>-->
-<!--                <artifactId>spotbugs-maven-plugin</artifactId>-->
-<!--                <version>${spotbugs.plugin.version}</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>verify-spotbugs</id>-->
-<!--                        <phase>test-compile</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <configuration>-->
-<!--                    <effort>Max</effort>-->
-<!--                    <threshold>High</threshold>-->
-<!--                    <failOnError>true</failOnError>-->
-<!--                    <excludeFilterFile>spot-bugs.filter-exclude.xml</excludeFilterFile>-->
-<!--                    <plugins>-->
-<!--                        <plugin>-->
-<!--                            <groupId>com.h3xstream.findsecbugs</groupId>-->
-<!--                            <artifactId>findsecbugs-plugin</artifactId>-->
-<!--                            <version>${findsecbugs-plugin.version}</version>-->
-<!--                        </plugin>-->
-<!--                        <plugin>-->
-<!--                            <groupId>com.mebigfatguy.sb-contrib</groupId>-->
-<!--                            <artifactId>sb-contrib</artifactId>-->
-<!--                            <version>${sb-contrib-plugin.version}</version>-->
-<!--                        </plugin>-->
-<!--                    </plugins>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>verify-spotbugs</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>High</threshold>
+                    <failOnError>true</failOnError>
+                    <excludeFilterFile>spot-bugs.filter-exclude.xml</excludeFilterFile>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.h3xstream.findsecbugs</groupId>
+                            <artifactId>findsecbugs-plugin</artifactId>
+                            <version>${findsecbugs-plugin.version}</version>
+                        </plugin>
+                        <plugin>
+                            <groupId>com.mebigfatguy.sb-contrib</groupId>
+                            <artifactId>sb-contrib</artifactId>
+                            <version>${sb-contrib-plugin.version}</version>
+                        </plugin>
+                    </plugins>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <version>${owasp-dependency-check-plugin.version}</version>
                 <!-- should be manually run, uncomment it needs to be a part of build pipeline-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
+                <!--                <executions>-->
+                <!--                    <execution>-->
+                <!--                        <goals>-->
+                <!--                            <goal>check</goal>-->
+                <!--                        </goals>-->
+                <!--                    </execution>-->
+                <!--                </executions>-->
             </plugin>
 
             <plugin>

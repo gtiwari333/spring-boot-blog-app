@@ -2,52 +2,53 @@ package gt.app.modules.file;
 
 import gt.app.config.AppProperties;
 import gt.app.domain.ReceivedFile;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
+import io.vertx.ext.web.FileUpload;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
+
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-@Service
+@ApplicationScoped
 public class FileService {
 
     private final Path rootLocation;
 
+    @Inject
     public FileService(AppProperties appProperties) {
         this.rootLocation = Path.of(appProperties.fileStorage().uploadFolder());
     }
 
-    public String store(ReceivedFile.FileGroup fileGroup, @NotNull MultipartFile file) {
-
+    public String store(ReceivedFile.FileGroup fileGroup, @NotNull FileUpload file) {
         try {
-
-            String fileIdentifier = getCleanedFileName(file.getOriginalFilename());
-
+            String fileIdentifier = getCleanedFileName(file.uploadedFileName());
             Path targetPath = getStoredFilePath(fileGroup, fileIdentifier);
 
-            file.transferTo(targetPath);
+            // Ensure directories exist
+            Files.createDirectories(targetPath.getParent());
+
+            // FileUpload stores data in a temp file; move it to the target
+            Files.move(Path.of(fileIdentifier), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
             return fileIdentifier;
-
         } catch (IOException e) {
-            throw new StorageException("Failed to store file " + file, e);
+            throw new RuntimeException("Failed to store file " + file.fileName(), e);
         }
     }
 
-    public Resource loadAsResource(ReceivedFile.FileGroup fileGroup, String fileIdentifier) {
+    public java.io.File loadAsFile(ReceivedFile.FileGroup fileGroup, String fileIdentifier) {
         try {
             Path targetPath = getStoredFilePath(fileGroup, fileIdentifier);
+            java.io.File file = targetPath.toFile();
 
-            Resource resource = new UrlResource(targetPath.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
+            if (file.exists() && file.canRead()) {
+                return file;
             } else {
                 throw new IOException("Could not read file: " + targetPath);
-
             }
         } catch (IOException e) {
             throw new RetrievalException("Could not read file: " + fileIdentifier + " , group " + fileGroup, e);

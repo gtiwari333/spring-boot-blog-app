@@ -1,39 +1,55 @@
-spring:
+quarkus:
+    # application.name
     application:
-        name: Seed App - An example of professional spring project
-    jpa:
-        show-sql: false
-        open-in-view: false
-        properties:
-            hibernate.globally_quoted_identifiers: true
-    mail:
+        name: "Seed App - An example of professional spring project"
+
+    # jpa.show-sql
+    hibernate-orm:
+        log:
+            sql: false
+        # hibernate.globally_quoted_identifiers
+        interceptor: gt.app.domain.AuditInterceptor
+        database:
+            globally-quoted-identifiers: true
+
+    # jpa.open-in-view (Quarkus disables this by default for performance)
+    # There is no direct "enable" flag because Quarkus enforces better patterns.
+
+    # mail properties
+    mailer:
         host: localhost
         port: ${MAILHOG_PORT:1025}
-        username:
-        password:
-    main:
-        lazy-initialization: false
-    threads:
-        virtual:
-            enabled: true
-server:
-    port: 8080
+        # username and password left blank as per original
 
-logging.level:
-    org.springframework.web: INFO
-    org.springframework.security: INFO
-    org.springframework.security.web: INFO
-    org.hibernate: INFO
-    ROOT: INFO
-    gt: DEBUG
+    # threads.virtual.enabled
+    # In Quarkus, this is handled by the underlying thread pool
+    virtual-threads:
+        enabled: true
 
+    # server.port
+    http:
+        port: 8080
 
-wro4j:
-    jmx-enabled: false
-    debug: true
-    manager-factory:
-        pre-processors:  removeSourceMaps, cssUrlRewriting, cssImport, cssMinJawr, semicolonAppender, jsMin
-    filter-url: /wro4j # this is the default, needs to be used in secConfig and the htmls
+    # logging configuration
+    log:
+        level: INFO
+        # Minimum log level must be set to allow DEBUG runtime logs
+        min-level: DEBUG
+
+        # Specific package levels (categories)
+        category:
+            # Use quotes if the key contains dots to ensure correct mapping
+            "org.springframework.web":
+                level: INFO
+            "org.springframework.security":
+                level: INFO
+            "org.springframework.security.web":
+                level: INFO
+            "org.hibernate":
+                level: INFO
+            "gt":
+                level: DEBUG
+
 
 
 # custom properties for this project

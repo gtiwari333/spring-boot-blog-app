@@ -16,7 +16,6 @@ import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -28,7 +27,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AppUser extends BaseEntity implements UserDetails {
+public class AppUser extends BaseEntity  {
     @Basic(fetch = FetchType.LAZY)
     @Lob
     byte[] avatar;
@@ -75,37 +74,30 @@ public class AppUser extends BaseEntity implements UserDetails {
 
     private String resetKey;
 
-    @Override
     public Collection<Authority> getAuthorities() {
         return authorities;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
 
-    @Override
     public String getUsername() {
         return uniqueId;
     }
 
-    @Override
     public boolean isAccountNonExpired() {
         return accountNonExpired;
     }
 
-    @Override
     public boolean isAccountNonLocked() {
         return accountNonLocked;
     }
 
-    @Override
     public boolean isCredentialsNonExpired() {
         return credentialsNonExpired;
     }
 
-    @Override
     public boolean isEnabled() {
         return active;
     }

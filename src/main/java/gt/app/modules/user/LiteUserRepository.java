@@ -1,12 +1,18 @@
 package gt.app.modules.user;
 
 import gt.app.domain.LiteUser;
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.Optional;
 
-interface LiteUserRepository extends JpaRepository<LiteUser, Long> {
-    Optional<LiteUser> findOneByUniqueId(String uniqueId);
+@ApplicationScoped
+public class LiteUserRepository implements PanacheRepository<LiteUser> {
 
-    Optional<LiteUser> findByIdAndActiveIsTrue(Long id);
+    public Optional<LiteUser> findOneByUniqueId(String uniqueId) {
+        return find("uniqueId", uniqueId).firstResultOptional();
+    }
+
+    public Optional<LiteUser> findByIdAndActiveIsTrue(Long id) {
+        return find("id = ?1 and active = true", id).firstResultOptional();
+    }
 }

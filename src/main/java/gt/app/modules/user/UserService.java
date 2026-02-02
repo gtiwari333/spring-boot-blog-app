@@ -10,23 +10,25 @@ import gt.app.modules.email.dto.EmailDto;
 import gt.app.modules.user.dto.PasswordUpdateDTO;
 import gt.app.modules.user.dto.UserProfileUpdateDTO;
 import gt.app.modules.user.dto.UserSignUpDTO;
+import io.quarkus.elytron.security.common.BcryptUtil; // Quarkus standard for Bcrypt
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
-@Service
+@ApplicationScoped
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthorityService authorityService;
     private final EmailService emailService;
-
     private final LiteUserRepository liteUserRepository;
 
+    @Transactional
     public void update(UserProfileUpdateDTO toUpdate, AppUserDetails userDetails) {
         LiteUser user = liteUserRepository.findOneByUniqueId(userDetails.getUsername())
             .orElseThrow(() -> new RecordNotFoundException("User", "login", userDetails.getUsername()));
@@ -35,28 +37,29 @@ public class UserService {
         user.setLastName(toUpdate.getLastName());
         user.setEmail(toUpdate.getEmail());
 
-        liteUserRepository.save(user);
+        // In Panache, changes to attached entities are auto-flushed at end of transaction.
+        // Explicit .save() is usually not needed if using PanacheRepository.persist().
     }
 
+    @Transactional
     public void updatePassword(PasswordUpdateDTO toUpdate, AppUserDetails userDetails) {
         LiteUser user = liteUserRepository.findOneByUniqueId(userDetails.getUsername())
             .orElseThrow(() -> new RecordNotFoundException("User", "login", userDetails.getUsername()));
 
-        user.setPassword(passwordEncoder.encode(toUpdate.pwdPlainText()));
-        liteUserRepository.save(user);
+        // Quarkus uses BcryptUtil for simple encoding
+        user.setPassword(BcryptUtil.bcryptHash(toUpdate.pwdPlainText()));
     }
 
+    @Transactional
     public AppUser create(UserSignUpDTO toCreate) {
-
         var user = new AppUser(toCreate.getUniqueId(), toCreate.getFirstName(), toCreate.getLastName(), toCreate.getEmail());
 
-        user.setPassword(passwordEncoder.encode(toCreate.getPwdPlaintext()));
-
+        user.setPassword(BcryptUtil.bcryptHash(toCreate.getPwdPlaintext()));
         user.setAuthorities(authorityService.findByNameIn(Constants.ROLE_USER));
 
-        userRepository.save(user);
+        userRepository.persist(user);
 
-        EmailDto dto = EmailDto.of("system@noteapp", Set.of(user.getEmail()),
+        EmailDto dto = EmailDto.of("system@noteapp", List.of(user.getEmail()),
             "NoteApp Account Created!",
             "Thanks for signing up.");
 
@@ -65,16 +68,18 @@ public class UserService {
         return user;
     }
 
+    @Transactional
     public void delete(Long id) {
         LiteUser author = liteUserRepository.findByIdAndActiveIsTrue(id)
             .orElseThrow(() -> new RecordNotFoundException("User", "id", id));
 
         author.setActive(Boolean.FALSE);
-        liteUserRepository.save(author);
     }
 
+    @Transactional
     public AppUser save(AppUser u) {
-        return userRepository.save(u);
+        userRepository.persist(u);
+        return u;
     }
 
     public boolean existsByUniqueId(String username) {

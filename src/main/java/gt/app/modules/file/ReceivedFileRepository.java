@@ -1,9 +1,11 @@
 package gt.app.modules.file;
 
 import gt.app.domain.ReceivedFile;
-import org.springframework.data.jpa.repository.JpaRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.UUID;
 
-interface ReceivedFileRepository extends JpaRepository<ReceivedFile, UUID> {
+@ApplicationScoped
+public class ReceivedFileRepository implements PanacheRepositoryBase<ReceivedFile, UUID> {
 }

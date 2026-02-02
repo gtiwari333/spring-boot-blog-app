@@ -6,23 +6,23 @@ import gt.app.domain.*;
 import gt.app.modules.note.NoteService;
 import gt.app.modules.user.AuthorityService;
 import gt.app.modules.user.UserService;
+import io.quarkus.arc.profile.IfBuildProfile;
+import io.quarkus.runtime.StartupContext;
+import io.quarkus.runtime.StartupTask;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-@Component
-@Profile({Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_TEST, Constants.SPRING_PROFILE_DOCKER})
+@ApplicationScoped
+@IfBuildProfile(anyOf = {Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_TEST, Constants.SPRING_PROFILE_DOCKER})
 @RequiredArgsConstructor
 @Slf4j
-public class DataCreator {
+public class DataCreator implements StartupTask {
 
     final AuthorityService authorityService;
     final UserService userService;
@@ -32,8 +32,8 @@ public class DataCreator {
 
     final AppProperties appProperties;
 
-    @EventListener
-    public void ctxRefreshed(ContextRefreshedEvent evt) {
+    @Override
+    public void deploy(StartupContext context) {
         initData();
     }
 
