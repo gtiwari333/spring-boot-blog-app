@@ -4,29 +4,31 @@
 <body>
 
 <th:block th:fragment="note-editor">
-    <div class="row">
+    <div class="note-editor-container" style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
         <input class="form-control" id="id" placeholder="" required="" th:field="*{id}" type="hidden">
 
-        <div class="col-md-4 mb-3">
-            <label for="title">Title</label>
-            <input class="form-control" id="title" placeholder="" required="" th:field="*{title}" type="text"
-                   value="">
-            <span th:errors="*{title}" th:if="${#fields.hasErrors('title')}"></span>
+        <div class="row">
+            <div class="col-md-8 mb-2">
+                <label for="title">📌 Title</label>
+                <input class="form-control" id="title" placeholder="Enter note title..." required="" th:field="*{title}" type="text"
+                       value="">
+                <span th:errors="*{title}" th:if="${#fields.hasErrors('title')}" class="error"></span>
+            </div>
 
+            <div class="col-md-4 mb-2">
+                <label for="files">📎 Attach File</label>
+                <input class="form-control" id="files" type="file" value="" name="files">
+            </div>
         </div>
 
-        <div class="col-md-4 mb-3">
-            <label for="content">Content</label>
-            <input class="form-control" id="content" placeholder="" required="" th:field="*{content}"
-                   type="text" value="">
-            <span th:errors="*{content}" th:if="${#fields.hasErrors('content')}"></span>
+        <div class="row">
+            <div class="col-md-12 mb-2">
+                <label for="content">✍️ Content</label>
+                <textarea class="form-control" id="content" placeholder="Enter note content..." required="" th:field="*{content}"
+                       rows="3" style="resize: vertical;"></textarea>
+                <span th:errors="*{content}" th:if="${#fields.hasErrors('content')}" class="error"></span>
+            </div>
         </div>
-
-        <div class="col-md-4 mb-3">
-            <label for="files">File</label>
-            <input class="btn btn-secondary btn-sm btn-block" id="files" type="file" value="" name="files">
-        </div>
-
     </div>
 
 </th:block>

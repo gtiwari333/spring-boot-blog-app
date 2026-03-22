@@ -20,8 +20,10 @@
 
 <div th:fragment="headerbar">
 
-    <nav class="navbar navbar-dark bg-dark navbar-expand-md bg-faded justify-content-center">
-        <a class="navbar-brand d-flex w-50 mr-auto" th:href="@{/}"><span>Note App</span></a>
+    <nav class="navbar navbar-dark navbar-expand-md bg-faded justify-content-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+        <a class="navbar-brand d-flex w-50 mr-auto" th:href="@{/}" style="font-weight: 700; font-size: 1.5rem; letter-spacing: 0.5px;">
+            <span>📝 Note App</span>
+        </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar3">
             <span class="navbar-toggler-icon"></span>
@@ -30,19 +32,18 @@
 
             <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-
-                    <a class="p-2" th:href="@{/note}" id="user-note-link">
+                    <a class="nav-link" th:href="@{/note}" id="user-note-link" style="font-weight: 600; display: flex; align-items: center;">
                         <span sec:authentication="name">Notes</span>'s Notes
                     </a>
                 </li>
                 <li class="nav-item" sec:authorize="isAnonymous()">
-                    <a class="nav-link " th:href="@{/login}" id="login-link">
+                    <a class="nav-link" th:href="@{/login}" id="login-link" style="font-weight: 600; padding: 8px 16px; margin: 0 5px; border-radius: 6px; transition: all 0.3s ease;">
                         Login
                     </a>
                 </li>
 
                 <li class="nav-item" sec:authorize="isAnonymous()">
-                    <a class="nav-link " th:href="@{/signup}" id="signup-link">
+                    <a class="nav-link" th:href="@{/signup}" id="signup-link" style="font-weight: 600; padding: 8px 16px; margin: 0 5px; background: rgba(255, 255, 255, 0.2); border-radius: 6px; transition: all 0.3s ease;">
                         Signup
                     </a>
                 </li>
@@ -50,18 +51,19 @@
 
             <ul class="nav navbar-nav ml-auto w-100 justify-content-end" sec:authorize="isAuthenticated()">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" style="font-weight: 600; padding: 8px 16px; background: rgba(255, 255, 255, 0.15); border-radius: 6px; transition: all 0.3s ease;">
                         <span sec:authentication="principal.username">USER_NAME</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" th:href="@{/password}" id="change-password-link">
-                            Change Password
+                    <div class="dropdown-menu dropdown-menu-right" style="border-radius: 10px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); border: none; margin-top: 10px;">
+                        <a class="dropdown-item" th:href="@{/password}" id="change-password-link" style="padding: 10px 20px; transition: all 0.2s ease;">
+                            🔒 Change Password
                         </a>
-                        <a class="dropdown-item" th:href="@{/profile}" id="profile-link">
-                            Profile
+                        <a class="dropdown-item" th:href="@{/profile}" id="profile-link" style="padding: 10px 20px; transition: all 0.2s ease;">
+                            👤 Profile
                         </a>
-                        <a class="dropdown-item" th:href="@{/auth/logout}" id="logout-link">
-                            Logout
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" th:href="@{/auth/logout}" id="logout-link" style="padding: 10px 20px; color: #e53e3e; transition: all 0.2s ease;">
+                            🚪 Logout
                         </a>
                     </div>
                 </li>

@@ -13,15 +13,21 @@
 
 <div class="container">
     <div class="card-deck mb-3">
-        <div class="px-3 py-3 pt-md-8 pb-md-8 mx-auto">
+        <div class="px-4 py-3 mx-auto" style="max-width: 700px; width: 100%;">
 
             <div sec:authorize="isAuthenticated()">
-                <h2>You are already logged in.</h2>
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #2d3748;">✅ You are already logged in.</h2>
+                    <p style="color: #718096; margin-top: 15px;">No need to sign up again!</p>
+                </div>
                 <hr/>
             </div>
 
             <div sec:authorize="isAnonymous()">
-                <h4 class="mb-3">User Registration</h4>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="color: #2d3748; font-weight: 800; margin-bottom: 8px;">Create Your Account</h2>
+                    <p style="color: #718096; font-size: 0.95rem;">Join us and start organizing your notes today</p>
+                </div>
                 <form th:action="@{/signup}" method="post" th:object="${user}">
                     <div class="mb-4">
                         <label for="firstName">First name</label>
@@ -68,13 +74,15 @@
                     </div>
 
                     <hr class="mb-4">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Register</button>
-                    <hr class="mb-4">
-                    <span>Already registered?
-                        <a href="/" th:href="@{/login}">
-                             <button type="button" class="btn btn-outline-success">Login</button>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" style="padding: 14px; font-size: 1.1rem; border-radius: 10px; margin-bottom: 20px;">
+                        🚀 Create Account
+                    </button>
+                    <div style="text-align: center; padding: 20px 0;">
+                        <span style="color: #718096;">Already have an account?</span>
+                        <a href="/" th:href="@{/login}" style="text-decoration: none; margin-left: 10px;">
+                             <button type="button" class="btn btn-outline-success" style="border-radius: 8px;">Login Here</button>
 					    </a>
-                    </span>
+                    </div>
 
                 </form>
 
