@@ -13,20 +13,20 @@
 
 <div class="container">
     <div class="card-deck mb-3">
-        <div class="px-4 py-3 mx-auto" style="max-width: 700px; width: 100%;">
+        <div class="px-4 py-3 mx-auto signup-container">
 
             <div sec:authorize="isAuthenticated()">
-                <div style="text-align: center; padding: 40px;">
-                    <h2 style="color: #2d3748;">✅ You are already logged in.</h2>
-                    <p style="color: #718096; margin-top: 15px;">No need to sign up again!</p>
+                <div class="already-logged-in">
+                    <h2>You are already logged in.</h2>
+                    <p class="text-muted-signup">No need to sign up again!</p>
                 </div>
                 <hr/>
             </div>
 
             <div sec:authorize="isAnonymous()">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <h2 style="color: #2d3748; font-weight: 800; margin-bottom: 8px;">Create Your Account</h2>
-                    <p style="color: #718096; font-size: 0.95rem;">Join us and start organizing your notes today</p>
+                <div class="signup-header">
+                    <h2>Create Your Account</h2>
+                    <p class="text-subtitle">Join us and start organizing your notes today</p>
                 </div>
                 <form th:action="@{/signup}" method="post" th:object="${user}">
                     <div class="mb-4">
@@ -74,14 +74,14 @@
                     </div>
 
                     <hr class="mb-4">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit" style="padding: 14px; font-size: 1.1rem; border-radius: 10px; margin-bottom: 20px;">
-                        🚀 Create Account
+                    <button class="btn btn-primary btn-lg btn-block btn-signup" type="submit">
+                        Create Account
                     </button>
-                    <div style="text-align: center; padding: 20px 0;">
-                        <span style="color: #718096;">Already have an account?</span>
-                        <a href="/" th:href="@{/login}" style="text-decoration: none; margin-left: 10px;">
-                             <button type="button" class="btn btn-outline-success" style="border-radius: 8px;">Login Here</button>
-					    </a>
+                    <div class="login-prompt">
+                        <span class="login-prompt-text">Already have an account?</span>
+                        <a th:href="@{/login}" class="login-link">
+                             <button type="button" class="btn btn-outline-success">Login Here</button>
+                        </a>
                     </div>
 
                 </form>
