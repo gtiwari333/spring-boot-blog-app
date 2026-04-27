@@ -61,10 +61,10 @@
                         <a class="dropdown-item" th:href="@{/profile}" id="profile-link" style="padding: 10px 20px; transition: all 0.2s ease;">
                             👤 Profile
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" th:href="@{/auth/logout}" id="logout-link" style="padding: 10px 20px; color: #e53e3e; transition: all 0.2s ease;">
-                            🚪 Logout
-                        </a>
+                        <form th:action="@{/auth/logout}" method="post" class="d-inline">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"  style="padding: 10px 20px; color: #e53e3e; transition: all 0.2s ease;"/>
+                            <button type="submit" class="dropdown-item" id="logout-link">🚪 Logout</button>
+                        </form>
                     </div>
                 </li>
             </ul>

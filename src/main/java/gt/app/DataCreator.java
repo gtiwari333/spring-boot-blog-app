@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Component
@@ -68,21 +70,22 @@ public class DataCreator {
         adminUser.setAuthorities(authorityService.findByNameIn(Constants.ROLE_ADMIN, Constants.ROLE_USER));
         userService.save(adminUser);
 
-        AppUser user1 = new AppUser("user1", "Ganesh", "Tiwari", "gt@email");
-        user1.setPassword(pwd);
-        user1.setAuthorities(authorityService.findByNameIn(Constants.ROLE_USER));
-        userService.save(user1);
-
-
-        AppUser user2 = new AppUser("user2", "Jyoti", "Kattel", "jk@email");
-        user2.setPassword(pwd);
-        user2.setAuthorities(authorityService.findByNameIn(Constants.ROLE_USER));
-        userService.save(user2);
+        List<AppUser> users = new ArrayList<>();
+        for (int i = 1; i <= 50; i++) {
+            AppUser user = new AppUser("user" + i, "FirstName" + i, "LastName" + i, "user" + i + "@email");
+            user.setPassword(pwd);
+            user.setAuthorities(authorityService.findByNameIn(Constants.ROLE_USER));
+            userService.save(user);
+            users.add(user);
+        }
 
         createNote(adminUser, "Admin's First Note", "Content Admin 1");
         createNote(adminUser, "Admin's Second Note", "Content Admin 2");
-        createNote(user1, "User1 Note", "Content User 1");
-        createNote(user2, "User2 Note", "Content User 2");
+
+        for (int i = 1; i <= 15000; i++) {
+            AppUser user = users.get(i % users.size());
+            createNote(user, "Note Title " + i, "Content for note number " + i);
+        }
 
 
     }

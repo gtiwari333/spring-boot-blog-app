@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.1</version>
+        <version>4.0.6</version>
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
@@ -18,14 +18,13 @@
         <build.profile>dev</build.profile>
         <java.version>21</java.version>
 
-        <springdoc-openapi-ui.version>3.0.0</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>3.0.3</springdoc-openapi-ui.version>
         <mapstruct.version>1.6.3</mapstruct.version>
 
         <selenide.version>7.12.0</selenide.version>
 
         <wro4j.version>2.1.1</wro4j.version>
-        <spock.version>2.4-M6-groovy-4.0</spock.version>
-        <groovy.version>4.0.29</groovy.version>
+        <spock.version>2.4-groovy-5.0</spock.version>
         <!-- client deps -->
         <webjar-jquery.version>3.5.1</webjar-jquery.version>
         <webjar-bootstrap.version>4.5.0</webjar-bootstrap.version>

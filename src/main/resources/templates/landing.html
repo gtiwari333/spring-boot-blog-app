@@ -55,10 +55,13 @@
             </th:block>
 
             <div th:if="${notes.getTotalElements() ==0}">
-                <div class="alert alert-warning" role="alert" style="text-align: center; padding: 20px; font-size: 1rem;">
+                <div class="alert alert-warning" role="alert"
+                     style="text-align: center; padding: 20px; font-size: 1rem;">
                     <span>📭 No notes available yet. Be the first to create one!</span>
                 </div>
             </div>
+
+            <div th:replace="~{_fragments/pagination :: pager(${notes}, '/')}"></div>
         </div>
     </div>
 
