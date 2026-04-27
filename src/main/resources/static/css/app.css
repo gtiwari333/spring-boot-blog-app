@@ -72,8 +72,6 @@ body {
 }
 
 .note-box .card-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
     border: none;
     padding: 12px 16px;
 }
@@ -163,15 +161,8 @@ label {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.table thead {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
 .table thead th {
     border: none;
-    padding: 15px;
-    font-weight: 600;
 }
 
 .table tbody tr {
