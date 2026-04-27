@@ -31,8 +31,8 @@
         <div class="navbar-collapse collapse w-100" id="collapsingNavbar3">
 
             <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" th:href="@{/note}" id="user-note-link" style="font-weight: 600; display: flex; align-items: center;">
+                <li class="nav-item mx-auto" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/note}" id="user-note-link" style="font-weight: 600; display: flex; align-items: center; justify-content: center;">
                         <span sec:authentication="name">Notes</span>'s Notes
                     </a>
                 </li>
