@@ -20,7 +20,7 @@ public class Note extends BaseAuditingEntity {
 
     private String content;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 5)
     private List<ReceivedFile> attachedFiles = new ArrayList<>();

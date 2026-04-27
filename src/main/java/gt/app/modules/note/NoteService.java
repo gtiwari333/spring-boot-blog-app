@@ -2,6 +2,7 @@ package gt.app.modules.note;
 
 import gt.app.domain.Note;
 import gt.app.domain.ReceivedFile;
+import gt.app.exception.RecordNotFoundException;
 import gt.app.modules.file.FileService;
 import gt.app.modules.note.dto.NoteCreateDto;
 import gt.app.modules.note.dto.NoteEditDto;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class NoteService {
 
     private static final ReceivedFile.FileGroup FILE_GROUP = ReceivedFile.FileGroup.NOTE_ATTACHMENT;
@@ -52,23 +55,27 @@ public class NoteService {
         return noteOpt.map(note -> {
             noteMapper.createToEntity(dto, note);
             return save(note);
-        }).orElseThrow();
+        }).orElseThrow(() -> new RecordNotFoundException("Note", "id", dto.id()));
     }
 
+    @Transactional(readOnly = true)
     public NoteReadDto read(Long id) {
         return noteRepository.findById(id)
-            .map(noteMapper::mapForRead).orElseThrow();
+            .map(noteMapper::mapForRead)
+            .orElseThrow(() -> new RecordNotFoundException("Note", "id", id));
     }
 
     public Note save(Note note) {
         return noteRepository.save(note);
     }
 
+    @Transactional(readOnly = true)
     public Page<NoteReadDto> readAll(Pageable pageable) {
         return noteRepository.findAll(pageable)
             .map(noteMapper::mapForRead);
     }
 
+    @Transactional(readOnly = true)
     public Page<NoteReadDto> readAllByUser(Pageable pageable, Long userId) {
         return noteRepository.findByCreatedByUserIdOrderByCreatedDateDesc(pageable, userId)
             .map(noteMapper::mapForRead);
@@ -78,6 +85,7 @@ public class NoteService {
         noteRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public Long findCreatedByUserIdById(Long id) {
         return noteRepository.findCreatedByUserIdById(id);
     }

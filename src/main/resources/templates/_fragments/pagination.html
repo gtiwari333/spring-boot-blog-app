@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--
+  Parameters:
+    page     - Spring Data Page object
+    baseUrl  - base path for page links, e.g. '/' or '/note'
+  Renders a Bootstrap 4 pagination nav with a ±2 window around the current page.
+  Hidden when there is only one page.
+-->
+<nav th:fragment="pager(page, baseUrl)"
+     aria-label="Page navigation"
+     th:if="${page.totalPages > 1}"
+     th:with="start=${T(java.lang.Math).max(0, page.number - 5)},
+              end=${T(java.lang.Math).min(page.totalPages - 1, page.number + 5)}">
+
+    <ul class="pagination justify-content-center mt-3">
+
+        <li class="page-item" th:classappend="${page.isFirst()} ? 'disabled'">
+            <a class="page-link"
+               th:href="${page.isFirst()} ? '#' : @{__${baseUrl}__(page=${page.number - 1})}"
+               aria-label="Previous">&laquo;</a>
+        </li>
+
+        <li class="page-item"
+            th:each="i : ${#numbers.sequence(start, end)}"
+            th:classappend="${i == page.number} ? 'active'">
+            <a class="page-link"
+               th:href="@{__${baseUrl}__(page=${i})}"
+               th:text="${i + 1}"></a>
+        </li>
+
+        <li class="page-item" th:classappend="${page.isLast()} ? 'disabled'">
+            <a class="page-link"
+               th:href="${page.isLast()} ? '#' : @{__${baseUrl}__(page=${page.number + 1})}"
+               aria-label="Next">&raquo;</a>
+        </li>
+
+    </ul>
+
+    <p class="text-center text-muted small mt-1">
+        Page <span th:text="${page.number + 1}"></span> of <span th:text="${page.totalPages}"></span>
+        (<span th:text="${page.totalElements}"></span> total)
+    </p>
+
+</nav>
+
+</body>
+</html>

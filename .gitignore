@@ -40,3 +40,4 @@ nbdist/
 # Logs
 ######################
 *.log*
+.profileconfig.json

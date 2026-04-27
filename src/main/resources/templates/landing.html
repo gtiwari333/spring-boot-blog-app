@@ -42,11 +42,13 @@
                 </th:block>
             </th:block>
 
-            <div th:if="${notes.getTotalElements() ==0}">
+            <div th:if="${notes.getTotalElements() == 0}">
                 <div class="alert alert-warning" role="alert">
                     <span>No notes available.</span>
                 </div>
             </div>
+
+            <div th:replace="~{_fragments/pagination :: pager(${notes}, '/')}"></div>
         </div>
     </div>
 

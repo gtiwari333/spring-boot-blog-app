@@ -6,6 +6,7 @@ import gt.app.modules.file.ReceivedFileService;
 import gt.app.modules.file.RetrievalException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,7 @@ public class DownloadController {
     final FileService fileService;
 
     @GetMapping("/file/{id}")
-    //no security check needed
+    @PreAuthorize("isAuthenticated()")
     public void downloadFile(@PathVariable UUID id, HttpServletResponse response) throws IOException {
         var receivedFile = receivedFileService.findById(id)
             .orElseThrow(() -> new RetrievalException("File not found", null));
