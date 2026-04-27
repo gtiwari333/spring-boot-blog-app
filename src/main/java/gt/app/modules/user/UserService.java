@@ -13,11 +13,13 @@ import gt.app.modules.user.dto.UserSignUpDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -77,6 +79,7 @@ public class UserService {
         return userRepository.save(u);
     }
 
+    @Transactional(readOnly = true)
     public boolean existsByUniqueId(String username) {
         return userRepository.existsByUniqueId(username);
     }

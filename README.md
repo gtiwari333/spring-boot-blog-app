@@ -116,6 +116,7 @@ open `dependency-check-report.html` from target to see the report.
 - File upload/download
 - Live update of thymeleaf templates for local development
 - HTML fragments
+- pagination
 - webjar - bootstrap4 + jquery
 - Custom Error page
 - Request logger filter
