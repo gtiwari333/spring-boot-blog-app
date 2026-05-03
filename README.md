@@ -22,6 +22,7 @@ The default username/passwords are listed on : gt.app.Application.initData, whic
     - For eclipse, download the lombok jar, run it, and point to eclipse installation
 - Maven (optional)
 - Docker
+- Chrome browser for e2e test
 
 ### How to Run
 

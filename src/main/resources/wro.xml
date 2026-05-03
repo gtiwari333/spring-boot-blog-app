@@ -6,7 +6,6 @@
         <js>classpath:static/js/app.js</js>
         <css>classpath:static/css/app.css</css>
         <css>classpath:static/css/app2.css</css>
-        <css>classpath:static/css/templates.css</css>
     </group>
 
     <!-- add more groups -->
