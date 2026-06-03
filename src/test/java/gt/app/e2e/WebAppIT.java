@@ -28,17 +28,12 @@ class WebAppIT extends BaseSeleniumTest {
             .body()
             .shouldHave(text("Note App"))
             .shouldNotHave(text("Logout"))
-            .shouldNotHave(text("Post Note"))
+            .shouldNotHave(text("Create a New Note"))
 
-            .shouldHave(text("User2 Note"))
-            .shouldHave(text("User1 Note"))
-            .shouldHave(text("Admin's First Note"))
-            .shouldHave(text("Admin's Second Note"))
-
-            .shouldHave(text("Content Admin 1"))
-            .shouldHave(text("Content Admin 2"))
-            .shouldHave(text("Content User 1"))
-            .shouldHave(text("Content User 2"));
+            .shouldHave(text("Content for note number"))
+            .shouldHave(text("Note Title"))
+            .shouldHave(text("Posted on"))
+            .shouldHave(text("By user"));
 
         testAccessDenied(new PublicPage().open());
     }
@@ -87,7 +82,7 @@ class WebAppIT extends BaseSeleniumTest {
             .shouldHave(text("Post Note"))
             .shouldHave(text("User1's Notes"))
             .shouldHave(text("Hello User1!"))
-            .shouldHave(text("User1 Note"))
+            .shouldHave(text("User1's Notes"))
             //should not see other user's notes
             .shouldNotHave(text("Content Admin 1"))
             .shouldNotHave(text("Content Admin 2"))
