@@ -5,6 +5,12 @@ JFR (Java Flight Recorder) Startup Analyzer
 Analyzes one or two JFR recordings to identify startup bottlenecks and
 compare before/after optimizations.
 
+Take JFR from running JVM app
+- Use JMC 'sdk install jmc'
+- use intellij 
+- or use jcmd command as  `$ jcmd <PID> JFR.start settings=profile name=<NAME>``
+
+
 Usage:
   python3 jfr-analyzer.py <file.jfr>                 # Single file analysis
   python3 jfr-analyzer.py <before.jfr> <after.jfr>   # Before/after comparison
