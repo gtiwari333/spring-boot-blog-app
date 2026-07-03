@@ -9,8 +9,8 @@ import gt.app.modules.user.UserService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +35,7 @@ public class DataCreator {
     final AppProperties appProperties;
 
     @EventListener
-    public void ctxRefreshed(ContextRefreshedEvent evt) {
+    public void ctxRefreshed(ApplicationReadyEvent evt) {
         initData();
     }
 
