@@ -6,13 +6,18 @@ spring:
         open-in-view: false
         properties:
             hibernate.globally_quoted_identifiers: true
+            # Startup optimizations — skip hbm.xml scanning (use annotations only)
+            hibernate.archive.autodetection: class
     mail:
         host: localhost
         port: ${MAILHOG_PORT:1025}
         username:
         password:
     main:
-        lazy-initialization: false
+        # Lazy init drastically reduces startup time by deferring bean creation to first use.
+        # Beans annotated with @Lazy(false) or consumed by non-lazy beans are still created eagerly.
+        # If specific beans must be eagerly initialized, annotate them with @Lazy(false).
+        lazy-initialization: true
     threads:
         virtual:
             enabled: true
