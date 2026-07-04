@@ -13,6 +13,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -26,6 +27,8 @@ import java.util.stream.Stream;
 @Slf4j
 public class DataCreator {
 
+    private static final int BATCH_SIZE = 100;
+
     final AuthorityService authorityService;
     final UserService userService;
     final NoteService noteService;
@@ -35,6 +38,7 @@ public class DataCreator {
     final AppProperties appProperties;
 
     @EventListener
+    @Transactional
     public void ctxRefreshed(ApplicationReadyEvent evt) {
         initData();
     }
@@ -44,7 +48,7 @@ public class DataCreator {
 
         File uploadFolder = Path.of(appProperties.fileStorage().uploadFolder()).toFile();
         if (!uploadFolder.exists()) {
-            if (uploadFolder.mkdirs() && Stream.of(ReceivedFile.FileGroup.values()).allMatch(f ->   Path.of(uploadFolder.getAbsolutePath()).toFile().mkdir())) {
+            if (uploadFolder.mkdirs() && Stream.of(ReceivedFile.FileGroup.values()).allMatch(f -> Path.of(uploadFolder.getAbsolutePath()).toFile().mkdir())) {
                 log.info("Upload folder created successfully");
             } else {
                 log.info("Failure to create upload folder");
@@ -57,46 +61,54 @@ public class DataCreator {
         }
         Authority adminAuthority = new Authority();
         adminAuthority.setName(Constants.ROLE_ADMIN);
-        authorityService.save(adminAuthority);
+        entityManager.persist(adminAuthority);
 
         Authority userAuthority = new Authority();
         userAuthority.setName(Constants.ROLE_USER);
-        authorityService.save(userAuthority);
+        entityManager.persist(userAuthority);
 
-        String pwd = "$2a$10$UtqWHf0BfCr41Nsy89gj4OCiL36EbTZ8g4o/IvFN2LArruHruiRXO"; // to make it faster //value is 'pass'
+        String pwd = "$2a$10$UtqWHf0BfCr41Nsy89gj4OCiL36EbTZ8g4o/IvFN2LArruHruiRXO"; // pre-hashed 'pass'
 
         AppUser adminUser = new AppUser("system", "System", "Tiwari", "system@email");
         adminUser.setPassword(pwd);
         adminUser.setAuthorities(authorityService.findByNameIn(Constants.ROLE_ADMIN, Constants.ROLE_USER));
-        userService.save(adminUser);
+        entityManager.persist(adminUser);
 
         List<AppUser> users = new ArrayList<>();
         for (int i = 1; i <= 50; i++) {
             AppUser user = new AppUser("user" + i, "FirstName" + i, "LastName" + i, "user" + i + "@email");
             user.setPassword(pwd);
             user.setAuthorities(authorityService.findByNameIn(Constants.ROLE_USER));
-            userService.save(user);
+            entityManager.persist(user);
             users.add(user);
         }
+        // Flush users so getReference() works for note creation
+        entityManager.flush();
 
-        createNote(adminUser, "Admin's First Note", "Content Admin 1");
-        createNote(adminUser, "Admin's Second Note", "Content Admin 2");
+        entityManager.persist(createNote(adminUser, "Admin's First Note", "Content Admin 1"));
+        entityManager.persist(createNote(adminUser, "Admin's Second Note", "Content Admin 2"));
 
+        // Batch-insert 15,000 notes with periodic flush/clear to avoid memory bloat
+        long start = System.currentTimeMillis();
         for (int i = 1; i <= 15000; i++) {
             AppUser user = users.get(i % users.size());
-            createNote(user, "Note Title " + i, "Content for note number " + i);
+            entityManager.persist(createNote(user, "Note Title " + i, "Content for note number " + i));
+            if (i % BATCH_SIZE == 0) {
+                entityManager.flush();
+                entityManager.clear();
+            }
         }
-
-
+        entityManager.flush();
+        long elapsed = System.currentTimeMillis() - start;
+        log.info("Seeded 15,000 notes in {}ms (batch size: {})", elapsed, BATCH_SIZE);
     }
 
-    void createNote(AppUser user, String title, String content) {
+    private Note createNote(AppUser user, String title, String content) {
         var n = new Note();
         n.setCreatedByUser(entityManager.getReference(LiteUser.class, user.getId()));
         n.setTitle(title);
         n.setContent(content);
-
-        noteService.save(n);
+        return n;
     }
 
 

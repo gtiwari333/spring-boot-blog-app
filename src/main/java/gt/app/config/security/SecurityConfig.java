@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
-@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
+@EnableMethodSecurity // don't use securedEnabled = true, jsr250Enabled = true, if its not used
 public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
