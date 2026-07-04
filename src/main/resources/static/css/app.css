@@ -250,6 +250,50 @@ footer a:hover {
     color: #764ba2;
 }
 
+/* Navbar Styling */
+.navbar-main {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-brand-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+}
+
+.nav-link-auth,
+.nav-link-signup {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.nav-link-auth:hover,
+.nav-link-signup:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff !important;
+}
+
+.nav-link-user-menu {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 600;
+}
+
+.dropdown-menu-styled {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-item-styled:hover,
+.dropdown-item-logout:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .container {

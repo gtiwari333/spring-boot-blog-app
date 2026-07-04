@@ -8,6 +8,9 @@ spring:
             hibernate.globally_quoted_identifiers: true
             # Startup optimizations — skip hbm.xml scanning (use annotations only)
             hibernate.archive.autodetection: class
+            # JDBC batch inserts (reduces DataCreator seeding time from ~7s to ~1s), also helps with any bulk operation
+            hibernate.jdbc.batch_size: 100
+            hibernate.order_inserts: true
     mail:
         host: localhost
         port: ${MAILHOG_PORT:1025}
@@ -18,9 +21,28 @@ spring:
         # Beans annotated with @Lazy(false) or consumed by non-lazy beans are still created eagerly.
         # If specific beans must be eagerly initialized, annotate them with @Lazy(false).
         lazy-initialization: true
+    jmx:
+        # Startup optimization — skip JMX registration for every bean
+        enabled: false
     threads:
         virtual:
             enabled: true
+
+
+# disable multipart if there's no use of it in the app
+#    servlet:
+#        multipart:
+#            enabled: false
+    mvc:
+        log-request-details: false
+        publish-request-handled-events: false
+        hiddenmethod:
+            filter:
+                enabled: false
+        formcontent:
+            filter:
+                enabled: false
+
 server:
     port: 8080
 
@@ -37,7 +59,7 @@ wro4j:
     jmx-enabled: false
     debug: true
     manager-factory:
-        pre-processors:  removeSourceMaps, cssUrlRewriting, cssImport, cssMinJawr, semicolonAppender, jsMin
+        pre-processors: removeSourceMaps, cssUrlRewriting, cssImport, cssMinJawr, semicolonAppender, jsMin
     filter-url: /wro4j # this is the default, needs to be used in secConfig and the htmls
 
 
