@@ -7,7 +7,7 @@ compare before/after optimizations.
 
 Take JFR from running JVM app
 - Use JMC 'sdk install jmc'
-- use intellij 
+- use intellij
 - or use jcmd command as  `$ jcmd <PID> JFR.start settings=profile name=<NAME>``
 
 
@@ -860,21 +860,73 @@ class JfrAnalysis:
 
 SECTION_WIDTH = 95
 
+MARKDOWN = False  # set by --markdown / -m flag
+
 
 def print_header(title: str):
     """Print a centered, double-lined section header."""
-    print()
-    print("=" * SECTION_WIDTH)
-    print(f"{title:^{SECTION_WIDTH}}")
-    print("=" * SECTION_WIDTH)
+    if MARKDOWN:
+        print(f"\n## {title}\n")
+    else:
+        print()
+        print("=" * SECTION_WIDTH)
+        print(f"{title:^{SECTION_WIDTH}}")
+        print("=" * SECTION_WIDTH)
 
 
 def print_subheader(title: str):
     """Print a subsection header with underline."""
-    print(f"\n{title}")
-    print("-" * min(SECTION_WIDTH, len(title)))
+    if MARKDOWN:
+        print(f"\n### {title}\n")
+    else:
+        print(f"\n{title}")
+        print("-" * min(SECTION_WIDTH, len(title)))
 
 
+def print_note(text: str):
+    """Print an informational note about metric significance under a section header."""
+    if MARKDOWN:
+        print(f"> 💡 {text}\n")
+    else:
+        print(f"  💡 {text}")
+
+
+
+
+# ── Table helpers (markdown-aware) ─────────────────────────────────────
+
+def _tbl_hdr(cols: str):
+    """Print a table header row. In markdown mode wraps with |."""
+    if MARKDOWN:
+        inner = cols.strip()
+        print("| " + re.sub(r" {2,}", " | ", inner) + " |")
+    else:
+        print(f"  {cols}")
+
+
+def _tbl_sep(widths: list[int]):
+    """Print a table separator row."""
+    if MARKDOWN:
+        print("|" + "|".join("-" * w for w in widths) + "|")
+    else:
+        print("  " + " ".join("-" * w for w in widths))
+
+
+def _tbl_row(cols: str):
+    """Print a table data row."""
+    if MARKDOWN:
+        inner = cols.strip()
+        print("| " + re.sub(r" {2,}", " | ", inner) + " |")
+    else:
+        print(f"  {cols}")
+
+
+def _tbl_title(text: str, width: int):
+    """Print a centered table title. Bold in markdown, centered in text mode."""
+    if MARKDOWN:
+        print(f"\n**{text}**\n")
+    else:
+        print(f"\n  {text:^{width}}")
 def report_single(analysis: JfrAnalysis):
     """
     Print a complete analysis report for a single JFR file.
@@ -908,23 +960,25 @@ def report_single(analysis: JfrAnalysis):
 
     # ── Section 2: CPU Hotspots ──────────────────────────────────────────
     print_header("CPU EXECUTION HOTSPOTS")
+    print_note("Hot leaf methods show where CPU time is actually spent. High concentration in few methods → clear optimization target. Well-distributed samples → healthy throughput with no single bottleneck. ClassLoader.defineClass / Inflater.inflateBytes → class loading / JAR decompression overhead (use CDS). AnnotationsScanner → Spring component scanning (use spring-context-indexer).")
     methods = analysis.cpu_method_counts()
     total = sum(methods.values()) or 1
     print(f"\n  Total samples: {int(total)}")
-    print(f"\n  {'Top 30 Hot Leaf Methods':^80}")
-    print(f"  {'Method':<70} {'Count':>7} {'Pct':>7}")
-    print(f"  {'-'*70} {'-'*7} {'-'*7}")
+    _tbl_title("Top 30 Hot Leaf Methods", 80)
+    _tbl_hdr(f"  {'Method':<70} {'Count':>7} {'Pct':>7}")
+    _tbl_sep([70, 7, 7])
     for method, count in methods.most_common(30):
-        print(f"  {method[:68]:<68} {count:>7d} {count/total*100:>6.1f}%")
+        _tbl_row(f"  {method[:68]:<68} {count:>7d} {count/total*100:>6.1f}%")
 
     threads = analysis.cpu_thread_counts()
-    print(f"\n  {'Thread Distribution':^80}")
-    print(f"  {'Thread':<50} {'Count':>7} {'Pct':>7}")
-    print(f"  {'-'*50} {'-'*7} {'-'*7}")
+    _tbl_title("Thread Distribution", 80)
+    _tbl_hdr(f"  {'Thread':<50} {'Count':>7} {'Pct':>7}")
+    _tbl_sep([50, 7, 7])
     for t, c in threads.most_common(15):
-        print(f"  {t[:48]:<48} {c:>7d} {c/total*100:>6.1f}%")
+        _tbl_row(f"  {t[:48]:<48} {c:>7d} {c/total*100:>6.1f}%")
 
     print_header("TOP CPU STACK SIGNATURES (top 5 frames)")
+    print_note("Full call chains showing WHY a leaf method is hot — the leaf tells WHAT is burning CPU, the stack tells WHY it's being called. Deep framework call chains → framework overhead dominates; shallow chains → application logic is the main cost. Look for repeated patterns across different leaf methods with the same call chain root.")
     sigs = analysis.cpu_stack_sigs(depth=5)
     for sig, count in sigs.most_common(20):
         print(f"\n  [{count}x, {count/total*100:.1f}%]")
@@ -933,42 +987,46 @@ def report_single(analysis: JfrAnalysis):
 
     # ── Section 3: Allocation Hotspots ───────────────────────────────────
     print_header("MEMORY ALLOCATION HOTSPOTS")
+    print_note("Allocation rate directly drives GC frequency — every allocated byte must eventually be collected. Framework types (TypeMappedAnnotations, ASM SymbolTable, reflection objects) → Spring/bytecode processing overhead. Domain objects → business logic. High allocation from a single type class → target that code path with pooling, caching, or reduced instantiation.")
     alloc = analysis.alloc_by_class()
     total_alloc = sum(alloc.values()) or 1
     print(f"\n  Total allocation: {format_bytes(total_alloc)}")
     print(f"  Sample count: {analysis.alloc_sample_count}")
 
-    print(f"\n  {'Top 40 Allocation Types':^80}")
-    print(f"  {'Type':<55} {'Bytes':>14} {'Pct':>7}")
-    print(f"  {'-'*55} {'-'*14} {'-'*7}")
+    _tbl_title("Top 40 Allocation Types", 80)
+    _tbl_hdr(f"  {'Type':<55} {'Bytes':>14} {'Pct':>7}")
+    _tbl_sep([55, 14, 7])
     for cls, w in alloc.most_common(40):
-        print(f"  {cls[:53]:<53} {w:>14,d} {w/total_alloc*100:>6.1f}%")
+        _tbl_row(f"  {cls[:53]:<53} {w:>14,d} {w/total_alloc*100:>6.1f}%")
 
     print_header("TOP byte[] ALLOCATION SITES")
+    print_note("byte[] is typically the #1 allocation type in JVM applications. Allocation sites reveal the root cause: Resource.getBytes / ClassLoader.defineClass → class loading from JARs (use CDS); StreamDecoder / SocketChannel → I/O; ByteArrayOutputStream → serialization/buffering. Reducing byte[] churn often yields the biggest GC improvement.")
     byte_stacks = analysis.alloc_stack_sigs(class_filter="[B", depth=4)
     total_byte = sum(byte_stacks.values()) or 1
     print(f"\n  Total byte[]: {format_bytes(total_byte)}")
     for sig, w in byte_stacks.most_common(20):
-        print(f"\n  {w:>12,d} ({w/total_byte*100:.1f}%)")
+        _tbl_row(f"\n  {w:>12,d} ({w/total_byte*100:.1f}%)")
         for line in sig.split(" -> "):
             print(f"    {line}")
 
     # ── Section 4: GC / Heap Timeline ────────────────────────────────────
     print_header("GC / HEAP TIMELINE")
+    print_note("Rapid heap growth → high allocation pressure. High peak usage → memory-hungry workload or potential leak. Frequent GC events → allocation churn that may benefit from object pooling, reduced allocation, or larger young generation. A flat heap curve after initial startup ramp-up is healthy.")
     heap = analysis.gc_heap_series()
     if heap:
         peaks = [h[1] for h in heap]
         print(f"\n  Events: {len(heap)}")
         print(f"  Heap range: {min(peaks):.1f} MB → {max(peaks):.1f} MB (peak)")
-        print(f"\n  {'Timestamp':<22} {'Heap':>10}")
-        print(f"  {'-'*22} {'-'*10}")
+        _tbl_hdr(f"\n  {'Timestamp':<22} {'Heap':>10}")
+        _tbl_sep([22, 10])
         for ts, mb in heap:
-            print(f"  {ts:<22} {mb:>8.1f} MB")
+            _tbl_row(f"  {ts:<22} {mb:>8.1f} MB")
     else:
         print("\n  No GCHeapSummary events found.")
 
     # ── Section 5: GC Pause Times ────────────────────────────────────────
     print_header("GC PAUSE TIMES")
+    print_note("Stop-the-world pauses directly impact application responsiveness. High total pause (>5% of recording) → GC is struggling with allocation rate. Max pause >100ms → potential user-visible latency spike. Full GC pauses (vs young-only) are most concerning — any full GC during startup or steady-state warrants investigation of old-gen pressure.")
     stats = analysis.gc_pause_stats()
     print(f"\n  Pause count: {stats['count']}")
     print(f"  Total pause time: {stats['total_ms']:,.1f} ms")
@@ -978,60 +1036,64 @@ def report_single(analysis: JfrAnalysis):
         print(f"  Pause time as % of recording: {pct_run:.2f}%")
     by_phase = analysis.gc_pause_by_phase()
     if by_phase:
-        print(f"\n  {'By Phase':^60}")
-        print(f"  {'Phase':<40} {'Total (ms)':>15}")
-        print(f"  {'-'*40} {'-'*15}")
+        _tbl_title("By Phase", 60)
+        _tbl_hdr(f"  {'Phase':<40} {'Total (ms)':>15}")
+        _tbl_sep([40, 15])
         for phase, ms in by_phase.most_common(15):
-            print(f"  {phase[:38]:<38} {ms:>15,.1f}")
+            _tbl_row(f"  {phase[:38]:<38} {ms:>15,.1f}")
 
     # ── Section 6: Class Loading ─────────────────────────────────────────
     print_header("CLASS LOADING")
+    print_note("Higher class count → slower startup, more metadata memory in Metaspace. 10k–25k classes is typical for Spring Boot applications. Reduce with CDS (Class Data Sharing), Spring AOT processing, or trimming unused dependencies. Unloaded classes may indicate classloader leaks if count grows over time.")
     loaded, unloaded = analysis.class_loading_final()
     print(f"\n  Classes loaded (final):   {loaded:,}")
     print(f"  Classes unloaded (final): {unloaded:,}")
     series = analysis.class_loading_series()
     if series:
-        print(f"\n  {'Timestamp':<22} {'Loaded classes':>16}")
-        print(f"  {'-'*22} {'-'*16}")
+        _tbl_hdr(f"\n  {'Timestamp':<22} {'Loaded classes':>16}")
+        _tbl_sep([22, 16])
         for ts, n in series[-15:]:
-            print(f"  {ts:<22} {n:>16,d}")
+            _tbl_row(f"  {ts:<22} {n:>16,d}")
 
     # ── Section 7: Thread Creation ───────────────────────────────────────
     print_header("THREAD CREATION")
+    print_note("Excessive thread creation → overhead from stack allocation (typically ~1MB per thread) and context switching. Pools grouped by prefix show which subsystems are active (HTTP executors, schedulers, connection pools). A few dozen threads is normal for Spring Boot; hundreds may indicate a leak or misconfiguration.")
     print(f"\n  Threads started: {analysis.thread_start_count:,}")
     print(f"  Threads ended:   {analysis.thread_end_count:,}")
     pools = analysis.thread_pool_breakdown()
     if pools:
-        print(f"\n  {'Grouped by pool / name prefix':^70}")
-        print(f"  {'Pool / prefix':<50} {'Started':>10}")
-        print(f"  {'-'*50} {'-'*10}")
+        _tbl_title("Grouped by pool / name prefix", 70)
+        _tbl_hdr(f"  {'Pool / prefix':<50} {'Started':>10}")
+        _tbl_sep([50, 10])
         for name, count in pools.most_common(25):
-            print(f"  {name[:48]:<48} {count:>10,d}")
+            _tbl_row(f"  {name[:48]:<48} {count:>10,d}")
 
     # ── Section 8: Lock Contention ───────────────────────────────────────
     print_header("LOCK CONTENTION")
+    print_note("Monitor enter = synchronized block/method waits; Thread park = java.util.concurrent lock waits (ReentrantLock, CountDownLatch, etc.). High wait times → threads blocking each other, reducing throughput. Identify the contended class and reduce lock scope, use lock-free structures, or increase parallelism.")
     print(f"\n  Monitor enter events: {len(analysis.monitor_enter_events):,}   "
           f"total wait: {analysis.monitor_contention_total_ms:,.1f} ms")
     top_mon = analysis.monitor_contention_top(20)
     if top_mon:
-        print(f"\n  {'Top Contended Monitor Classes':^80}")
-        print(f"  {'Class':<50} {'Wait (ms)':>13} {'Events':>10}")
-        print(f"  {'-'*50} {'-'*13} {'-'*10}")
+        _tbl_title("Top Contended Monitor Classes", 80)
+        _tbl_hdr(f"  {'Class':<50} {'Wait (ms)':>13} {'Events':>10}")
+        _tbl_sep([50, 13, 10])
         for cls, ms, cnt in top_mon:
-            print(f"  {cls[:48]:<48} {ms:>13,.1f} {cnt:>10,d}")
+            _tbl_row(f"  {cls[:48]:<48} {ms:>13,.1f} {cnt:>10,d}")
 
     print(f"\n  Thread park events: {len(analysis.thread_park_events):,}   "
           f"total park time: {analysis.thread_park_total_ms:,.1f} ms")
     top_park = analysis.thread_park_top(20)
     if top_park:
-        print(f"\n  {'Top Parked Classes':^80}")
-        print(f"  {'Class':<50} {'Park time (ms)':>16} {'Events':>10}")
-        print(f"  {'-'*50} {'-'*16} {'-'*10}")
+        _tbl_title("Top Parked Classes", 80)
+        _tbl_hdr(f"  {'Class':<50} {'Park time (ms)':>16} {'Events':>10}")
+        _tbl_sep([50, 16, 10])
         for cls, ms, cnt in top_park:
-            print(f"  {cls[:48]:<48} {ms:>16,.1f} {cnt:>10,d}")
+            _tbl_row(f"  {cls[:48]:<48} {ms:>16,.1f} {cnt:>10,d}")
 
     # ── Section 9: JIT Compilation ───────────────────────────────────────
     print_header("JIT COMPILATION")
+    print_note("Compile time = CPU spent optimizing hot methods. High compile time during startup → code churn as methods are compiled/recompiled. C1-only (TieredStopAtLevel=1) disables C2, trading peak throughput for faster startup & zero compilation CPU. Level 4 = C2 (most expensive, highest optimization).")
     print(f"\n  Compilations: {analysis.compilation_count:,}")
     print(f"  Total compile time: {analysis.compilation_total_ms:,.1f} ms")
     if analysis.recording_duration_s() > 0:
@@ -1039,14 +1101,15 @@ def report_single(analysis: JfrAnalysis):
         print(f"  Compile time as % of recording: {pct_run:.2f}%")
     top_compiled = analysis.compilation_top_methods(20)
     if top_compiled:
-        print(f"\n  {'Top Compiled Methods by Time':^90}")
-        print(f"  {'Method':<60} {'Level':>6} {'Time (ms)':>14}")
-        print(f"  {'-'*60} {'-'*6} {'-'*14}")
+        _tbl_title("Top Compiled Methods by Time", 90)
+        _tbl_hdr(f"  {'Method':<60} {'Level':>6} {'Time (ms)':>14}")
+        _tbl_sep([60, 6, 14])
         for ms, method, level in top_compiled:
-            print(f"  {method[:58]:<58} {str(level):>6} {ms:>14,.2f}")
+            _tbl_row(f"  {method[:58]:<58} {str(level):>6} {ms:>14,.2f}")
 
     # ── Section 10: I/O Activity ─────────────────────────────────────────
     print_header("SOCKET / FILE I/O ACTIVITY")
+    print_note("I/O during startup delays readiness. Socket reads → network calls (DB queries, HTTP clients). File reads → classpath scanning, JAR access, config loading. Defer or cache network calls; use CDS to reduce file I/O from class loading.")
     sock = analysis.io_socket_summary()
     print(f"\n  Sockets — reads: {sock['read_count']:,} ({format_bytes(sock['read_bytes'])}, "
           f"{sock['read_ms']:,.1f} ms wait)")
@@ -1054,11 +1117,11 @@ def report_single(analysis: JfrAnalysis):
           f"{sock['write_ms']:,.1f} ms wait)")
     top_hosts = analysis.io_socket_top_hosts()
     if top_hosts:
-        print(f"\n  {'Top Hosts by I/O Wait Time':^70}")
-        print(f"  {'Host':<45} {'Wait (ms)':>15}")
-        print(f"  {'-'*45} {'-'*15}")
+        _tbl_title("Top Hosts by I/O Wait Time", 70)
+        _tbl_hdr(f"  {'Host':<45} {'Wait (ms)':>15}")
+        _tbl_sep([45, 15])
         for host, ms in top_hosts:
-            print(f"  {host[:43]:<43} {ms:>15,.1f}")
+            _tbl_row(f"  {host[:43]:<43} {ms:>15,.1f}")
 
     fio = analysis.io_file_summary()
     print(f"\n  Files — reads: {fio['read_count']:,} ({format_bytes(fio['read_bytes'])}, "
@@ -1067,44 +1130,46 @@ def report_single(analysis: JfrAnalysis):
           f"{fio['write_ms']:,.1f} ms wait)")
     top_paths = analysis.io_file_top_paths()
     if top_paths:
-        print(f"\n  {'Top Paths by I/O Wait Time':^90}")
-        print(f"  {'Path':<65} {'Wait (ms)':>15}")
-        print(f"  {'-'*65} {'-'*15}")
+        _tbl_title("Top Paths by I/O Wait Time", 90)
+        _tbl_hdr(f"  {'Path':<65} {'Wait (ms)':>15}")
+        _tbl_sep([65, 15])
         for path, ms in top_paths:
-            print(f"  {path[:63]:<63} {ms:>15,.1f}")
+            _tbl_row(f"  {path[:63]:<63} {ms:>15,.1f}")
 
     # ── Section 11: CPU Load Timeline ────────────────────────────────────
     print_header("CPU LOAD TIMELINE")
+    print_note("JVM user% = app code CPU; system% = kernel time (I/O syscalls, GC). Machine total near 100% → CPU saturated. High system% relative to user% → I/O or syscall bottleneck rather than pure computation. Correlate with I/O and GC sections.")
     avg_user, avg_sys, avg_machine = analysis.cpu_load_avg()
     print(f"\n  Avg JVM user: {avg_user:.1f}%   Avg JVM system: {avg_sys:.1f}%   Avg machine total: {avg_machine:.1f}%")
     cpu_series = analysis.cpu_load_series()
     if cpu_series:
-        print(f"\n  {'Timestamp':<22} {'JVM User':>9} {'JVM Sys':>9} {'Machine':>9}")
-        print(f"  {'-'*22} {'-'*9} {'-'*9} {'-'*9}")
+        _tbl_hdr(f"\n  {'Timestamp':<22} {'JVM User':>9} {'JVM Sys':>9} {'Machine':>9}")
+        _tbl_sep([22, 9, 9, 9])
         for ts, u, s, m in cpu_series[-20:]:
-            print(f"  {ts:<22} {u:>8.1f}% {s:>8.1f}% {m:>8.1f}%")
+            _tbl_row(f"  {ts:<22} {u:>8.1f}% {s:>8.1f}% {m:>8.1f}%")
 
     # ── Section 12: Wall Clock Sleeping ──────────────────────────────────
     print_header("WALL CLOCK SLEEPING (Idle/Wait Time)")
+    print_note("Threads sleeping = waiting (I/O, locks, idle, or parked). High sleep on main thread → startup blocked on external resource or lock. Parked threads → java.util.concurrent wait. High total sleep time → I/O-bound or lock-bound workload, not CPU-bound.")
     sleep_threads = analysis.sleep_by_thread()
     total_sleep = sum(sleep_threads.values())
     print(f"\n  Total sleep across all threads: {total_sleep/1000:.1f}s")
     print(f"  Events: {len(analysis.sleep_events)}")
 
-    print(f"\n  {'By Thread':^70}")
-    print(f"  {'Thread':<45} {'Time (ms)':>12} {'Pct':>7}")
-    print(f"  {'-'*45} {'-'*12} {'-'*7}")
+    _tbl_title("By Thread", 70)
+    _tbl_hdr(f"  {'Thread':<45} {'Time (ms)':>12} {'Pct':>7}")
+    _tbl_sep([45, 12, 7])
     for t, d in sleep_threads.most_common(20):
         pct = d / total_sleep * 100 if total_sleep else 0
-        print(f"  {t[:43]:<43} {d:>12,.0f} {pct:>6.1f}%")
+        _tbl_row(f"  {t[:43]:<43} {d:>12,.0f} {pct:>6.1f}%")
 
     longest = analysis.sleep_longest(15)
     if longest:
-        print(f"\n  {'Longest Individual Sleep Events':^80}")
-        print(f"  {'Duration':>10} {'Samples':>8} {'Thread':<30} {'Top Frame':<40}")
-        print(f"  {'-'*10} {'-'*8} {'-'*30} {'-'*40}")
+        _tbl_title("Longest Individual Sleep Events", 80)
+        _tbl_hdr(f"  {'Duration':>10} {'Samples':>8} {'Thread':<30} {'Top Frame':<40}")
+        _tbl_sep([10, 8, 30, 40])
         for dur_ms, thread, top_frame, samples in longest:
-            print(f"  {dur_ms:>10,.0f} ms {samples:>8} {thread[:28]:<28} {top_frame[:38]:<38}")
+            _tbl_row(f"  {dur_ms:>10,.0f} ms {samples:>8} {thread[:28]:<28} {top_frame[:38]:<38}")
 
 
 # ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -1130,24 +1195,26 @@ def report_comparison(before: JfrAnalysis, after: JfrAnalysis):
     11. Overall summary — key metrics at a glance
     """
     print_header("BEFORE vs AFTER COMPARISON")
+    print_note("Side-by-side delta view. ELIMINATED = was present in Before but absent in After. NEW = appeared only in After. Focus on large-magnitude deltas; small changes may be noise from slightly different workload timing or sampling variance.")
     print(f"  Before: {before.name}  ({before.recording_duration_s():.3f}s, JVM {before.jvm_version()})")
     print(f"  After:  {after.name}  ({after.recording_duration_s():.3f}s, JVM {after.jvm_version()})")
 
     # ── Section 1: Allocation Comparison ─────────────────────────────────
     print_header("ALLOCATION COMPARISON")
+    print_note("Reduction in allocation → less GC pressure, higher throughput. ELIMINATED (was >1MB, now 0) = clearest optimization wins. NEW types = new code paths or different workload. Focus on large-magnitude deltas; small changes may be workload noise.")
     old_alloc = before.alloc_by_class()
     new_alloc = after.alloc_by_class()
     old_total = sum(old_alloc.values())
     new_total = sum(new_alloc.values())
 
-    print(f"\n  {'Metric':<48} {'Before':>15} {'After':>15} {'Change':>15}")
-    print(f"  {'-'*48} {'-'*15} {'-'*15} {'-'*15}")
-    print(f"  {'Total allocation':<48} {format_bytes(old_total):>15} {format_bytes(new_total):>15} {format_bytes(new_total-old_total):>15}")
-    print(f"  {'Allocation samples':<48} {before.alloc_sample_count:>15,d} {after.alloc_sample_count:>15,d} {after.alloc_sample_count-before.alloc_sample_count:>+15,d}")
+    _tbl_hdr(f"\n  {'Metric':<48} {'Before':>15} {'After':>15} {'Change':>15}")
+    _tbl_sep([48, 15, 15, 15])
+    _tbl_row(f"  {'Total allocation':<48} {format_bytes(old_total):>15} {format_bytes(new_total):>15} {format_bytes(new_total-old_total):>15}")
+    _tbl_row(f"  {'Allocation samples':<48} {before.alloc_sample_count:>15,d} {after.alloc_sample_count:>15,d} {after.alloc_sample_count-before.alloc_sample_count:>+15,d}")
 
-    print(f"\n  {'Top Allocation Types Comparison':^95}")
-    print(f"  {'Type':<52} {'Before':>13} {'After':>13} {'Delta':>14}")
-    print(f"  {'-'*52} {'-'*13} {'-'*13} {'-'*14}")
+    _tbl_title("Top Allocation Types Comparison", 95)
+    _tbl_hdr(f"  {'Type':<52} {'Before':>13} {'After':>13} {'Delta':>14}")
+    _tbl_sep([52, 13, 13, 14])
     all_types = set(old_alloc) | set(new_alloc)
     for t in sorted(all_types, key=lambda t: old_alloc.get(t, 0), reverse=True)[:40]:
         o, n = old_alloc.get(t, 0), new_alloc.get(t, 0)
@@ -1159,10 +1226,11 @@ def report_comparison(before: JfrAnalysis, after: JfrAnalysis):
             marker = " ◀◀ ELIMINATED"
         elif o == 0 and n > 1_000_000:
             marker = " ◀◀ NEW"
-        print(f"  {t[:50]:<50} {o:>13,d} {n:>13,d} {delta:>+14,d} ({pct_change(o, n)}){marker}")
+        _tbl_row(f"  {t[:50]:<50} {o:>13,d} {n:>13,d} {delta:>+14,d} ({pct_change(o, n)}){marker}")
 
     # ── Section 2: CPU Comparison ────────────────────────────────────────
     print_header("CPU EXECUTION SAMPLE COMPARISON")
+    print_note("Fewer total samples for same duration → less CPU time consumed. Method deltas show shifted hotspots. ◀◀ markers highlight methods significantly reduced or eliminated — these are the clearest optimization wins. Check thread distribution for workload shifts between thread pools.")
     old_methods = before.cpu_method_counts()
     new_methods = after.cpu_method_counts()
     old_cpu_total = sum(old_methods.values())
@@ -1172,28 +1240,29 @@ def report_comparison(before: JfrAnalysis, after: JfrAnalysis):
     if old_cpu_total:
         print(f"  Delta:  {int(new_cpu_total - old_cpu_total):+d} ({pct_change(old_cpu_total, new_cpu_total)})")
 
-    print(f"\n  {'Top Hot Methods Comparison':^90}")
-    print(f"  {'Method':<65} {'Before':>8} {'After':>8} {'Delta':>8}")
-    print(f"  {'-'*65} {'-'*8} {'-'*8} {'-'*8}")
+    _tbl_title("Top Hot Methods Comparison", 90)
+    _tbl_hdr(f"  {'Method':<65} {'Before':>8} {'After':>8} {'Delta':>8}")
+    _tbl_sep([65, 8, 8, 8])
     all_methods = set(old_methods) | set(new_methods)
     for m in sorted(all_methods, key=lambda m: old_methods.get(m, 0), reverse=True)[:30]:
         o, n = old_methods.get(m, 0), new_methods.get(m, 0)
         delta = n - o
         marker = " ◀◀" if (o > 2 and n == 0) or (o >= 5 and delta <= -o * 0.5) else ""
-        print(f"  {m[:63]:<63} {o:>8} {n:>8} {delta:>+8}{marker}")
+        _tbl_row(f"  {m[:63]:<63} {o:>8} {n:>8} {delta:>+8}{marker}")
 
-    print(f"\n  {'Thread Distribution Comparison':^90}")
-    print(f"  {'Thread':<40} {'Before':>8} {'After':>8} {'Delta':>8}")
-    print(f"  {'-'*40} {'-'*8} {'-'*8} {'-'*8}")
+    _tbl_title("Thread Distribution Comparison", 90)
+    _tbl_hdr(f"  {'Thread':<40} {'Before':>8} {'After':>8} {'Delta':>8}")
+    _tbl_sep([40, 8, 8, 8])
     old_threads = before.cpu_thread_counts()
     new_threads = after.cpu_thread_counts()
     all_threads = set(old_threads) | set(new_threads)
     for t in sorted(all_threads, key=lambda t: old_threads.get(t, 0), reverse=True)[:15]:
         o, n = old_threads.get(t, 0), new_threads.get(t, 0)
-        print(f"  {t[:38]:<38} {o:>8} {n:>8} {n-o:>+8}")
+        _tbl_row(f"  {t[:38]:<38} {o:>8} {n:>8} {n-o:>+8}")
 
     # ── Section 3: GC Heap Comparison ────────────────────────────────────
     print_header("GC / HEAP COMPARISON")
+    print_note("Fewer GC events → less allocation pressure. Lower peak heap → reduced memory footprint. Heap range (min → max) shows growth; a tighter range means more stable memory usage. Either reduction is an improvement; both reduced is ideal.")
     old_heap = before.gc_heap_series()
     new_heap = after.gc_heap_series()
     if old_heap:
@@ -1211,119 +1280,127 @@ def report_comparison(before: JfrAnalysis, after: JfrAnalysis):
 
     # ── Section 4: GC Pause Time Comparison ──────────────────────────────
     print_header("GC PAUSE TIME COMPARISON")
+    print_note("Reduced pause count/time → better responsiveness. Lower max pause → fewer latency spikes. Compare by-phase to see which GC phase improved. Full GC pauses (vs young-only) are most impactful — any reduction in full GCs is a significant win.")
     ob = before.gc_pause_stats()
     oa = after.gc_pause_stats()
-    print(f"\n  {'Metric':<30} {'Before':>15} {'After':>15} {'Change':>15}")
-    print(f"  {'-'*30} {'-'*15} {'-'*15} {'-'*15}")
-    print(f"  {'Pause count':<30} {ob['count']:>15,d} {oa['count']:>15,d} {oa['count']-ob['count']:>+15,d}")
-    print(f"  {'Total pause (ms)':<30} {ob['total_ms']:>15,.1f} {oa['total_ms']:>15,.1f} {oa['total_ms']-ob['total_ms']:>+15,.1f}")
-    print(f"  {'Avg pause (ms)':<30} {ob['avg_ms']:>15,.2f} {oa['avg_ms']:>15,.2f} {oa['avg_ms']-ob['avg_ms']:>+15,.2f}")
-    print(f"  {'Max pause (ms)':<30} {ob['max_ms']:>15,.2f} {oa['max_ms']:>15,.2f} {oa['max_ms']-ob['max_ms']:>+15,.2f}")
+    _tbl_hdr(f"\n  {'Metric':<30} {'Before':>15} {'After':>15} {'Change':>15}")
+    _tbl_sep([30, 15, 15, 15])
+    _tbl_row(f"  {'Pause count':<30} {ob['count']:>15,d} {oa['count']:>15,d} {oa['count']-ob['count']:>+15,d}")
+    _tbl_row(f"  {'Total pause (ms)':<30} {ob['total_ms']:>15,.1f} {oa['total_ms']:>15,.1f} {oa['total_ms']-ob['total_ms']:>+15,.1f}")
+    _tbl_row(f"  {'Avg pause (ms)':<30} {ob['avg_ms']:>15,.2f} {oa['avg_ms']:>15,.2f} {oa['avg_ms']-ob['avg_ms']:>+15,.2f}")
+    _tbl_row(f"  {'Max pause (ms)':<30} {ob['max_ms']:>15,.2f} {oa['max_ms']:>15,.2f} {oa['max_ms']-ob['max_ms']:>+15,.2f}")
 
     old_phase = before.gc_pause_by_phase()
     new_phase = after.gc_pause_by_phase()
     all_phases = set(old_phase) | set(new_phase)
     if all_phases:
-        print(f"\n  {'By Phase (ms)':^70}")
-        print(f"  {'Phase':<35} {'Before':>12} {'After':>12} {'Delta':>12}")
-        print(f"  {'-'*35} {'-'*12} {'-'*12} {'-'*12}")
+        _tbl_title("By Phase (ms)", 70)
+        _tbl_hdr(f"  {'Phase':<35} {'Before':>12} {'After':>12} {'Delta':>12}")
+        _tbl_sep([35, 12, 12, 12])
         for phase in sorted(all_phases, key=lambda p: old_phase.get(p, 0), reverse=True):
             o, n = old_phase.get(phase, 0), new_phase.get(phase, 0)
-            print(f"  {phase[:33]:<33} {o:>12,.1f} {n:>12,.1f} {n-o:>+12,.1f}")
+            _tbl_row(f"  {phase[:33]:<33} {o:>12,.1f} {n:>12,.1f} {n-o:>+12,.1f}")
 
     # ── Section 5: Class Loading Comparison ──────────────────────────────
     print_header("CLASS LOADING COMPARISON")
+    print_note("Fewer classes loaded → faster startup & less metadata memory. Large reductions suggest dependency trimming or AOT processing is working. 10k–25k classes is typical for Spring Boot; increases may indicate new dependencies or conditional configs activating.")
     ol, ou = before.class_loading_final()
     nl, nu = after.class_loading_final()
-    print(f"\n  {'Metric':<30} {'Before':>15} {'After':>15} {'Change':>15}")
-    print(f"  {'-'*30} {'-'*15} {'-'*15} {'-'*15}")
-    print(f"  {'Classes loaded':<30} {ol:>15,d} {nl:>15,d} {nl-ol:>+15,d} ({pct_change(ol, nl)})")
-    print(f"  {'Classes unloaded':<30} {ou:>15,d} {nu:>15,d} {nu-ou:>+15,d} ({pct_change(ou, nu)})")
+    _tbl_hdr(f"\n  {'Metric':<30} {'Before':>15} {'After':>15} {'Change':>15}")
+    _tbl_sep([30, 15, 15, 15])
+    _tbl_row(f"  {'Classes loaded':<30} {ol:>15,d} {nl:>15,d} {nl-ol:>+15,d} ({pct_change(ol, nl)})")
+    _tbl_row(f"  {'Classes unloaded':<30} {ou:>15,d} {nu:>15,d} {nu-ou:>+15,d} ({pct_change(ou, nu)})")
 
     # ── Section 6: Thread Creation Comparison ────────────────────────────
     print_header("THREAD CREATION COMPARISON")
-    print(f"\n  {'Metric':<30} {'Before':>15} {'After':>15} {'Change':>15}")
-    print(f"  {'-'*30} {'-'*15} {'-'*15} {'-'*15}")
-    print(f"  {'Threads started':<30} {before.thread_start_count:>15,d} {after.thread_start_count:>15,d} "
+    print_note("Fewer threads started → less overhead from stack allocation & context switching. Pool breakdown changes show which subsystems now have different activity levels (e.g., fewer HTTP executors → fewer requests, or more scheduler threads → new background work).")
+    _tbl_hdr(f"\n  {'Metric':<30} {'Before':>15} {'After':>15} {'Change':>15}")
+    _tbl_sep([30, 15, 15, 15])
+    _tbl_row(f"  {'Threads started':<30} {before.thread_start_count:>15,d} {after.thread_start_count:>15,d} "
           f"{after.thread_start_count-before.thread_start_count:>+15,d} ({pct_change(before.thread_start_count, after.thread_start_count)})")
-    print(f"  {'Threads ended':<30} {before.thread_end_count:>15,d} {after.thread_end_count:>15,d} "
+    _tbl_row(f"  {'Threads ended':<30} {before.thread_end_count:>15,d} {after.thread_end_count:>15,d} "
           f"{after.thread_end_count-before.thread_end_count:>+15,d}")
 
     old_pools = before.thread_pool_breakdown()
     new_pools = after.thread_pool_breakdown()
     all_pools = set(old_pools) | set(new_pools)
     if all_pools:
-        print(f"\n  {'By Pool / Name Prefix':^70}")
-        print(f"  {'Pool / prefix':<40} {'Before':>10} {'After':>10} {'Delta':>10}")
-        print(f"  {'-'*40} {'-'*10} {'-'*10} {'-'*10}")
+        _tbl_title("By Pool / Name Prefix", 70)
+        _tbl_hdr(f"  {'Pool / prefix':<40} {'Before':>10} {'After':>10} {'Delta':>10}")
+        _tbl_sep([40, 10, 10, 10])
         for p in sorted(all_pools, key=lambda p: old_pools.get(p, 0), reverse=True)[:25]:
             o, n = old_pools.get(p, 0), new_pools.get(p, 0)
-            print(f"  {p[:38]:<38} {o:>10,d} {n:>10,d} {n-o:>+10,d}")
+            _tbl_row(f"  {p[:38]:<38} {o:>10,d} {n:>10,d} {n-o:>+10,d}")
 
     # ── Section 7: Lock Contention Comparison ────────────────────────────
     print_header("LOCK CONTENTION COMPARISON")
-    print(f"\n  {'Metric':<30} {'Before':>15} {'After':>15} {'Change':>15}")
-    print(f"  {'-'*30} {'-'*15} {'-'*15} {'-'*15}")
-    print(f"  {'Monitor enter events':<30} {len(before.monitor_enter_events):>15,d} {len(after.monitor_enter_events):>15,d} "
+    print_note("Reduced wait time → less thread blocking. ELIMINATED classes are the biggest wins — contention fully removed. Monitor enter = synchronized blocks; Thread park = java.util.concurrent lock waits. High park time on specific classes → consider lock-free structures or reduced lock scope.")
+    _tbl_hdr(f"\n  {'Metric':<30} {'Before':>15} {'After':>15} {'Change':>15}")
+    _tbl_sep([30, 15, 15, 15])
+    _tbl_row(f"  {'Monitor enter events':<30} {len(before.monitor_enter_events):>15,d} {len(after.monitor_enter_events):>15,d} "
           f"{len(after.monitor_enter_events)-len(before.monitor_enter_events):>+15,d}")
-    print(f"  {'Monitor wait time (ms)':<30} {before.monitor_contention_total_ms:>15,.1f} {after.monitor_contention_total_ms:>15,.1f} "
+    _tbl_row(f"  {'Monitor wait time (ms)':<30} {before.monitor_contention_total_ms:>15,.1f} {after.monitor_contention_total_ms:>15,.1f} "
           f"{after.monitor_contention_total_ms-before.monitor_contention_total_ms:>+15,.1f}")
-    print(f"  {'Thread park events':<30} {len(before.thread_park_events):>15,d} {len(after.thread_park_events):>15,d} "
+    _tbl_row(f"  {'Thread park events':<30} {len(before.thread_park_events):>15,d} {len(after.thread_park_events):>15,d} "
           f"{len(after.thread_park_events)-len(before.thread_park_events):>+15,d}")
-    print(f"  {'Park time (ms)':<30} {before.thread_park_total_ms:>15,.1f} {after.thread_park_total_ms:>15,.1f} "
+    _tbl_row(f"  {'Park time (ms)':<30} {before.thread_park_total_ms:>15,.1f} {after.thread_park_total_ms:>15,.1f} "
           f"{after.thread_park_total_ms-before.thread_park_total_ms:>+15,.1f}")
 
     old_mon = dict((c, ms) for c, ms, _ in before.monitor_contention_top(100))
     new_mon = dict((c, ms) for c, ms, _ in after.monitor_contention_top(100))
     all_mon = set(old_mon) | set(new_mon)
     if all_mon:
-        print(f"\n  {'Top Contended Monitor Classes (ms)':^80}")
-        print(f"  {'Class':<45} {'Before':>13} {'After':>13} {'Delta':>13}")
-        print(f"  {'-'*45} {'-'*13} {'-'*13} {'-'*13}")
+        _tbl_title("Top Contended Monitor Classes (ms)", 80)
+        _tbl_hdr(f"  {'Class':<45} {'Before':>13} {'After':>13} {'Delta':>13}")
+        _tbl_sep([45, 13, 13, 13])
         for cls in sorted(all_mon, key=lambda c: old_mon.get(c, 0), reverse=True)[:20]:
             o, n = old_mon.get(cls, 0), new_mon.get(cls, 0)
             marker = " ◀◀ ELIMINATED" if o > 0 and n == 0 else ""
-            print(f"  {cls[:43]:<43} {o:>13,.1f} {n:>13,.1f} {n-o:>+13,.1f}{marker}")
+            _tbl_row(f"  {cls[:43]:<43} {o:>13,.1f} {n:>13,.1f} {n-o:>+13,.1f}{marker}")
 
     # ── Section 8: JIT Compilation Comparison ────────────────────────────
     print_header("JIT COMPILATION COMPARISON")
-    print(f"\n  {'Metric':<30} {'Before':>15} {'After':>15} {'Change':>15}")
-    print(f"  {'-'*30} {'-'*15} {'-'*15} {'-'*15}")
-    print(f"  {'Compilations':<30} {before.compilation_count:>15,d} {after.compilation_count:>15,d} "
+    print_note("Fewer compilations / less compile time → less CPU spent on JIT. With TieredStopAtLevel=1 compilations are disabled entirely (C1 template interpreter only). C2 compilations (level 4) consume the most CPU.")
+    _tbl_hdr(f"\n  {'Metric':<30} {'Before':>15} {'After':>15} {'Change':>15}")
+    _tbl_sep([30, 15, 15, 15])
+    _tbl_row(f"  {'Compilations':<30} {before.compilation_count:>15,d} {after.compilation_count:>15,d} "
           f"{after.compilation_count-before.compilation_count:>+15,d} ({pct_change(before.compilation_count, after.compilation_count)})")
-    print(f"  {'Total compile time (ms)':<30} {before.compilation_total_ms:>15,.1f} {after.compilation_total_ms:>15,.1f} "
+    _tbl_row(f"  {'Total compile time (ms)':<30} {before.compilation_total_ms:>15,.1f} {after.compilation_total_ms:>15,.1f} "
           f"{after.compilation_total_ms-before.compilation_total_ms:>+15,.1f} ({pct_change(before.compilation_total_ms, after.compilation_total_ms)})")
 
     # ── Section 9: I/O Comparison ────────────────────────────────────────
     print_header("SOCKET / FILE I/O COMPARISON")
+    print_note("Reduced I/O → faster readiness & less waiting. Socket changes may reflect different workload; file I/O changes reflect classpath/config scanning activity. High socket I/O during startup → defer or cache network calls.")
     os_ = before.io_socket_summary()
     ns_ = after.io_socket_summary()
-    print(f"\n  {'Metric':<30} {'Before':>18} {'After':>18} {'Change':>15}")
-    print(f"  {'-'*30} {'-'*18} {'-'*18} {'-'*15}")
-    print(f"  {'Socket reads':<30} {os_['read_count']:>18,d} {ns_['read_count']:>18,d} {ns_['read_count']-os_['read_count']:>+15,d}")
-    print(f"  {'Socket bytes read':<30} {format_bytes(os_['read_bytes']):>18} {format_bytes(ns_['read_bytes']):>18} {format_bytes(ns_['read_bytes']-os_['read_bytes']):>15}")
-    print(f"  {'Socket writes':<30} {os_['write_count']:>18,d} {ns_['write_count']:>18,d} {ns_['write_count']-os_['write_count']:>+15,d}")
-    print(f"  {'Socket bytes written':<30} {format_bytes(os_['write_bytes']):>18} {format_bytes(ns_['write_bytes']):>18} {format_bytes(ns_['write_bytes']-os_['write_bytes']):>15}")
+    _tbl_hdr(f"\n  {'Metric':<30} {'Before':>18} {'After':>18} {'Change':>15}")
+    _tbl_sep([30, 18, 18, 15])
+    _tbl_row(f"  {'Socket reads':<30} {os_['read_count']:>18,d} {ns_['read_count']:>18,d} {ns_['read_count']-os_['read_count']:>+15,d}")
+    _tbl_row(f"  {'Socket bytes read':<30} {format_bytes(os_['read_bytes']):>18} {format_bytes(ns_['read_bytes']):>18} {format_bytes(ns_['read_bytes']-os_['read_bytes']):>15}")
+    _tbl_row(f"  {'Socket writes':<30} {os_['write_count']:>18,d} {ns_['write_count']:>18,d} {ns_['write_count']-os_['write_count']:>+15,d}")
+    _tbl_row(f"  {'Socket bytes written':<30} {format_bytes(os_['write_bytes']):>18} {format_bytes(ns_['write_bytes']):>18} {format_bytes(ns_['write_bytes']-os_['write_bytes']):>15}")
 
     of_ = before.io_file_summary()
     nf_ = after.io_file_summary()
-    print(f"\n  {'File reads':<30} {of_['read_count']:>18,d} {nf_['read_count']:>18,d} {nf_['read_count']-of_['read_count']:>+15,d}")
-    print(f"  {'File bytes read':<30} {format_bytes(of_['read_bytes']):>18} {format_bytes(nf_['read_bytes']):>18} {format_bytes(nf_['read_bytes']-of_['read_bytes']):>15}")
-    print(f"  {'File writes':<30} {of_['write_count']:>18,d} {nf_['write_count']:>18,d} {nf_['write_count']-of_['write_count']:>+15,d}")
-    print(f"  {'File bytes written':<30} {format_bytes(of_['write_bytes']):>18} {format_bytes(nf_['write_bytes']):>18} {format_bytes(nf_['write_bytes']-of_['write_bytes']):>15}")
+    _tbl_row(f"\n  {'File reads':<30} {of_['read_count']:>18,d} {nf_['read_count']:>18,d} {nf_['read_count']-of_['read_count']:>+15,d}")
+    _tbl_row(f"  {'File bytes read':<30} {format_bytes(of_['read_bytes']):>18} {format_bytes(nf_['read_bytes']):>18} {format_bytes(nf_['read_bytes']-of_['read_bytes']):>15}")
+    _tbl_row(f"  {'File writes':<30} {of_['write_count']:>18,d} {nf_['write_count']:>18,d} {nf_['write_count']-of_['write_count']:>+15,d}")
+    _tbl_row(f"  {'File bytes written':<30} {format_bytes(of_['write_bytes']):>18} {format_bytes(nf_['write_bytes']):>18} {format_bytes(nf_['write_bytes']-of_['write_bytes']):>15}")
 
     # ── Section 10: CPU Load Comparison ──────────────────────────────────
     print_header("CPU LOAD COMPARISON")
+    print_note("Lower JVM user% → less CPU time for same work. Lower system% → fewer I/O syscalls. A shift from user→system may indicate I/O is now the bottleneck rather than computation.")
     ou_, os2, om = before.cpu_load_avg()
     nu_, ns2, nm = after.cpu_load_avg()
-    print(f"\n  {'Metric':<30} {'Before':>12} {'After':>12} {'Change':>12}")
-    print(f"  {'-'*30} {'-'*12} {'-'*12} {'-'*12}")
-    print(f"  {'Avg JVM user %':<30} {ou_:>11.1f}% {nu_:>11.1f}% {nu_-ou_:>+11.1f}%")
-    print(f"  {'Avg JVM system %':<30} {os2:>11.1f}% {ns2:>11.1f}% {ns2-os2:>+11.1f}%")
-    print(f"  {'Avg machine total %':<30} {om:>11.1f}% {nm:>11.1f}% {nm-om:>+11.1f}%")
+    _tbl_hdr(f"\n  {'Metric':<30} {'Before':>12} {'After':>12} {'Change':>12}")
+    _tbl_sep([30, 12, 12, 12])
+    _tbl_row(f"  {'Avg JVM user %':<30} {ou_:>11.1f}% {nu_:>11.1f}% {nu_-ou_:>+11.1f}%")
+    _tbl_row(f"  {'Avg JVM system %':<30} {os2:>11.1f}% {ns2:>11.1f}% {ns2-os2:>+11.1f}%")
+    _tbl_row(f"  {'Avg machine total %':<30} {om:>11.1f}% {nm:>11.1f}% {nm-om:>+11.1f}%")
 
     # ── Section 11: Sleep Comparison ─────────────────────────────────────
     print_header("WALL CLOCK SLEEPING COMPARISON")
+    print_note("Less sleep time → threads spending less time waiting (I/O, locks, idle). Shift between threads may indicate workload moved. Sleep on main thread → startup blocked on external resource.")
     old_sleep = before.sleep_by_thread()
     new_sleep = after.sleep_by_thread()
     old_sleep_total = sum(old_sleep.values())
@@ -1331,15 +1408,16 @@ def report_comparison(before: JfrAnalysis, after: JfrAnalysis):
     print(f"\n  Before: {len(before.sleep_events)} events, {old_sleep_total/1000:.1f}s total")
     print(f"  After:  {len(after.sleep_events)} events, {new_sleep_total/1000:.1f}s total")
 
-    print(f"\n  {'Thread':<40} {'Before (ms)':>12} {'After (ms)':>12} {'Delta':>12}")
-    print(f"  {'-'*40} {'-'*12} {'-'*12} {'-'*12}")
+    _tbl_hdr(f"\n  {'Thread':<40} {'Before (ms)':>12} {'After (ms)':>12} {'Delta':>12}")
+    _tbl_sep([40, 12, 12, 12])
     all_sleep_threads = set(old_sleep) | set(new_sleep)
     for t in sorted(all_sleep_threads, key=lambda t: old_sleep.get(t, 0), reverse=True)[:15]:
         o, n = old_sleep.get(t, 0), new_sleep.get(t, 0)
-        print(f"  {t[:38]:<38} {o:>12,.0f} {n:>12,.0f} {n-o:>+12,.0f}")
+        _tbl_row(f"  {t[:38]:<38} {o:>12,.0f} {n:>12,.0f} {n-o:>+12,.0f}")
 
     # ── Section 12: Overall Summary ──────────────────────────────────────
     print_header("SUMMARY")
+    print_note("Key metrics at a glance. Green flags: reduced allocation, lower GC pause, fewer classes loaded, less lock contention, shorter duration. Red flags: increases in any of these may indicate regression or different workload.")
     dur_delta = after.recording_duration_s() - before.recording_duration_s()
     print(f"\n  Recording duration: {before.recording_duration_s():.3f}s → {after.recording_duration_s():.3f}s "
           f"({dur_delta:+.3f}s, {pct_change(before.recording_duration_s(), after.recording_duration_s())})")
@@ -1370,11 +1448,18 @@ def main():
       - 2 arguments: Before/after comparison (single reports + diff report).
       - 0 or >2:     Print usage and exit.
     """
-    if len(sys.argv) < 2:
+    global MARKDOWN
+
+    # Parse --markdown / -m flag from any position in args
+    args = [a for a in sys.argv[1:] if a not in ("--markdown", "-m")]
+    if len(args) < len(sys.argv) - 1:
+        MARKDOWN = True
+
+    if len(args) < 1:
         print(__doc__)
         sys.exit(1)
 
-    files = sys.argv[1:]
+    files = args
 
     if len(files) == 1:
         analysis = JfrAnalysis(files[0])
