@@ -31,6 +31,7 @@ public class SecurityConfig {
         "/h2-console/**", // enabled for testing/demo purpose
         "/debug/**",
         "/actuator/**",   // Prometheus scraping & health checks
+        "/favicon.ico",
         "/" //landing page is allowed for all
     };
 

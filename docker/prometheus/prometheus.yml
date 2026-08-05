@@ -9,3 +9,5 @@ scrape_configs:
       - targets:
           - 'blog-app-1:8080'
           - 'blog-app-2:8080'
+          # for app running from IDE (host machine)
+          - 'host.docker.internal:8080'

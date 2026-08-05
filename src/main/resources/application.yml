@@ -30,7 +30,14 @@ spring:
     mvc:
         log-request-details: false
         publish-request-handled-events: false
-
+    web:
+        resources:
+            cache.cachecontrol.max-age: 100
+            static-locations:
+                - classpath:/META-INF/resources/
+                - classpath:/resources/
+                - classpath:/static/
+                - classpath:/public/
 server:
     port: 8080
 
