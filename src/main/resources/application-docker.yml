@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/blogapp
+    driver-class-name: org.postgresql.Driver
+    username: blogapp
+    password: blogapp
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  thymeleaf:
+    cache: true  # cached in docker, unlike dev where it reads from src/
+  web:
+    resources:
+      static-locations:
+        - classpath:/META-INF/resources/
+        - classpath:/resources/
+        - classpath:/static/
+        - classpath:/public/
+  mvc:
+    static-path-pattern: /static/**

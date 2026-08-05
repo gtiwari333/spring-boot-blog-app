@@ -1,6 +1,6 @@
 spring:
     application:
-        name: Seed App - An example of professional spring project
+        name: Seed App
     jpa:
         show-sql: false
         open-in-view: false
@@ -55,6 +55,23 @@ wro4j:
 app-properties:
     file-storage:
         upload-folder: ${java.io.tmpdir}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      slo:
+        http.server.requests: 10ms,50ms,100ms,250ms,500ms,1s,2s,5s,10s
 
 
 spring-doc:
