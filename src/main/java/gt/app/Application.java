@@ -57,6 +57,7 @@ public class Application {
 
 }
 
+
 //required for GraalVMNativeImage::
 class MyRuntimeHints implements RuntimeHintsRegistrar {
     @Override

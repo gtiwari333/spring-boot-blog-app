@@ -27,9 +27,21 @@ spring:
     threads:
         virtual:
             enabled: true
+
+
+# disable multipart if there's no use of it in the app
+#    servlet:
+#        multipart:
+#            enabled: false
     mvc:
         log-request-details: false
         publish-request-handled-events: false
+        hiddenmethod:
+            filter:
+                enabled: false
+        formcontent:
+            filter:
+                enabled: false
 
 server:
     port: 8080
