@@ -28,6 +28,10 @@ public class UserAuthorityService {
 
             Long createdById = noteService.findCreatedByUserIdById(id);
 
+            if (createdById == null) {
+                return false;  // note doesn't exist
+            }
+
             return createdById.equals(curUser.getId());
         }
 

@@ -30,6 +30,8 @@ public class SecurityConfig {
         "/signup/**",
         "/h2-console/**", // enabled for testing/demo purpose
         "/debug/**",
+        "/actuator/**",   // Prometheus scraping & health checks
+        "/favicon.ico",
         "/" //landing page is allowed for all
     };
 
@@ -53,6 +55,7 @@ public class SecurityConfig {
                 if (h2ConsoleEnabled) {
                     csrf.ignoringRequestMatchers("/h2-console/**");
                 }
+                csrf.ignoringRequestMatchers("/actuator/**");
             })
             .formLogin(f -> f.loginProcessingUrl("/auth/login")
                 .permitAll())

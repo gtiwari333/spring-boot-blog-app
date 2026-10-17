@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.6</version>
+        <version>4.1.1</version>
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
@@ -111,6 +111,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
 
         <!-- processors/code generators -->
         <dependency>
@@ -158,17 +162,20 @@
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
             <version>${webjar-jquery.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
             <version>${webjar-bootstrap.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>popper.js</artifactId>
             <version>${webjar-popperjs.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -210,10 +217,18 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <!-- dev profile uses h2 -->
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-h2console</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <!-- docker profile uses postgresql -->
+            <scope>runtime</scope>
         </dependency>
 
         <!-- spock deps -->
@@ -276,6 +291,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <image>
+                        <name>blog-app:${project.version}</name>
+                    </image>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

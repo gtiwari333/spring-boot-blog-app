@@ -1,4 +1,4 @@
-# note: spring boot runs this automatically if you uncomment 'pring-boot-docker-compose` dependency in pom.xml
+# note: spring boot runs this automatically if you uncomment 'spring-boot-docker-compose` dependency in pom.xml
 services:
     emailhog:
         image: 'mailhog/mailhog'
