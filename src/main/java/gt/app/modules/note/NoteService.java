@@ -33,14 +33,16 @@ public class NoteService {
     public Note createNote(NoteCreateDto dto) {
 
         List<ReceivedFile> files = new ArrayList<>();
-        for (MultipartFile mpf : dto.files()) {
+        if (dto.files() != null) {
+            for (MultipartFile mpf : dto.files()) {
 
-            if (mpf.isEmpty()) {
-                continue;
+                if (mpf.isEmpty()) {
+                    continue;
+                }
+
+                String fileId = fileService.store(FILE_GROUP, mpf);
+                files.add(new ReceivedFile(FILE_GROUP, mpf.getOriginalFilename(), fileId));
             }
-
-            String fileId = fileService.store(FILE_GROUP, mpf);
-            files.add(new ReceivedFile(FILE_GROUP, mpf.getOriginalFilename(), fileId));
         }
 
         Note note = noteMapper.createToEntity(dto);

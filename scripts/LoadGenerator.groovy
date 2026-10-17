@@ -8,7 +8,7 @@
  *
  * Usage:
  *   groovy scripts/LoadGenerator.groovy
- *   groovy scripts/LoadGenerator.groovy --url http://localhost:8080 --duration 300 --users 3
+ *   groovy scripts/LoadGenerator.groovy --url http://localhost:8082 --duration 300 --users 20
  *   groovy scripts/LoadGenerator.groovy --headless false   # show browser window
  */
 
@@ -16,17 +16,18 @@
 @Grab('org.slf4j:slf4j-nop:2.0.17')
 
 import com.codeborne.selenide.Selenide
-import com.codeborne.selenide.SelenideElement
 import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Configuration
 import org.openqa.selenium.Keys
 
 import java.time.Duration
 import java.time.Instant
+import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 import java.util.concurrent.ThreadLocalRandom
 
 // ---- CLI args ----
-def cfg = [url: 'http://localhost:80', duration: 300, users: 3, headless: true, interval: 0.3]
+def cfg = [url: 'http://localhost:80', duration: 300, users: 3, headless: true, interval: 0.3, browser: 'chrome']
 def i = 0
 while (i < args.length) {
     switch (args[i]) {
@@ -35,6 +36,7 @@ while (i < args.length) {
         case '--users':     cfg.users = args[++i].toInteger(); break
         case '--headless':  cfg.headless = args[++i].toBoolean(); break
         case '--interval':  cfg.interval = args[++i].toDouble(); break
+        case '--browser':   cfg.browser = args[++i]; break
     }
     i++
 }
@@ -46,7 +48,7 @@ final INTERVAL        = cfg.interval
 final PASSWORD        = 'pass'
 
 Configuration.headless        = cfg.headless
-Configuration.browser         = 'chrome'
+Configuration.browser         = cfg.browser
 Configuration.baseUrl         = BASE
 Configuration.timeout         = 15000L
 Configuration.pageLoadTimeout = 30000L
@@ -61,7 +63,7 @@ println "╠══════════════════════�
 println "║  URL:      ${BASE}"
 println "║  Duration: ${DURATION_SECS}s"
 println "║  Users:    ${USER_COUNT}"
-println "║  Headless: ${Configuration.headless}"
+println "║  Browser:  ${cfg.browser} (headless: ${Configuration.headless})"
 println "║  Interval: ${INTERVAL}s"
 println "╚══════════════════════════════════════════╝"
 
@@ -100,6 +102,7 @@ def login = { String username ->
     // Wait for post-login redirect
     Selenide.$('#navbarDropdownMenuLink').shouldBe(Condition.visible)
     sleep(200)
+    return true  // login succeeded
 }
 
 def postNote = { String title, String content ->
@@ -179,17 +182,20 @@ def browseAdmin = {
 
 // ---- Main Loop ----
 
+// App seeds 50 users (user1..user50). Wrap indices to stay within range.
+def SEEDED_USERS = 50
+
 def deadline = Instant.now().plusSeconds(DURATION_SECS)
 def actionCount = 0
-def noteCounters = new int[USER_COUNT + 1]
-def editRowCounters = new int[USER_COUNT + 1]
+def noteCounters = new int[SEEDED_USERS + 1]
+def editRowCounters = new int[SEEDED_USERS + 1]
 def loggedInUser = null
 
 enum Action {
     BROWSE_PUBLIC, BROWSE_USER, POST_NOTE, EDIT_NOTE,
     DELETE_NOTE, LOGOUT_RELOGIN, SIGNUP, BROWSE_ADMIN
 }
-def weights = [25, 20, 25, 10, 5, 8, 2, 5]
+def weights = [25, 20, 25, 10, 5, 8, 0, 5]  // SIGNUP disabled
 
 def pickWeighted = { ->
     int total = weights.sum()
@@ -205,7 +211,7 @@ def pickWeighted = { ->
 try {
     while (Instant.now() < deadline) {
         def action = pickWeighted()
-        def userIdx = rng.nextInt(1, USER_COUNT + 1)
+        def userIdx = rng.nextInt(1, USER_COUNT + 1) % SEEDED_USERS + 1
         def username = "user${userIdx}"
 
         try {
@@ -215,30 +221,32 @@ try {
                     break
 
                 case Action.BROWSE_USER:
-                    if (loggedInUser == null) { login(username); loggedInUser = username }
-                    openUserPage()
-                    openPublicPage()
+                    if (loggedInUser == null) { try { login(username); loggedInUser = username } catch(e) { loggedInUser = null } }
+                    if (loggedInUser != null) { openUserPage(); openPublicPage() }
                     break
 
                 case Action.POST_NOTE:
-                    if (loggedInUser == null) { login(username); loggedInUser = username }
+                    if (loggedInUser == null) { try { login(username); loggedInUser = username } catch(e) { loggedInUser = null } }
+                    if (loggedInUser == null) break
                     noteCounters[userIdx]++
                     editRowCounters[userIdx]++
                     def n = noteCounters[userIdx]
-                    postNote("Load Note #${n}", "Generated at ${java.time.LocalTime.now().truncatedTo(java.time.temporal.ChronoUnit.SECONDS)}")
+                    postNote("Load Note #${n}", "Generated at ${LocalTime.now().truncatedTo(ChronoUnit.SECONDS)}")
                     break
 
                 case Action.EDIT_NOTE:
-                    if (loggedInUser == null) { login(username); loggedInUser = username }
+                    if (loggedInUser == null) { try { login(username); loggedInUser = username } catch(e) { loggedInUser = null } }
+                    if (loggedInUser == null) break
                     if (editRowCounters[userIdx] > 0) {
                         openUserPage()
                         def row = rng.nextInt(1, Math.min(editRowCounters[userIdx] + 1, 11))
-                        editNote(row, "Edited #${row}", "Updated at ${java.time.LocalTime.now().truncatedTo(java.time.temporal.ChronoUnit.SECONDS)}")
+                        editNote(row, "Edited #${row}", "Updated at ${LocalTime.now().truncatedTo(ChronoUnit.SECONDS)}")
                     }
                     break
 
                 case Action.DELETE_NOTE:
-                    if (loggedInUser == null) { login(username); loggedInUser = username }
+                    if (loggedInUser == null) { try { login(username); loggedInUser = username } catch(e) { loggedInUser = null } }
+                    if (loggedInUser == null) break
                     if (editRowCounters[userIdx] > 0) {
                         openUserPage()
                         def row = rng.nextInt(1, Math.min(editRowCounters[userIdx] + 1, 11))
@@ -248,20 +256,19 @@ try {
                     break
 
                 case Action.LOGOUT_RELOGIN:
-                    if (loggedInUser != null) { logout(); loggedInUser = null }
-                    def newUser = rng.nextInt(1, USER_COUNT + 1)
-                    login("user${newUser}")
-                    loggedInUser = "user${newUser}"
+                    if (loggedInUser != null) { try { logout() } catch(e) {} ; loggedInUser = null }
+                    def newUser = rng.nextInt(1, USER_COUNT + 1) % SEEDED_USERS + 1
+                    try { login("user${newUser}"); loggedInUser = "user${newUser}" } catch(e) { loggedInUser = null }
                     break
 
                 case Action.SIGNUP:
-                    if (loggedInUser != null) { logout(); loggedInUser = null }
-                    signup("lt${System.currentTimeMillis() % 100000}")
+                    if (loggedInUser != null) { try { logout() } catch(e) {} ; loggedInUser = null }
+                    try { signup("lt${System.currentTimeMillis() % 100000}") } catch(e) {}
                     break
 
                 case Action.BROWSE_ADMIN:
-                    if (loggedInUser != 'system') { login('system'); loggedInUser = 'system' }
-                    browseAdmin()
+                    if (loggedInUser != 'system') { try { login('system'); loggedInUser = 'system' } catch(e) { loggedInUser = null } }
+                    if (loggedInUser == 'system') { browseAdmin() }
                     break
             }
 
